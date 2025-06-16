@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import { Box, Typography, Grid, Card, CardActionArea, CardContent, CardMedia, Button, Link } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -7,7 +8,7 @@ const plantillas = [
   { title: 'Plantilla Demo', image: '/plantilla1.jpg' },
   { title: 'Plantilla Demo', image: '/plantilla2.jpg' },
   { title: 'Plantilla Demo', image: '/plantilla3.jpg' },
-  { title: 'Plantilla Demo', image: '/plantilla4.jpg' }
+  { title: 'Plantilla Demo', image: '/plantillla4.jpg' }
 ];
 
 // Datos de ejemplo para cursos
@@ -18,9 +19,11 @@ const cursos = [
 ];
 
 function BlogHomeSection() {
+  const [activeIndex, setActiveIndex] = useState(null);
+
   return (
     <Box sx={{ width: '100%', py: { xs: 4, md: 8 }, px: { xs: 2, md: 4 }, bgcolor: '#fff' }}>
-      <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+      <Box sx={{ maxWidth: 1600, mx: 'auto' }}>
         {/* PLANTILLAS */}
         <Typography
           variant="h6"
@@ -34,43 +37,75 @@ function BlogHomeSection() {
         >
           PLANTILLAS
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 4 }}>
-          <Grid container spacing={2} sx={{ flex: 1 }}>
+        <Box sx= {{ width:'100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 }, maxWidth: 1300, mx: 'auto' }}>
+
+          <Grid container spacing={3} sx={{ flex: 1 }}>
             {plantillas.map((plantilla, idx) => (
-              <Grid item xs={6} sm={3} key={idx}>
-                <Card
-            key={idx}
-            sx={{
-              width: 300,
-              transition: 'transform 0.3s, box-shadow 0.3s',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.2)'
-              }
-            }}
-          >
-            <CardActionArea href='/recursos'>
-              <CardMedia
-                component="img"
-                image={plantilla.image}
-                alt={plantilla.title}
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={3}
+                key={plantilla.title}
                 sx={{
-                  width: '100%',
-                  aspectRatio: '16/9',
-                  objectFit: 'cover',
-                  borderBottom: '1px solid #eee'
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
-              />
-              <CardContent>
-                <Typography variant="h6" sx={{ color: '#003366', fontWeight: 500 }}>
-                  {plantilla.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {plantilla.description}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+              >
+                <Card
+                  elevation={0}
+                  onMouseEnter={() => setActiveIndex(idx)}
+                  onMouseLeave={() => setActiveIndex(null)}
+                  onTouchStart={() => setActiveIndex(idx)}
+                  onTouchEnd={() => setActiveIndex(null)}
+                  sx={{
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    background: 'transparent',
+                    width: '100%',
+                    maxWidth: 250,
+                    minWidth: 140,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    transition: 'transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1)',
+                    transform:
+                      activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
+                    boxShadow:
+                      activeIndex === idx
+                        ? '0 8px 24px 0 rgba(67,185,127,0.18)'
+                        : 'none',
+                    '& .MuiCardMedia-root': {
+                      filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
+                      transition: 'filter 0.2s'
+                    }
+                  }}
+                >
+                  <CardActionArea href='/recursos'>
+                    <CardMedia
+                      component="img"
+                      image={plantilla.image}
+                      alt={plantilla.title}
+                      sx={{
+                        width: '100%',
+                        aspectRatio: '1/2',
+                        objectFit: 'cover',
+                        borderBottom: '1px solid #eee'
+                      }}
+                    />
+                    <CardContent sx={{ p: 0, flexGrow: 1 }}>
+                      <Typography variant="h6" sx={{
+                        color: '#003366', fontWeight: 400,
+                        fontSize: { xs: 16, md: 18 }
+                      }}>
+                        {plantilla.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {plantilla.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
               </Grid>
             ))}
           </Grid>
@@ -81,7 +116,7 @@ function BlogHomeSection() {
               sx={{
                 color: '#43B97F',
                 fontWeight: 500,
-                fontSize: 16,
+                fontSize: 18,
                 display: 'flex',
                 alignItems: 'center',
                 gap: 1,
@@ -100,7 +135,8 @@ function BlogHomeSection() {
           sx={{
             color: '#003366',
             letterSpacing: '0.12em',
-            mb: 2,
+            mb: 8,
+            mt: 6,
             textTransform: 'uppercase',
             fontWeight: 500
           }}
@@ -114,8 +150,8 @@ function BlogHomeSection() {
                 sx={{
                   borderRadius: '50%',
                   overflow: 'hidden',
-                  width: 170,
-                  height: 170,
+                  width: 250,
+                  height: 250,
                   mx: 'auto',
                   transition: 'transform 0.3s, box-shadow 0.3s',
                   display: 'flex',
@@ -144,10 +180,10 @@ function BlogHomeSection() {
             </Grid>
           ))}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 2 }}>
           <Button
             variant="contained"
-            href="/cursos"
+            href="/recursos"
             sx={{
               bgcolor: '#43B97F',
               color: '#fff',
@@ -159,7 +195,9 @@ function BlogHomeSection() {
               textTransform: 'none',
               boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
               '&:hover': {
-                bgcolor: '#388e5c'
+                bgcolor: '#fff',
+                borderColor: '#388e5c',
+                color: '#388e5c',
               }
             }}
           >

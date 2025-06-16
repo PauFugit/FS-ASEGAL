@@ -38,7 +38,7 @@ function AboutUsSection() {
             ASEGAL B&F ASESORÍAS
           </Typography>
           <Typography sx={{ color: '#003366', mb: 4, fontSize: { xs: 15, md: 17 } }}>
-            Profesionales expertas en garantizar la seguridad alimentaria y el cumplimiento regulatorio, con nuestra cercanía y confiabilidad hacemos que tu emprendimiento logre que cada alimento servido sea de la más alta calidad, impulsando tu negocio al siguiente nivel.
+            Profesionales expertas en seguridad alimentaria y cumplimiento regulatorio, comprometidas en potenciar tus proyectos gastronómicos para alcanzar nuevos mercados con productos confiables y seguros para tus clientes.
           </Typography>
         </Grid>
         <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -89,7 +89,7 @@ function AboutUsSection() {
               textShadow: '1px 2px 4px #e0e0e0'
             }}
           >
-            ¿POR QUÉ ASEGAL B&F?
+            ¿POR QUÉ ASEGAL ByF?
           </Typography>
           <List>
             {whyItems.map((item) => (

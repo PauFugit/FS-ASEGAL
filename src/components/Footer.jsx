@@ -1,9 +1,206 @@
-import React from 'react'
+import React from 'react';
+import { Box, Typography, Link, IconButton, Stack } from '@mui/material';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <div>Footer</div>
-  )
+    <Box sx={{ bgcolor: '#fff', pt: 5, width: '100vw', position: 'relative', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw' }}>
+      {/* Primera fila: logo, descripción y links */}
+      <Box
+        sx={{
+          width: '100%',
+          maxWidth: 1400,
+          mx: 'auto',
+          px: { xs: 2, md: 6 },
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'flex-start', md: 'flex-start' },
+          justifyContent: 'space-between',
+          gap: { xs: 3, md: 0 },
+        }}
+      >
+        {/* Logo y descripción */}
+        <Box sx={{ flex: 1, minWidth: 220 }}>
+          <Box component="img" src="/logo.jpg" alt="Asegal B&F" sx={{ height: 60, mb: 1 }} />
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#003366',
+              fontSize: { xs: '1rem', md: '1.05rem' },
+              mb: 1,
+              lineHeight: 1.4,
+            }}
+          >
+            Asesorías para el aseguramiento de calidad para empresas gastronómicas, expertas en garantizar la seguridad alimentaria y el cumplimiento regulatorio.<br />
+            <Box component="span" sx={{ fontWeight: 700 }}>
+              Impulsa tu negocio al siguiente nivel, asesórate con Asegal B&F.
+            </Box>
+          </Typography>
+        </Box>
+
+        {/* Links */}
+        <Box
+          sx={{
+            flex: 1,
+            minWidth: 180,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'flex-start', md: 'flex-end' },
+            mt: { xs: 2, md: 0 },
+            gap: 0.5,
+          }}
+        >
+          <Link
+            href="#"
+            underline="none"
+            sx={{
+              color: '#003366',
+              fontWeight: 700,
+              fontSize: '1.05rem',
+              mb: 0.5,
+              fontFamily: 'inherit',
+            }}
+          >
+            Sobre Asegal B&F
+          </Link>
+          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+            Misión y Visión
+          </Link>
+          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+            Políticas de Privacidad
+          </Link>
+          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic', mb: 0.5 }}>
+            Contáctanos
+          </Link>
+          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic' }}>
+            Cotiza
+          </Link>
+        </Box>
+      </Box>
+
+      {/* Franja inferior: redes sociales y contacto */}
+      <Box
+        sx={{
+          mt: 5,
+          borderTop: '1.5px solid #e1d6fa',
+          borderRadius: 20,
+          bgcolor: '#fff',
+          width: '100%',
+          maxWidth: 1400,
+          mx: 'auto',
+          px: { xs: 2, md: 4 },
+          py: 2,
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          boxShadow: '0 2px 8px 0 rgba(80,0,200,0.03)',
+        }}
+      >
+        {/* Redes sociales */}
+        <Stack direction="row" alignItems="center" spacing={1.5}>
+          <IconButton
+            href="#"
+            sx={{
+              bgcolor: '#fff',
+              border: '2px solid #e1d6fa',
+              color: '#e4405f',
+              width: 40,
+              height: 40,
+              mr: 0.5,
+              '&:hover': { bgcolor: '#f8f8ff' },
+            }}
+          >
+            <InstagramIcon />
+          </IconButton>
+          <IconButton
+            href="#"
+            sx={{
+              bgcolor: '#fff',
+              border: '2px solid #e1d6fa',
+              color: '#1877f3',
+              width: 40,
+              height: 40,
+              mr: 0.5,
+              '&:hover': { bgcolor: '#f8f8ff' },
+            }}
+          >
+            <FacebookIcon />
+          </IconButton>
+          <IconButton
+            href="#"
+            sx={{
+              bgcolor: '#fff',
+              border: '2px solid #e1d6fa',
+              color: '#ea4335',
+              width: 40,
+              height: 40,
+              '&:hover': { bgcolor: '#f8f8ff' },
+            }}
+          >
+            <EmailIcon />
+          </IconButton>
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#a084e8',
+              fontWeight: 500,
+              fontStyle: 'italic',
+              ml: 2,
+              fontSize: '1rem',
+            }}
+          >
+            Encuéntranos en redes sociales
+          </Typography>
+        </Stack>
+        {/* Contacto */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={2}
+          sx={{
+            bgcolor: '#fff',
+            border: '1.5px solid #e1d6fa',
+            borderRadius: 20,
+            px: 2.5,
+            py: 1,
+            minWidth: 260,
+            justifyContent: 'center',
+          }}
+        >
+          <PhoneIcon sx={{ color: '#003366', fontSize: 20 }} />
+          <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>
+            +56 9 9492 8092
+          </Typography>
+          <EmailIcon sx={{ color: '#003366', fontSize: 20, ml: 2 }} />
+          <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>
+            contacto@asegalbyfasesorias.cl
+          </Typography>
+        </Stack>
+      </Box>
+
+      {/* Copyright */}
+      <Typography
+        variant="body2"
+        align="center"
+        sx={{
+          mt: 3,
+          color: '#003366',
+          fontStyle: 'italic',
+          fontWeight: 500,
+          fontSize: '1rem',
+        }}
+      >
+        {currentYear} © Asegal B&F Asesorías - Todos los Derechos Reservados
+      </Typography>
+    </Box>
+  );
 }
 
-export default Footer
+export default Footer;

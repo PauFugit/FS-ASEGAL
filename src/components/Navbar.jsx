@@ -39,7 +39,7 @@ const Navbar = () => {
                 sx={{
                     justifyContent: 'space-between',
                     minHeight: { xs: 56, md: 72 },
-                    height: { xs: 56, md: 72 },
+                    height: { xs: 100, md: 100 },
                     flexDirection: 'row',
                     alignItems: 'center',
                     px: { xs: 1, md: 3 },
@@ -52,7 +52,7 @@ const Navbar = () => {
                         display: 'flex',
                         alignItems: 'center',
                         height: '100%',
-                        width: 150,
+                        width: 300,
                         flexShrink: 0,
                         overflow: 'hidden'
                     }}
@@ -77,7 +77,7 @@ const Navbar = () => {
                                     objectFit: 'contain',
                                     height: '100%',
                                     width: '100%',
-                                    maxHeight: '56px'
+                                    maxHeight: '100px'
                                 }}
                             />
                         </Box>
