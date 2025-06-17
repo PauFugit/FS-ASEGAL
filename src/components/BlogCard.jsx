@@ -28,10 +28,17 @@ function BlogCard({ image, title, description }) {
     >
       <CardMedia
         component="img"
-        height="140"
         image={image}
         alt={title}
-        sx={{ objectFit: 'cover' }}
+        sx={{
+          objectFit: 'cover', width: '100%',
+          height: 140, // <-- Aquí puedes cambiar el valor
+          objectFit: 'cover',
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          transition: 'filter 0.2s',
+          padding: 2,
+        }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h6" component="div" sx={{ color: '#1565c0', fontWeight: 500 }}>

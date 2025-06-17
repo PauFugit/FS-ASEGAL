@@ -1,129 +1,95 @@
 import React from 'react';
-import { Box, Typography, Grid, Card, CardMedia, CardContent, IconButton, Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Box, Typography, Grid, Button } from '@mui/material';
+import BlogCard from './BlogCard';
 
 const blogPosts = [
   {
-    title: 'Buenas prácticas en la gastronomía',
     image: '/blogcard1.jpg',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
-    link: '/blog'
+    title: 'Lo que necesitas para iniciar tu negocio...',
+    description: '¿Estás pensando en emprender en el mundo de la gastronomía? Aquí te dejamos una guía con los pasos esenciales para comenzar tu negocio de manera exitosa...'
   },
   {
-    title: 'Buenas prácticas en la gastronomía',
     image: '/blogcard2.jpg',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
-    link: '/blog'
+    title: 'Tips para enfrentar con éxito una fiscalización de SEREMI',
+    description: '¿Te preocupa una posible fiscalización de SEREMI? Aquí te compartimos consejos prácticos para estar preparado y cumplir con las normativas vigentes...'
   },
   {
-    title: 'Buenas prácticas en la gastronomía',
     image: '/blogcard3.jpg',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
-    link: '/blog'
+    title: '¿Qué información debe contener una etiqueta nutricional?',
+    description: 'La etiqueta nutricional es fundamental para informar a los consumidores sobre los productos alimenticios. Descubre qué información debe incluir y cómo interpretarla correctamente...'
   }
 ];
 
 function BlogHomeSection() {
   return (
-    <Box sx={{ width: '100%', py: { xs: 4, md: 8 }, px: { xs: 2, md: 4 }, bgcolor: '#f9f9f9' }}>
-      <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
-        {/* Título */}
-        <Typography variant="overline" sx={{ color: '#FFDE17', display: 'block', mb: 1 }}>
+    <Box sx={{ width: '100%', bgcolor: '#fafbfc', py: 6, px: 2, position: 'relative' }}>
+      {/* Línea decorativa y título */}
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <Typography variant="overline" sx={{ color: '#43b97f', fontWeight: 700, fontSize: 18, mr: 2, position: 'relative', top: 6 }}>
           BLOG
         </Typography>
-        <Typography
-          variant="h4"
+        <Box sx={{ flex: 1, borderBottom: '2px solid #1565c0', ml: 1 }} />
+      </Box>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 500,
+          color: '#003366',
+          letterSpacing: '0.12em',
+          mb: 5,
+          textTransform: 'uppercase',
+          fontSize: { xs: 24, md: 32 },
+          textShadow: '1px 2px 4px #e0e0e0'
+        }}
+      >
+        NOVEDADES Y CONSEJOS PARA TI
+      </Typography>
+
+      {/* Cards alineadas */}
+      <Grid container spacing={4} justifyContent="center">
+        {blogPosts.map((post, index) => (
+          <Grid item xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+            <BlogCard
+              image={post.image}
+              title={post.title}
+              description={post.description}
+              sx={{
+                height: { xs: 270, md: 260 }, // altura más pequeña
+                maxHeight: 270,
+                minHeight: 230
+              }}
+            />
+          </Grid>
+        ))}
+      </Grid>
+
+      {/* Línea decorativa inferior y botón "Leer más" */}
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+        <Box sx={{
+          flex: 1,
+          borderBottom: '2px solid #1565c0',
+          mr: 3
+        }} />
+        <Button
+          variant="contained"
+          href="/blog"
           sx={{
-            fontWeight: 500,
-            color: '#003366',
-            letterSpacing: '0.12em',
-            mb: 4,
-            textTransform: 'uppercase',
-            fontSize: { xs: 24, md: 32 },
-            textShadow: '1px 2px 4px #e0e0e0'
+            bgcolor: '#43b97f',
+            color: '#ffffff',
+            borderRadius: '24px',
+            fontWeight: 600,
+            py: 1.2,
+            px: 4,
+            fontSize: 20,
+            boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
+            textTransform: 'italic',
+            '&:hover': {
+              bgcolor: '#003366' 
+            }
           }}
         >
-          NOVEDADES Y CONSEJOS PARA TI
-        </Typography>
-
-        {/* Cards: Todas en una fila */}
-        <Grid container spacing={4} wrap="nowrap" sx={{ overflowX: 'auto', pb: 2 }}>
-          {blogPosts.map((post, index) => (
-            <Grid item key={index} sx={{ flex: '0 0 33.33%', minWidth: 300 }}>
-              <Card
-                sx={{
-                  borderRadius: 2,
-                  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.08)',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
-                  position: 'relative',
-                  overflow: 'visible',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.12)'
-                  }
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={post.image}
-                  alt={post.title}
-                  sx={{
-                    height: 140,
-                    objectFit: 'cover',
-                    borderBottom: '1px solid #eee'
-                  }}
-                />
-                <CardContent sx={{ bgcolor: '#EAF6FF', position: 'relative', pb: 6 }}>
-                  <Typography variant="h6" component="div" sx={{ fontWeight: 500, mb: 1, color: '#003366' }}>
-                    {post.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {post.description}
-                  </Typography>
-                  <IconButton
-                    href={post.link}
-                    sx={{
-                      position: 'absolute',
-                      bottom: -20,
-                      right: 16,
-                      bgcolor: '#003366',
-                      color: '#fff',
-                      width: 40,
-                      height: 40,
-                      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-                      '&:hover': {
-                        bgcolor: '#002244'
-                      }
-                    }}
-                  >
-                    <ArrowForwardIcon />
-                  </IconButton>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Botón "Leer más" */}
-        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 4 }}>
-          <Button
-            variant="contained"
-            href="/blog"
-            sx={{
-              bgcolor: '#FFDE17',
-              color: '#003366',
-              borderRadius: '24px',
-              fontWeight: 600,
-              py: 1.2,
-              px: 3,
-              '&:hover': {
-                bgcolor: '#f2d413'
-              }
-            }}
-          >
-            Leer más
-          </Button>
-        </Box>
+          Leer más
+        </Button>
       </Box>
     </Box>
   );

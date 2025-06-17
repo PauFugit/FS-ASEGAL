@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { Box, Typography, Grid, Card, CardMedia, CardContent, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-
+import { motion } from 'framer-motion';
 const services = [
   {
-    title: 'Resolución Sanitaria',
+    title: 'Tramiación Resolución Sanitaria',
     image: '/resolucionsanitaria.jpg',
   },
   {
@@ -46,9 +46,10 @@ function CardServicesSection() {
         {services.map((service, idx) => (
           <Grid
             item
-            xs={12}
-            sm={6}
-            md={3}
+            xs={12} // 1 card por fila en extra small
+            sm={6}  // 2 cards por fila en small
+            md={4}  // 3 cards en la primera fila y 2 en la segunda en medium
+            lg={2.4} // 5 cards por fila en large
             key={service.title}
             sx={{
               display: 'flex',

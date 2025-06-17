@@ -90,7 +90,7 @@ const Navbar = () => {
                         {menuLinks.map((link, idx) => {
                             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
                             return (
-                                <Link href={link.href} passHref key={link.href} legacyBehavior>
+                                <Link href={link.href} passHref key={link.href}>
                                     <Button
                                         color="inherit"
                                         sx={{
@@ -123,7 +123,7 @@ const Navbar = () => {
                 {/* Botón Desktop */}
                 {!isMobile && (
                     <Box sx={{ ml: 2 }}>
-                        <Link href="/contacto" passHref legacyBehavior>
+                        <Link href="/contacto" passHref>
                             <Button
                                 variant="contained"
                                 sx={{
@@ -172,7 +172,7 @@ const Navbar = () => {
                                     const isHovered = hoveredIndex === idx;
                                     return (
                                         <ListItem key={link.href} disablePadding>
-                                            <Link href={link.href} passHref legacyBehavior>
+                                            <Link href={link.href} passHref>
                                                 <ListItemButton
                                                     onClick={handleDrawerToggle}
                                                     onMouseEnter={() => setHoveredIndex(idx)}
@@ -199,7 +199,7 @@ const Navbar = () => {
                                     );
                                 })}
                                 <ListItem sx={{ justifyContent: 'center', mt: 1 }}>
-                                    <Link href="/contacto" passHref legacyBehavior>
+                                    <Link href="/contacto" passHref>
                                         <Button
                                             variant="contained"
                                             fullWidth

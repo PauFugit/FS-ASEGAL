@@ -8,7 +8,7 @@ function BannerStatic({ image, text }) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: 300,
+        height: 400,
         overflow: 'hidden',
       }}
     >

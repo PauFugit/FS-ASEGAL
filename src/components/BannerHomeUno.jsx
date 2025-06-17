@@ -1,9 +1,65 @@
-import React from 'react'
+// BannerHomeUno.jsx
+import React from 'react';
+import { Box, Button, Typography } from '@mui/material';
 
 function BannerHomeUno() {
   return (
-    <div>BannerHomeUno</div>
-  )
+    <Box
+      sx={{
+        width: '100%',
+        bgcolor: '#fff3a7',
+        display: 'flex',
+        alignItems: 'center',
+        py: 4,
+        px: 0,
+      }}
+    >
+      {/* Línea izquierda */}
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#aee9b6', mx: 1 }} />
+
+      {/* Texto */}
+      <Typography
+        sx={{
+          color: '#4a7c7b',
+          fontSize: 22,
+          letterSpacing: '0.2em',
+          fontWeight: 400,
+          mx: 2,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Déjalo en nuestras manos
+      </Typography>
+
+      {/* Línea central corta */}
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#aee9b6', mx: 1, maxWidth: 40 }} />
+
+      {/* Botón */}
+      <Button
+        variant="contained"
+        href="/servicios"
+        sx={{
+          bgcolor: '#43b97f',
+          color: '#fff',
+          fontWeight: 600,
+          fontSize: 18,
+          borderRadius: 16,
+          px: 4,
+          py: 0.5,
+          boxShadow: '0px 4px 8px #aee9b6',
+          mx: 2,
+          '&:hover': {
+            bgcolor: '#388e5c',
+          },
+        }}
+      >
+        CONSULTA NUESTROS SERVICIOS
+      </Button>
+
+      {/* Línea derecha */}
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#aee9b6', mx: 1 }} />
+    </Box>
+  );
 }
 
-export default BannerHomeUno
+export default BannerHomeUno;

@@ -151,7 +151,7 @@ function ContactoSection() {
           <Button
             fullWidth
             sx={{
-              bgcolor: '#fbc02d',
+              bgcolor: '#43b97f',
               color: '#fff',
               fontWeight: 600,
               borderRadius: 5,
@@ -189,7 +189,7 @@ function ContactoSection() {
           >
             <img
               src="/contacto.jpeg"
-              alt="Ubicación"
+              alt="Contacto"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
           </Box>

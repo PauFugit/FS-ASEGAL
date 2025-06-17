@@ -1,212 +1,139 @@
-'use client';
-import React, { useState } from 'react';
-import { Box, Typography, Grid, Card, CardActionArea, CardContent, CardMedia, Button, Link } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+'use client'
+import React from 'react';
+import { Box, Typography, Button, Stack, Link } from '@mui/material';
+import { motion } from 'framer-motion';
 
-// Datos de ejemplo para plantillas
-const plantillas = [
-  { title: 'Plantilla Demo', image: '/plantilla1.jpg' },
-  { title: 'Plantilla Demo', image: '/plantilla2.jpg' },
-  { title: 'Plantilla Demo', image: '/plantilla3.jpg' },
-  { title: 'Plantilla Demo', image: '/plantillla4.jpg' }
+const courses = [
+  {
+    title: "BPM",
+    image: "/capahome1.jpg"
+  },
+  {
+    title: "Resolución Sanitaria",
+    image: "/capahome2.jpg"
+  },
+  {
+    title: "Etiquetado Nutricional",
+    image: "/capahome3.webp"
+  }
 ];
 
-// Datos de ejemplo para cursos
-const cursos = [
-  { title: 'Aseguramiento Calidad', image: '/capahome1.jpg' },
-  { title: 'Resolución Sanitaria', image: '/capahome2.jpg' },
-  { title: 'Comienza tu negocio', image: '/capahome3.webp' }
-];
-
-function BlogHomeSection() {
-  const [activeIndex, setActiveIndex] = useState(null);
-
+const CourseCard = ({ title, image, index }) => {
   return (
-    <Box sx={{ width: '100%', py: { xs: 4, md: 8 }, px: { xs: 2, md: 4 }, bgcolor: '#fff' }}>
-      <Box sx={{ maxWidth: 1600, mx: 'auto' }}>
-        {/* PLANTILLAS */}
-        <Typography
-          variant="h6"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.05 }}
+    >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2
+      }}>
+        <Box sx={{
+          width: 300,
+          height: 300,
+          borderRadius: '50%',
+          backgroundImage: `url(${image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          border: '4px solid white',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        }} />
+        <Typography variant="h6" sx={{ 
+          color: '#2d4c6a',
+          fontWeight: 600,
+          fontSize: '1.1rem',
+          textAlign: 'center',
+          mt: 1
+        }}>
+          {title}
+        </Typography>
+      </Box>
+    </motion.div>
+  );
+};
+
+const CursosCapacitacionesSection = () => {
+  return (
+    <Box sx={{ 
+      py: 8,
+      px: { xs: 3, sm: 6, md: 8, lg: 12 },
+      maxWidth: 1600,
+      mx: 'auto',
+      position: 'relative'
+    }}>
+      <Typography variant="h4" sx={{ 
+        mb: 6,
+        fontWeight: 700,
+        color: '#2d4c6a',
+        textAlign: 'left',
+        px: { xs: 2, sm: 0 }
+      }}>
+        CURSOS Y CAPACITACIONES
+      </Typography>
+
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        <Stack 
+          direction="row"
+          spacing={6}
           sx={{
-            color: '#003366',
-            letterSpacing: '0.12em',
-            mb: 2,
-            textTransform: 'uppercase',
-            fontWeight: 500
+            width: '100%',
+            justifyContent: 'center',
+            overflowX: 'auto',
+            pb: 3,
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+            mb: 4
           }}
         >
-          PLANTILLAS
-        </Typography>
-        <Box sx= {{ width:'100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 }, maxWidth: 1300, mx: 'auto' }}>
+          {courses.map((course, index) => (
+            <CourseCard 
+              key={index}
+              title={course.title} 
+              image={course.image}
+              index={index} 
+            />
+          ))}
+        </Stack>
 
-          <Grid container spacing={3} sx={{ flex: 1 }}>
-            {plantillas.map((plantilla, idx) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={3}
-                key={plantilla.title}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <Card
-                  elevation={0}
-                  onMouseEnter={() => setActiveIndex(idx)}
-                  onMouseLeave={() => setActiveIndex(null)}
-                  onTouchStart={() => setActiveIndex(idx)}
-                  onTouchEnd={() => setActiveIndex(null)}
+        {/* Línea decorativa inferior y botón "Leer más" */}
+              <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+                <Box sx={{
+                  flex: 1,
+                  borderBottom: '2px solid #1565c0',
+                  mr: 3
+                }} />
+                <Button
+                  variant="contained"
+                  href="/recursos"
                   sx={{
-                    borderRadius: 0,
-                    boxShadow: 'none',
-                    background: 'transparent',
-                    width: '100%',
-                    maxWidth: 250,
-                    minWidth: 140,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    transition: 'transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1)',
-                    transform:
-                      activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
-                    boxShadow:
-                      activeIndex === idx
-                        ? '0 8px 24px 0 rgba(67,185,127,0.18)'
-                        : 'none',
-                    '& .MuiCardMedia-root': {
-                      filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
-                      transition: 'filter 0.2s'
+                    bgcolor: '#43b97f',
+                    color: '#ffffff',
+                    borderRadius: '24px',
+                    fontWeight: 600,
+                    py: 1.2,
+                    px: 4,
+                    fontSize: 20,
+                    boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
+                    textTransform: 'italic',
+                    '&:hover': {
+                      bgcolor: '#003366'
                     }
                   }}
                 >
-                  <CardActionArea href='/recursos'>
-                    <CardMedia
-                      component="img"
-                      image={plantilla.image}
-                      alt={plantilla.title}
-                      sx={{
-                        width: '100%',
-                        aspectRatio: '1/2',
-                        objectFit: 'cover',
-                        borderBottom: '1px solid #eee'
-                      }}
-                    />
-                    <CardContent sx={{ p: 0, flexGrow: 1 }}>
-                      <Typography variant="h6" sx={{
-                        color: '#003366', fontWeight: 400,
-                        fontSize: { xs: 16, md: 18 }
-                      }}>
-                        {plantilla.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {plantilla.description}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-          <Box sx={{ minWidth: 160, ml: 2, mt: 2, display: { xs: 'none', sm: 'block' } }}>
-            <Link
-              href="/recursos"
-              underline="none"
-              sx={{
-                color: '#43B97F',
-                fontWeight: 500,
-                fontSize: 18,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                transition: 'color 0.2s',
-                '&:hover': { color: '#2e7d32' }
-              }}
-            >
-              Ver más plantillas <ArrowForwardIcon sx={{ fontSize: 20 }} />
-            </Link>
-          </Box>
-        </Box>
-
-        {/* CURSOS Y CAPACITACIONES */}
-        <Typography
-          variant="h6"
-          sx={{
-            color: '#003366',
-            letterSpacing: '0.12em',
-            mb: 8,
-            mt: 6,
-            textTransform: 'uppercase',
-            fontWeight: 500
-          }}
-        >
-          CURSOS Y CAPACITACIONES
-        </Typography>
-        <Grid container spacing={4} justifyContent="center" sx={{ mb: 4 }}>
-          {cursos.map((curso, idx) => (
-            <Grid item xs={12} sm={4} md={4} key={idx} sx={{ textAlign: 'center' }}>
-              <Card
-                sx={{
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  width: 250,
-                  height: 250,
-                  mx: 'auto',
-                  transition: 'transform 0.3s, box-shadow 0.3s',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: '0px 8px 20px rgba(0,0,0,0.2)'
-                  }
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={curso.image}
-                  alt={curso.title}
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                />
-              </Card>
-              <Typography variant="subtitle1" sx={{ mt: 1, color: '#003366', fontWeight: 500 }}>
-                {curso.title}
-              </Typography>
-            </Grid>
-          ))}
-        </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'right', mt: 2 }}>
-          <Button
-            variant="contained"
-            href="/recursos"
-            sx={{
-              bgcolor: '#43B97F',
-              color: '#fff',
-              borderRadius: '24px',
-              fontWeight: 600,
-              px: 4,
-              py: 1,
-              fontSize: 18,
-              textTransform: 'none',
-              boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
-              '&:hover': {
-                bgcolor: '#fff',
-                borderColor: '#388e5c',
-                color: '#388e5c',
-              }
-            }}
-          >
-            Ver más
-          </Button>
-        </Box>
-      </Box>
+                  VER MÁS
+                </Button>
+              </Box>
+            </Box>
     </Box>
   );
-}
+};
 
-export default BlogHomeSection;
+export default CursosCapacitacionesSection;

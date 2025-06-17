@@ -7,7 +7,7 @@ const BannerHome = () => {
       sx={{
         width: '100%',
         minHeight: 420,
-        background: 'url("/herosection.jpg") center/cover no-repeat, #e3f1fa',
+        background: 'linear-gradient(rgba(227, 241, 250, 0.7), rgba(227, 241, 250, 0.7)), url("/herosection.jpg") center/cover no-repeat',
         position: 'relative',
         overflow: 'hidden',
         borderRadius: '0 0 8px 8px',
@@ -15,8 +15,14 @@ const BannerHome = () => {
         pb: { xs: 10, md: 0 }
       }}
     >
-      {/* Texto principal */}
-      <Box sx={{ px: { xs: 2, md: 8 }, pt: { xs: 4, md: 8 }, maxWidth: 700 }}>
+      {/* Contenido principal (izquierda) */}
+      <Box sx={{ 
+        px: { xs: 2, md: 8 }, 
+        pt: { xs: 4, md: 8 }, 
+        maxWidth: 700,
+        position: 'relative',
+        zIndex: 5
+      }}>
         <Typography
           variant="h2"
           sx={{
@@ -24,7 +30,8 @@ const BannerHome = () => {
             fontWeight: 400,
             letterSpacing: '0.08em',
             color: '#2d4c6a',
-            lineHeight: 1.1
+            lineHeight: 1.1,
+            mb: 2
           }}
         >
           EMPRENDE<br />CON SEGURIDAD
@@ -32,17 +39,18 @@ const BannerHome = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            mt: 2,
             color: '#4b6b8a',
-            fontSize: { xs: 16, md: 20 }
+            fontSize: { xs: 16, md: 20 },
+            mb: 3
           }}
         >
           Impulsamos tu negocio en base a los más altos estándares de calidad
         </Typography>
 
-        {/* Botones principales */}
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 4 }}>
+        {/* Botones */}
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 4 }}>
           <Button
+            href="/nosotras"
             variant="contained"
             sx={{
               backgroundColor: '#43B97F',
@@ -62,6 +70,7 @@ const BannerHome = () => {
             Conoce más
           </Button>
           <Button
+            href="/servicios"
             variant="outlined"
             sx={{
               border: '2px solid #FFD600',
@@ -85,80 +94,80 @@ const BannerHome = () => {
         </Stack>
       </Box>
 
-      {/* Burbuja grande (arriba derecha) */}
+      {/* Burbujas (derecha) */}
+      {/* 1. Burbuja grande (centro-derecha) */}
       <Box
         sx={{
           position: 'absolute',
-          top: { xs: 24, md: 24 },
-          right: { xs: 32, md: 120 },
-          width: { xs: 140, md: 230 },
-          height: { xs: 140, md: 230 },
+          top: { xs: '30%', md: '25%' },
+          right: { xs: '5%', md: '8%' },
+          width: { xs: 140, md: 220 },
+          height: { xs: 140, md: 220 },
           borderRadius: '50%',
-          overflow: 'hidden',
           border: '4px solid white',
-          boxShadow: '0 2px 12px #0001',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
           zIndex: 2,
-          background: '#fff'
+          overflow: 'hidden'
         }}
       >
         <img
           src="/burbujauno.jpg"
-          alt="Banner 1"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </Box>
-      {/* Burbuja mediana (abajo derecha, sobresaliendo) */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: { xs: -40, md: -60 },
-          right: { xs: 60, md: 160 },
-          width: { xs: 110, md: 170 },
-          height: { xs: 110, md: 170 },
-          borderRadius: '50%',
-          overflow: 'hidden',
-          border: '4px solid white',
-          boxShadow: '0 2px 12px #0001',
-          zIndex: 3,
-          background: '#fff'
-        }}
-      >
-        <img
-          src="/burbujatres.jpg"
-          alt="Banner 3"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      </Box>
-      {/* Burbuja pequeña (arriba derecha, sobrepuesta a la grande) */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: { xs: 48, md: 40 },
-          right: { xs: -10, md: 30 },
-          width: { xs: 90, md: 130 },
-          height: { xs: 90, md: 130 },
-          borderRadius: '50%',
-          overflow: 'hidden',
-          border: '4px solid white',
-          boxShadow: '0 2px 8px #0001',
-          zIndex: 4,
-          background: '#fff'
-        }}
-      >
-        <img
-          src="/burbujados.jpg"
-          alt="Banner 2"
+          alt="Imagen circular 1"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </Box>
 
-      {/* Franja inferior con botones y texto */}
+      {/* 2. Burbuja mediana (superior derecha, superpuesta) */}
       <Box
         sx={{
           position: 'absolute',
+          top: { xs: '10%', md: '10%' },
+          right: { xs: '15%', md: '18%' },
+          width: { xs: 100, md: 160 },
+          height: { xs: 100, md: 160 },
+          borderRadius: '50%',
+          border: '4px solid white',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          zIndex: 3,
+          overflow: 'hidden'
+        }}
+      >
+        <img
+          src="/burbujados.jpg"
+          alt="Imagen circular 2"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </Box>
+
+      {/* 3. Burbuja pequeña (inferior derecha) */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: { xs: '15%', md: '20%' },
+          right: { xs: '8%', md: '12%' },
+          width: { xs: 80, md: 130 },
+          height: { xs: 80, md: 130 },
+          borderRadius: '50%',
+          border: '4px solid white',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          zIndex: 1,
+          overflow: 'hidden'
+        }}
+      >
+        <img
+          src="/burbujatres.jpg"
+          alt="Imagen circular 3"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      </Box>
+
+      {/* Franja inferior */}
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
           left: 0,
           right: 0,
-          bottom: 0,
           background: '#FFE88A',
           minHeight: 56,
           display: 'flex',
@@ -166,7 +175,7 @@ const BannerHome = () => {
           px: { xs: 2, md: 8 },
           py: 1,
           flexDirection: { xs: 'column', sm: 'row' },
-          gap: 2,
+          gap: 1,
           borderTop: '1px solid #ffe066',
           zIndex: 10
         }}
@@ -193,6 +202,7 @@ const BannerHome = () => {
         </Typography>
         <Box sx={{ flex: 1 }} />
         <Button
+          href="/contacto"
           variant="contained"
           sx={{
             backgroundColor: '#43B97F',

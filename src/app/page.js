@@ -13,6 +13,8 @@ import NuestroEquipoSection from "@/components/NuestroEquipoSection";
 import PlantillasHomeSection from "@/components/PlantillasHomeSection";
 import Image from "next/image";
 import BannerHome from "@/components/BannerHome";
+import { motion } from 'framer-motion';
+
 
 export default function Home() {
   return (

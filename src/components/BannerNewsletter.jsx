@@ -13,7 +13,7 @@ function BannerNewsletter() {
     <Box
       sx={{
         bgcolor: '#fae3c2',
-        py: 4,
+        py: 8,
         px: 2,
         display: 'flex',
         flexDirection: 'column',

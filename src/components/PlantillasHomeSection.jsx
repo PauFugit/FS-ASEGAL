@@ -1,9 +1,152 @@
-import React from 'react'
+'use client'
+import React from 'react';
+import { Box, Typography, Card, CardContent, Stack, Link } from '@mui/material';
+import { motion } from 'framer-motion';
 
-function PlantillasHomeSection() {
+const templates = [
+  {
+    title: "Control recepción materias primas",
+    image: "/plantilla1.jpg"
+  },
+  {
+    title: "Control temperaturas alimentos",
+    image: "/plantilla2.jpg"
+  },
+  {
+    title: "Control sanitización alimentos",
+    image: "/plantilla3.jpg"
+  },
+  {
+    title: "Control de desechos",
+    image: "/plantillla4.jpg"
+  }
+];
+
+const TemplateCard = ({ title, image, index }) => {
   return (
-    <div>PlantillasHomeSection</div>
-  )
-}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover={{ scale: 1.03 }}
+    >
+      <Card sx={{
+        width: '100%',
+        maxWidth: 280,
+        height: 280,
+        borderRadius: 2,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        overflow: 'hidden'
+      }}>
+        <Box sx={{
+          height: 200,
+          backgroundImage: `url(${image})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }} />
+        <CardContent sx={{ 
+          flexGrow: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 2
+        }}>
+          <Typography variant="h6" align="center" sx={{ 
+            color: '#2d4c6a',
+            fontWeight: 600,
+            fontSize: '1.1rem',
+            lineHeight: 1.3
+          }}>
+            {title}
+          </Typography>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
 
-export default PlantillasHomeSection
+const PlantillasHomeSection = () => {
+  return (
+    <Box sx={{ 
+      py: 6,
+      px: { xs: 3, sm: 6, md: 8, lg: 12 },
+      maxWidth: 1600,
+      mx: 'auto'
+    }}>
+      <Typography variant="h4" sx={{ 
+        mb: 5,
+        fontWeight: 700,
+        color: '#2d4c6a',
+        textAlign: 'left',
+        px: { xs: 2, sm: 0 }
+      }}>
+        PLANTILLAS
+      </Typography>
+
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { sm: 'center' },
+        justifyContent: 'space-between',
+        gap: 4,
+        mb: 4
+      }}>
+        <Stack 
+          direction="row"
+          spacing={3}
+          sx={{
+            flexGrow: 1,
+            overflowX: 'auto',
+            pb: 2,
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+            minHeight: 320
+          }}
+        >
+          {templates.map((template, index) => (
+            <Box key={index} sx={{ minWidth: 280 }}>
+              <TemplateCard 
+                title={template.title} 
+                image={template.image}
+                index={index} 
+              />
+            </Box>
+          ))}
+        </Stack>
+
+        <Link 
+          href="/recursos" 
+          sx={{ 
+            textDecoration: 'none',
+            whiteSpace: 'nowrap',
+            mr: { sm: 2, md: 4 },
+            alignSelf: { xs: 'flex-end', sm: 'center' },
+            mt: { xs: 2, sm: 0 }
+          }}
+        >
+          <Typography 
+            sx={{ 
+              color: '#43B97F',
+              fontWeight: 600,
+              fontSize: '1.1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            Ver más plantillas 
+            <Box component="span" sx={{ fontSize: '1.4rem', lineHeight: 0 }}>♦</Box>
+          </Typography>
+        </Link>
+      </Box>
+    </Box>
+  );
+};
+
+export default PlantillasHomeSection;

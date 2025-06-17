@@ -12,19 +12,17 @@ function page() {
     name: 'Carolina Fernández',
     role: 'Ingeniera en Alimentos y Fundadora',
     img: '/team1.jpg',
-    desc: 'Apasionada por la cocina saludable y la innovación gastronómica.',
   },
   {
     name: 'Carolina Berthelon',
     role: 'Ingeniera en Alimentos y Fundadora',
     img: '/team2.jpg',
-    desc: 'Emprendedora y amante de los sabores auténticos.',
   },
 ];
   return(
   <div>
     <BannerStatic
-        image="bannerBlog.jpg"
+        image="bannerNosotras.jpg"
         text="QUIENES SOMOS"
       />
   <Fade in timeout={1200}>

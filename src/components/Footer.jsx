@@ -9,7 +9,7 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <Box sx={{ bgcolor: '#fff', pt: 5, width: '100vw', position: 'relative', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw' }}>
+    <Box sx={{ bgcolor: '#fff', pt: 5, width: '100%', position: 'relative', left: 0, right: 0, marginLeft: 0, marginRight: 0 }}>
       {/* Primera fila: logo, descripción y links */}
       <Box
         sx={{
@@ -25,14 +25,13 @@ function Footer() {
         }}
       >
         {/* Logo y descripción */}
-        <Box sx={{ flex: 1, minWidth: 220 }}>
-          <Box component="img" src="/logo.jpg" alt="Asegal B&F" sx={{ height: 60, mb: 1 }} />
+        <Box sx={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-start', gap: 3 }}>
+          <Box component="img" src="/logo.jpg" alt="Asegal B&F" sx={{ height: 100 }} />
           <Typography
             variant="body2"
             sx={{
               color: '#003366',
               fontSize: { xs: '1rem', md: '1.05rem' },
-              mb: 1,
               lineHeight: 1.4,
             }}
           >
@@ -68,16 +67,16 @@ function Footer() {
           >
             Sobre Asegal B&F
           </Link>
-          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/misionyvision" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
             Misión y Visión
           </Link>
-          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/politicasdeprivacidad" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
             Políticas de Privacidad
           </Link>
-          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/contacto" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic', mb: 0.5 }}>
             Contáctanos
           </Link>
-          <Link href="#" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic' }}>
+          <Link href="/cotiza" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic' }}>
             Cotiza
           </Link>
         </Box>
@@ -104,61 +103,55 @@ function Footer() {
         }}
       >
         {/* Redes sociales */}
-        <Stack direction="row" alignItems="center" spacing={1.5}>
-          <IconButton
-            href="#"
-            sx={{
-              bgcolor: '#fff',
-              border: '2px solid #e1d6fa',
-              color: '#e4405f',
-              width: 40,
-              height: 40,
-              mr: 0.5,
-              '&:hover': { bgcolor: '#f8f8ff' },
-            }}
-          >
-            <InstagramIcon />
-          </IconButton>
-          <IconButton
-            href="#"
-            sx={{
-              bgcolor: '#fff',
-              border: '2px solid #e1d6fa',
-              color: '#1877f3',
-              width: 40,
-              height: 40,
-              mr: 0.5,
-              '&:hover': { bgcolor: '#f8f8ff' },
-            }}
-          >
-            <FacebookIcon />
-          </IconButton>
-          <IconButton
-            href="#"
-            sx={{
-              bgcolor: '#fff',
-              border: '2px solid #e1d6fa',
-              color: '#ea4335',
-              width: 40,
-              height: 40,
-              '&:hover': { bgcolor: '#f8f8ff' },
-            }}
-          >
-            <EmailIcon />
-          </IconButton>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Stack direction="row" spacing={1.5} sx={{ mb: 1 }}>
+            <IconButton
+              href="#"
+              sx={{
+                color: '#e4405f',
+                width: 40,
+                height: 40,
+                '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+              }}
+            >
+              <InstagramIcon />
+            </IconButton>
+            <IconButton
+              href="#"
+              sx={{
+                color: '#1877f3',
+                width: 40,
+                height: 40,
+                '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+              }}
+            >
+              <FacebookIcon />
+            </IconButton>
+            <IconButton
+              href="#"
+              sx={{
+                color: '#ea4335',
+                width: 40,
+                height: 40,
+                '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+              }}
+            >
+              <EmailIcon />
+            </IconButton>
+          </Stack>
           <Typography
             variant="body2"
             sx={{
-              color: '#a084e8',
+              color: '#003366',
               fontWeight: 500,
               fontStyle: 'italic',
-              ml: 2,
               fontSize: '1rem',
             }}
           >
             Encuéntranos en redes sociales
           </Typography>
-        </Stack>
+        </Box>
+
         {/* Contacto */}
         <Stack
           direction="row"

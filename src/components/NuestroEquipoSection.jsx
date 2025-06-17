@@ -7,16 +7,12 @@ import Avatar from '@mui/material/Avatar';
 
 const team = [
   {
-    name: 'María González',
-    role: 'Chef Ejecutiva',
+    name: 'Carolina Fernández',
     img: '/team1.jpg',
-    desc: 'Apasionada por la cocina saludable y la innovación gastronómica.',
   },
   {
-    name: 'Lucía Pérez',
-    role: 'Fundadora',
+    name: 'Carolina Berthelon',
     img: '/team2.jpg',
-    desc: 'Emprendedora y amante de los sabores auténticos.',
   },
 ];
 
@@ -34,7 +30,7 @@ function NuestroEquipoSection() {
             letterSpacing: 2,
           }}
         >
-          ASEGAL B & F ASESORÍAS
+          NUESTRO EQUIPO
         </Typography>
         <Typography
           variant="body1"
@@ -47,7 +43,8 @@ function NuestroEquipoSection() {
             fontSize: '1.15rem',
           }}
         >
-          Somos un equipo apasionado por la gastronomía, la creatividad y el bienestar. Nuestra misión es inspirar a través de recetas, consejos y experiencias únicas, promoviendo una alimentación consciente y deliciosa.
+          Somos Carolina Fernández y Carolina Berthelon, ingenieras en alimentos y fundadoras de Asegal B&F.
+          Acompañamos a empresas del sector alimentario en su crecimiento, ofreciendo asesoría personalizada y experta en calidad, inocuidad y cumplimiento normativo. Nuestro compromiso es ayudarte a desarrollar productos seguros, confiables y alineados con los más altos estándares del mercado.
         </Typography>
         <Grid container spacing={4} justifyContent="center">
           {team.map((member, idx) => (
