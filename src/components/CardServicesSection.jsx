@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Box, Typography, Grid, Card, CardMedia, CardContent, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { motion } from 'framer-motion';
+
 const services = [
   {
     title: 'Tramiación Resolución Sanitaria',
@@ -23,7 +23,6 @@ const services = [
 ];
 
 function CardServicesSection() {
-  // Estado para saber qué card está activa (hover/touch)
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
@@ -46,10 +45,10 @@ function CardServicesSection() {
         {services.map((service, idx) => (
           <Grid
             item
-            xs={12} // 1 card por fila en extra small
-            sm={6}  // 2 cards por fila en small
-            md={4}  // 3 cards en la primera fila y 2 en la segunda en medium
-            lg={2.4} // 5 cards por fila en large
+            xs={12}
+            sm={6}
+            md={4}
+            lg={2.4}
             key={service.title}
             sx={{
               display: 'flex',
@@ -73,12 +72,8 @@ function CardServicesSection() {
                 flexDirection: 'column',
                 alignItems: 'center',
                 transition: 'transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1)',
-                transform:
-                  activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
-                boxShadow:
-                  activeIndex === idx
-                    ? '0 8px 24px 0 rgba(67,185,127,0.18)'
-                    : 'none',
+                transform: activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
+                boxShadow: activeIndex === idx ? '0 8px 24px 0 rgba(67,185,127,0.18)' : 'none',
                 '& .MuiCardMedia-root': {
                   filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
                   transition: 'filter 0.2s'

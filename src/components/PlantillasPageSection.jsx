@@ -1,7 +1,6 @@
-'use client'
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
-import { motion } from 'framer-motion';
 
 const templates = [
   {
@@ -35,13 +34,29 @@ const templates = [
 ];
 
 const TemplateCard = ({ title, image, index }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    // Animación de entrada con delay basado en el índice
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, index * 100);
+    
+    return () => clearTimeout(timer);
+  }, [index]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.03 }}
-      style={{ width: '100%' }}
+    <Box
+      sx={{
+        width: '100%',
+        opacity: isVisible ? 1 : 0,
+        transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+        transition: 'opacity 0.5s ease, transform 0.3s ease',
+        transitionDelay: `${index * 0.1}s`
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <Card sx={{
         width: '100%',
@@ -52,20 +67,26 @@ const TemplateCard = ({ title, image, index }) => {
         display: 'flex',
         flexDirection: 'column',
         cursor: 'pointer',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        '&:hover': {
+          boxShadow: '0 4px 16px rgba(0,0,0,0.15)'
+        }
       }}>
         <Box sx={{
           height: 200,
           backgroundImage: `url(${image})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          transition: 'transform 0.3s ease',
+          transform: isHovered ? 'scale(1.05)' : 'scale(1)'
         }} />
         <CardContent sx={{ 
           flexGrow: 1,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          p: 2
+          p: 2,
+          backgroundColor: '#f9f9f9'
         }}>
           <Typography variant="h6" align="center" sx={{ 
             color: '#2d4c6a',
@@ -77,7 +98,7 @@ const TemplateCard = ({ title, image, index }) => {
           </Typography>
         </CardContent>
       </Card>
-    </motion.div>
+    </Box>
   );
 };
 
@@ -94,7 +115,8 @@ const PlantillasPageSection = () => {
         fontWeight: 700,
         color: '#2d4c6a',
         textAlign: 'left',
-        px: { xs: 2, sm: 0 }
+        px: { xs: 2, sm: 0 },
+        fontSize: { xs: '1.8rem', md: '2.125rem' }
       }}>
         PLANTILLAS
       </Typography>
@@ -105,7 +127,8 @@ const PlantillasPageSection = () => {
           gridTemplateColumns: {
             xs: '1fr',
             sm: '1fr 1fr',
-            md: '1fr 1fr 1fr 1fr'
+            md: '1fr 1fr 1fr',
+            lg: '1fr 1fr 1fr 1fr'
           },
           gap: { xs: 3, sm: 4, md: 5 },
           width: '100%',
@@ -115,7 +138,12 @@ const PlantillasPageSection = () => {
         }}
       >
         {templates.map((template, index) => (
-          <Box key={index} sx={{ width: '100%', maxWidth: 280 }}>
+          <Box key={index} sx={{ 
+            width: '100%', 
+            maxWidth: 280,
+            display: 'flex',
+            justifyContent: 'center'
+          }}>
             <TemplateCard 
               title={template.title} 
               image={template.image}

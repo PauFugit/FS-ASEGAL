@@ -15,19 +15,19 @@ const AboutUs = () => {
 
   // Imágenes para los carruseles
   const galleryImages = [
+    '/burbujatres.jpg',
     '/blogcard1.jpg',
     '/blogcard2.jpg',
-    '/blogcard1.jpg',
-    '/burbujatres.jpg'
+    '/blogcard3.jpg'
   ];
 
   const commitmentImages = [
-    '/burbujatres.jpg',
     '/blogcard4.jpg',
-    '/blogcard5.jpg'
+    '/blogcard5.jpg',
+    '/blogcard6.webp'
   ];
 
-  // Cambio automático de imágenes con efecto fade
+  // Cambio automático de imágenes con efecto fade CSS
   useEffect(() => {
     const interval1 = setInterval(() => {
       setFade(false);
@@ -58,7 +58,7 @@ const AboutUs = () => {
     { icon: <InnovationIcon fontSize="large" />, title: "Innovación", description: "Soluciones creativas y actualizadas" }
   ];
 
-  // Estilos para las animaciones
+  // Estilos para las animaciones CSS
   const fadeStyles = {
     opacity: fade ? 1 : 0,
     transition: 'opacity 0.5s ease-in-out',
@@ -107,7 +107,7 @@ const AboutUs = () => {
         gap: { xs: 4, md: 6 },
         mb: { xs: 8, md: 10 }
       }}>
-        {/* Contenedor de imagen con dimensiones fijas */}
+        {/* Contenedor de imagen con efecto fade CSS */}
         <Box sx={{ 
           flex: 1,
           position: 'relative',
@@ -215,65 +215,7 @@ const AboutUs = () => {
         </Box>
       </Box>
 
-      {/* Sección de Valores */}
-      <Box sx={{ 
-        mb: 6,
-        px: { xs: 0, md: 4 }
-      }}>
-        <Typography variant="h4" align="center" sx={{ 
-          mb: 5,
-          color: theme.palette.primary.main,
-          fontWeight: 600,
-          fontSize: { xs: '1.5rem', md: '1.75rem' }
-        }}>
-          Nuestros Valores
-        </Typography>
-        
-        <Box sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
-          gap: 4,
-          px: { xs: 2, sm: 0 }
-        }}>
-          {values.map((value, i) => (
-            <Box
-              key={i}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                p: 3,
-                ...hoverStyles
-              }}
-            >
-              <Box sx={{ 
-                color: '#FFD600',
-                fontSize: '3rem',
-                mb: 2,
-                lineHeight: 1
-              }}>
-                {value.icon}
-              </Box>
-              <Typography variant="h6" sx={{ 
-                mb: 1.5,
-                color: theme.palette.primary.main,
-                fontWeight: 600,
-                fontSize: '1.2rem'
-              }}>
-                {value.title}
-              </Typography>
-              <Typography variant="body1" sx={{ 
-                color: theme.palette.text.secondary,
-                fontSize: '0.95rem'
-              }}>
-                {value.description}
-              </Typography>
-            </Box>
-          ))}
-        </Box>
-      </Box>
-
+      
       {/* Sección del Equipo */}
       <Box sx={{ 
         display: 'flex',
@@ -344,6 +286,66 @@ const AboutUs = () => {
           </Typography>
         </Box>
       </Box>
+
+      {/* Sección de Valores */}
+      <Box sx={{ 
+        mb: 6,
+        px: { xs: 0, md: 4 }
+      }}>
+        <Typography variant="h4" align="center" sx={{ 
+          mb: 5, mt:8,
+          color: theme.palette.primary.main,
+          fontWeight: 600,
+          fontSize: { xs: '1.5rem', md: '1.75rem' }
+        }}>
+          Nuestros Valores
+        </Typography>
+        
+        <Box sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' },
+          gap: 4,
+          px: { xs: 2, sm: 0 }
+        }}>
+          {values.map((value, i) => (
+            <Box
+              key={i}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                p: 3,
+                ...hoverStyles
+              }}
+            >
+              <Box sx={{ 
+                color: '#FFD600',
+                fontSize: '3rem',
+                mb: 2,
+                lineHeight: 1
+              }}>
+                {value.icon}
+              </Box>
+              <Typography variant="h6" sx={{ 
+                mb: 1.5,
+                color: theme.palette.primary.main,
+                fontWeight: 600,
+                fontSize: '1.2rem'
+              }}>
+                {value.title}
+              </Typography>
+              <Typography variant="body1" sx={{ 
+                color: theme.palette.text.secondary,
+                fontSize: '0.95rem'
+              }}>
+                {value.description}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
     </Container>
   );
 };

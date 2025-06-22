@@ -1,7 +1,7 @@
 'use client'
 import React from 'react';
 import { Box, Typography, Button, Stack, Link } from '@mui/material';
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 const courses = [
   {
@@ -19,40 +19,66 @@ const courses = [
 ];
 
 const CourseCard = ({ title, image, index }) => {
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (cardRef.current) {
+      cardRef.current.style.opacity = '0';
+      cardRef.current.style.transition = `opacity 0.5s ${index * 0.1}s ease-out`;
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) observer.unobserve(cardRef.current);
+    };
+  }, [index]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover={{ scale: 1.05 }}
-    >
-      <Box sx={{
+    <Box 
+      ref={cardRef}
+      sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: 2
+        gap: 2,
+        '&:hover': {
+          transform: 'scale(1.05)',
+          transition: 'transform 0.3s ease'
+        }
+      }}
+    >
+      <Box sx={{
+        width: 300,
+        height: 300,
+        borderRadius: '50%',
+        backgroundImage: `url(${image})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        border: '4px solid white',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        transition: 'transform 0.3s ease'
+      }} />
+      <Typography variant="h6" sx={{ 
+        color: '#2d4c6a',
+        fontWeight: 600,
+        fontSize: '1.1rem',
+        textAlign: 'center',
+        mt: 1
       }}>
-        <Box sx={{
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          backgroundImage: `url(${image})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          border: '4px solid white',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
-        }} />
-        <Typography variant="h6" sx={{ 
-          color: '#2d4c6a',
-          fontWeight: 600,
-          fontSize: '1.1rem',
-          textAlign: 'center',
-          mt: 1
-        }}>
-          {title}
-        </Typography>
-      </Box>
-    </motion.div>
+        {title}
+      </Typography>
+    </Box>
   );
 };
 
@@ -104,34 +130,35 @@ const CursosCapacitacionesSection = () => {
         </Stack>
 
         {/* Línea decorativa inferior y botón "Leer más" */}
-              <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
-                <Box sx={{
-                  flex: 1,
-                  borderBottom: '2px solid #1565c0',
-                  mr: 3
-                }} />
-                <Button
-                  variant="contained"
-                  href="/recursos"
-                  sx={{
-                    bgcolor: '#43b97f',
-                    color: '#ffffff',
-                    borderRadius: '24px',
-                    fontWeight: 600,
-                    py: 1.2,
-                    px: 4,
-                    fontSize: 20,
-                    boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
-                    textTransform: 'italic',
-                    '&:hover': {
-                      bgcolor: '#003366'
-                    }
-                  }}
-                >
-                  VER MÁS
-                </Button>
-              </Box>
-            </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+          <Box sx={{
+            flex: 1,
+            borderBottom: '2px solid #1565c0',
+            mr: 3
+          }} />
+          <Button
+            variant="contained"
+            href="/recursos"
+            sx={{
+              bgcolor: '#43b97f',
+              color: '#ffffff',
+              borderRadius: '24px',
+              fontWeight: 600,
+              py: 1.2,
+              px: 4,
+              fontSize: 20,
+              boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
+              textTransform: 'italic',
+              transition: 'background-color 0.3s ease',
+              '&:hover': {
+                bgcolor: '#003366'
+              }
+            }}
+          >
+            VER MÁS
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 };

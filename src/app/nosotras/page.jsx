@@ -1,4 +1,5 @@
 // src/app/nosotras/page.jsx
+import ContactForm from '@/components/ContactForm';
 import AboutUs from '../../components/AboutUs';
 import BannerStatic from '../../components/BannerStatic';
 
