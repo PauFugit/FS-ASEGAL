@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Avatar, useTheme } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   EmojiObjects as InnovationIcon,
   GppGood as QualityIcon,
@@ -12,29 +11,38 @@ const AboutUs = () => {
   const theme = useTheme();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentCommitmentImageIndex, setCurrentCommitmentImageIndex] = useState(0);
+  const [fade, setFade] = useState(true);
 
   // Imágenes para los carruseles
   const galleryImages = [
-    '/contacto2.jpeg',
-    '/caro1.jpeg',
-    '/caro2.jpeg',
+    '/blogcard1.jpg',
+    '/blogcard2.jpg',
+    '/blogcard1.jpg',
     '/burbujatres.jpg'
   ];
 
   const commitmentImages = [
     '/burbujatres.jpg',
-    '/contacto2.jpeg',
-    '/caro1.jpeg'
+    '/blogcard4.jpg',
+    '/blogcard5.jpg'
   ];
 
-  // Cambio automático de imágenes
+  // Cambio automático de imágenes con efecto fade
   useEffect(() => {
     const interval1 = setInterval(() => {
-      setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+      setFade(false);
+      setTimeout(() => {
+        setCurrentImageIndex(prev => (prev + 1) % galleryImages.length);
+        setFade(true);
+      }, 300);
     }, 4000);
     
     const interval2 = setInterval(() => {
-      setCurrentCommitmentImageIndex(prev => (prev + 1) % commitmentImages.length);
+      setFade(false);
+      setTimeout(() => {
+        setCurrentCommitmentImageIndex(prev => (prev + 1) % commitmentImages.length);
+        setFade(true);
+      }, 300);
     }, 3500);
     
     return () => {
@@ -50,113 +58,24 @@ const AboutUs = () => {
     { icon: <InnovationIcon fontSize="large" />, title: "Innovación", description: "Soluciones creativas y actualizadas" }
   ];
 
-  // Secciones alternadas
-  const sections = [
-    {
-      image: (
-        <Box sx={{
-          width: '100%',
-          height: { xs: 250, md: 350 },
-          position: 'relative',
-          borderRadius: '24px',
-          overflow: 'hidden',
-        }}>
-          <AnimatePresence mode='wait'>
-            <motion.img
-              key={currentImageIndex}
-              src={galleryImages[currentImageIndex]}
-              alt="Nuestro trabajo"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-          </AnimatePresence>
-        </Box>
-      ),
-      content: (
-        <Box>
-          <Typography variant="h4" gutterBottom sx={{ 
-            color: theme.palette.primary.main,
-            fontWeight: 600,
-            mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem' }
-          }}>
-            Nuestra Historia
-          </Typography>
-          <Typography paragraph sx={{ 
-            color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem' }
-          }}>
-            Somos <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: theme.palette.primary.dark
-            }}>Carolina Fernández y Carolina Berthelon</Box>, ingenieras en alimentos y fundadoras de <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: theme.palette.primary.dark
-            }}>Asegal B&F</Box>. Comprometidas con el crecimiento de empresas en la industria alimentaria, brindamos soluciones personalizadas para cada necesidad.
-          </Typography>
-        </Box>
-      )
-    },
-    {
-      image: (
-        <Box sx={{
-          width: '100%',
-          height: { xs: 250, md: 350 },
-          position: 'relative',
-          borderRadius: '24px',
-          overflow: 'hidden',
-        }}>
-          <AnimatePresence mode='wait'>
-            <motion.img
-              key={currentCommitmentImageIndex}
-              src={commitmentImages[currentCommitmentImageIndex]}
-              alt="Nuestro compromiso"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8 }}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
-          </AnimatePresence>
-        </Box>
-      ),
-      content: (
-        <Box>
-          <Typography variant="h4" gutterBottom sx={{ 
-            color: theme.palette.primary.main,
-            fontWeight: 600,
-            mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem' }
-          }}>
-            Nuestro Compromiso
-          </Typography>
-          <Typography paragraph sx={{ 
-            color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem' }
-          }}>
-            Con <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: theme.palette.primary.dark
-            }}>experiencia y cercanía</Box> ofrecemos asesoría personalizada para fortalecer tu negocio, garantizando productos <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: theme.palette.primary.dark
-            }}>seguros y confiables</Box> que cumplen con normas regulatorias y estándares de calidad.
-          </Typography>
-        </Box>
-      )
+  // Estilos para las animaciones
+  const fadeStyles = {
+    opacity: fade ? 1 : 0,
+    transition: 'opacity 0.5s ease-in-out',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    position: 'absolute',
+    top: 0,
+    left: 0
+  };
+
+  const hoverStyles = {
+    transition: 'transform 0.3s ease',
+    '&:hover': {
+      transform: 'scale(1.03)'
     }
-  ];
+  };
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
@@ -180,43 +99,121 @@ const AboutUs = () => {
         ASEGAL B&F
       </Typography>
 
-      {/* Secciones alternadas */}
-      {sections.map((section, index) => (
-        <Box 
-          key={index}
-          sx={{ 
-            display: 'flex',
-            flexDirection: { xs: 'column', md: index % 2 === 0 ? 'row' : 'row-reverse' },
-            alignItems: 'center',
-            gap: { xs: 4, md: 6 },
-            mb: { xs: 8, md: 10 },
-            '&:last-child': { mb: 6 }
-          }}
-        >
-          {/* Imagen */}
-          <Box sx={{ 
-            flex: 1,
-            position: 'relative',
-            minHeight: { xs: 250, md: 350 },
-            width: '100%',
-            borderRadius: '24px',
-            boxShadow: 3,
-          }}>
-            {section.image}
-          </Box>
-
-          {/* Contenido */}
-          <Box sx={{ 
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            px: { xs: 0, md: 2 }
-          }}>
-            {section.content}
-          </Box>
+      {/* Sección Historia */}
+      <Box sx={{ 
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: 'center',
+        gap: { xs: 4, md: 6 },
+        mb: { xs: 8, md: 10 }
+      }}>
+        {/* Contenedor de imagen con dimensiones fijas */}
+        <Box sx={{ 
+          flex: 1,
+          position: 'relative',
+          height: { xs: 250, md: 350 },
+          width: '100%',
+          minWidth: { xs: '100%', md: '50%' },
+          borderRadius: '24px',
+          boxShadow: 3,
+          overflow: 'hidden'
+        }}>
+          <Box
+            component="img"
+            src={galleryImages[currentImageIndex]}
+            alt="Nuestro trabajo"
+            sx={fadeStyles}
+          />
         </Box>
-      ))}
+
+        {/* Contenido */}
+        <Box sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          px: { xs: 0, md: 2 }
+        }}>
+          <Typography variant="h4" gutterBottom sx={{ 
+            color: theme.palette.primary.main,
+            fontWeight: 600,
+            mb: 3,
+            fontSize: { xs: '1.5rem', md: '1.75rem' }
+          }}>
+            Nuestra Historia
+          </Typography>
+          <Typography paragraph sx={{ 
+            color: theme.palette.text.secondary,
+            fontSize: { xs: '1rem', md: '1.1rem' }
+          }}>
+            Somos <Box component="span" sx={{ 
+              fontWeight: 600,
+              color: theme.palette.primary.dark
+            }}>Carolina Fernández y Carolina Berthelon</Box>, ingenieras en alimentos y fundadoras de <Box component="span" sx={{ 
+              fontWeight: 600,
+              color: theme.palette.primary.dark
+            }}>Asegal B&F</Box>. Comprometidas con el crecimiento de empresas en la industria alimentaria, brindamos soluciones personalizadas para cada necesidad.
+          </Typography>
+        </Box>
+      </Box>
+
+      {/* Sección Compromiso */}
+      <Box sx={{ 
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row-reverse' },
+        alignItems: 'center',
+        gap: { xs: 4, md: 6 },
+        mb: { xs: 8, md: 10 }
+      }}>
+        {/* Contenedor de imagen con dimensiones fijas */}
+        <Box sx={{ 
+          flex: 1,
+          position: 'relative',
+          height: { xs: 250, md: 350 },
+          width: '100%',
+          minWidth: { xs: '100%', md: '50%' },
+          borderRadius: '24px',
+          boxShadow: 3,
+          overflow: 'hidden'
+        }}>
+          <Box
+            component="img"
+            src={commitmentImages[currentCommitmentImageIndex]}
+            alt="Nuestro compromiso"
+            sx={fadeStyles}
+          />
+        </Box>
+
+        {/* Contenido */}
+        <Box sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          px: { xs: 0, md: 2 }
+        }}>
+          <Typography variant="h4" gutterBottom sx={{ 
+            color: theme.palette.primary.main,
+            fontWeight: 600,
+            mb: 3,
+            fontSize: { xs: '1.5rem', md: '1.75rem' }
+          }}>
+            Nuestro Compromiso
+          </Typography>
+          <Typography paragraph sx={{ 
+            color: theme.palette.text.secondary,
+            fontSize: { xs: '1rem', md: '1.1rem' }
+          }}>
+            Con <Box component="span" sx={{ 
+              fontWeight: 600,
+              color: theme.palette.primary.dark
+            }}>experiencia y cercanía</Box> ofrecemos asesoría personalizada para fortalecer tu negocio, garantizando productos <Box component="span" sx={{ 
+              fontWeight: 600,
+              color: theme.palette.primary.dark
+            }}>seguros y confiables</Box> que cumplen con normas regulatorias y estándares de calidad.
+          </Typography>
+        </Box>
+      </Box>
 
       {/* Sección de Valores */}
       <Box sx={{ 
@@ -239,42 +236,40 @@ const AboutUs = () => {
           px: { xs: 2, sm: 0 }
         }}>
           {values.map((value, i) => (
-            <motion.div
+            <Box
               key={i}
-              whileHover={{ scale: 1.03 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Box sx={{
+              sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 textAlign: 'center',
                 p: 3,
+                ...hoverStyles
+              }}
+            >
+              <Box sx={{ 
+                color: '#FFD600',
+                fontSize: '3rem',
+                mb: 2,
+                lineHeight: 1
               }}>
-                <Box sx={{ 
-                  color: '#FFD600',
-                  fontSize: '3rem',
-                  mb: 2,
-                  lineHeight: 1
-                }}>
-                  {value.icon}
-                </Box>
-                <Typography variant="h6" sx={{ 
-                  mb: 1.5,
-                  color: theme.palette.primary.main,
-                  fontWeight: 600,
-                  fontSize: '1.2rem'
-                }}>
-                  {value.title}
-                </Typography>
-                <Typography variant="body1" sx={{ 
-                  color: theme.palette.text.secondary,
-                  fontSize: '0.95rem'
-                }}>
-                  {value.description}
-                </Typography>
+                {value.icon}
               </Box>
-            </motion.div>
+              <Typography variant="h6" sx={{ 
+                mb: 1.5,
+                color: theme.palette.primary.main,
+                fontWeight: 600,
+                fontSize: '1.2rem'
+              }}>
+                {value.title}
+              </Typography>
+              <Typography variant="body1" sx={{ 
+                color: theme.palette.text.secondary,
+                fontSize: '0.95rem'
+              }}>
+                {value.description}
+              </Typography>
+            </Box>
           ))}
         </Box>
       </Box>
@@ -305,6 +300,7 @@ const AboutUs = () => {
               height: { xs: 160, md: 200 },
               border: `4px solid white`,
               boxShadow: 3,
+              ...hoverStyles
             }}
           />
           <Avatar
@@ -315,6 +311,7 @@ const AboutUs = () => {
               height: { xs: 160, md: 200 },
               border: `4px solid white`,
               boxShadow: 3,
+              ...hoverStyles
             }}
           />
         </Box>
