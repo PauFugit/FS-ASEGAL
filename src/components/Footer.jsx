@@ -26,7 +26,7 @@ function Footer() {
       >
         {/* Logo y descripción */}
         <Box sx={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-start', gap: 3 }}>
-          <Box component="img" src="/logo.jpg" alt="Asegal B&F" sx={{ height: 100 }} />
+          <Box component="img" src="/logo.png" alt="Asegal B&F" sx={{ height: 100 }} />
           <Typography
             variant="body2"
             sx={{
@@ -55,7 +55,7 @@ function Footer() {
           }}
         >
           <Link
-            href="#"
+            href="/nosotras"
             underline="none"
             sx={{
               color: '#003366',

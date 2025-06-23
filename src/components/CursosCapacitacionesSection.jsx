@@ -70,7 +70,7 @@ const CourseCard = ({ title, image, index }) => {
         transition: 'transform 0.3s ease'
       }} />
       <Typography variant="h6" sx={{ 
-        color: '#2d4c6a',
+        color: '#1A1773',
         fontWeight: 600,
         fontSize: '1.1rem',
         textAlign: 'center',
@@ -92,11 +92,12 @@ const CursosCapacitacionesSection = () => {
       position: 'relative'
     }}>
       <Typography variant="h4" sx={{ 
-        mb: 6,
-        fontWeight: 700,
-        color: '#2d4c6a',
+        mb: 8,
+        fontWeight: 500,
+        color: '#1A1773',
         textAlign: 'left',
-        px: { xs: 2, sm: 0 }
+        px: { xs: 2, sm: 0 },
+        fontSize: { xl:48 }
       }}>
         CURSOS Y CAPACITACIONES
       </Typography>
@@ -116,7 +117,7 @@ const CursosCapacitacionesSection = () => {
             pb: 3,
             scrollbarWidth: 'none',
             '&::-webkit-scrollbar': { display: 'none' },
-            mb: 4
+            mb: 4,
           }}
         >
           {courses.map((course, index) => (
@@ -140,7 +141,7 @@ const CursosCapacitacionesSection = () => {
             variant="contained"
             href="/recursos"
             sx={{
-              bgcolor: '#43b97f',
+              bgcolor: '#1A1773',
               color: '#ffffff',
               borderRadius: '24px',
               fontWeight: 600,
@@ -151,7 +152,9 @@ const CursosCapacitacionesSection = () => {
               textTransform: 'italic',
               transition: 'background-color 0.3s ease',
               '&:hover': {
-                bgcolor: '#003366'
+                bgcolor: '#ffffff',
+                color: '#1A1773', 
+                boxShadow: '0px 4px 12px rgba(#82C6E8, 0.2)',
               }
             }}
           >

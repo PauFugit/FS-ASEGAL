@@ -60,8 +60,8 @@ const TemplateCard = ({ title, image, index }) => {
     >
       <Card sx={{
         width: '100%',
-        maxWidth: 280,
-        height: 280,
+        maxWidth: 300,
+        height: 300,
         borderRadius: 2,
         boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
         display: 'flex',
@@ -91,7 +91,7 @@ const TemplateCard = ({ title, image, index }) => {
           <Typography variant="h6" align="center" sx={{ 
             color: '#2d4c6a',
             fontWeight: 600,
-            fontSize: '1.1rem',
+            fontSize: '1.4rem',
             lineHeight: 1.3
           }}>
             {title}
@@ -107,16 +107,15 @@ const PlantillasPageSection = () => {
     <Box sx={{ 
       py: 6,
       px: { xs: 3, sm: 6, md: 8, lg: 12 },
-      maxWidth: 1600,
       mx: 'auto'
     }}>
       <Typography variant="h4" sx={{ 
         mb: 5,
-        fontWeight: 700,
-        color: '#2d4c6a',
+        fontWeight: 600,
+        color: '#1A1773',
         textAlign: 'left',
         px: { xs: 2, sm: 0 },
-        fontSize: { xs: '1.8rem', md: '2.125rem' }
+        fontSize: { xs: '1.8rem', md: '2.125rem', xl: '3rem' }
       }}>
         PLANTILLAS
       </Typography>

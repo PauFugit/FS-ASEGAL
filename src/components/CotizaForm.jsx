@@ -21,7 +21,7 @@ function CotizaForm() {
     >
       <Typography
         sx={{
-          color: '#1976d2',
+          color: '#1A1773',
           fontWeight: 500,
           fontSize: 15,
           mb: 1,
@@ -140,18 +140,18 @@ function CotizaForm() {
         variant="contained"
         fullWidth
         sx={{
-          bgcolor: '#15355B',
+          bgcolor: '#1A1773',
           color: '#fff',
           borderRadius: '20px',
-          fontWeight: 500,
+          fontWeight: 600,
           fontStyle: 'italic',
           fontSize: 18,
           mt: 1,
           py: 1,
-          boxShadow: '0px 2px 8px 0px #15355B22',
+          boxShadow: '0px 2px 8px 0px #1A177322',
           textTransform: 'none',
           '&:hover': {
-            bgcolor: '#1a437a',
+            bgcolor: '#9FBA47',
             color: '#fff',
           },
         }}

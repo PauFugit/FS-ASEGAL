@@ -2,7 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-function BannerStatic({ image, text }) {
+function BannerStatic({ image, text, color }) {
   return (
     <Box
       sx={{
@@ -27,7 +27,7 @@ function BannerStatic({ image, text }) {
           position: 'absolute',
           left: 0,
           bottom: 0,
-          bgcolor: 'rgba(0,44,70,0.95)',
+          bgcolor: '#1A1773',
           color: '#fff',
           px: 3,
           py: 1,
@@ -37,8 +37,8 @@ function BannerStatic({ image, text }) {
           variant="subtitle1"
           sx={{
             fontWeight: 'bold',
-            letterSpacing: '0.15em',
-            fontSize: '1.1rem',
+            letterSpacing: '0.25rem',
+            fontSize: '1.5rem',
           }}
         >
           {text}

@@ -25,7 +25,7 @@ function ContactoSection() {
           left: 0,
           width: { xs: '100%', md: '30%' }, // Azul 30%
           height: '100%',
-          bgcolor: '#003366',
+          bgcolor: '#1a1773',
           zIndex: 0,
           transition: 'width 0.3s',
         }}
@@ -62,7 +62,7 @@ function ContactoSection() {
             bgcolor: '#fff',
             borderRadius: 2,
             boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)',
-            border: '1.5px solid #43b36a',
+            border: '1.5px solid #9FBA47',
             p: { xs: 3, sm: 4, md: 6 },
             minWidth: { xs: '95%', sm: 400, md: 480 },
             maxWidth: { xs: '98%', sm: 540, md: 600 },
@@ -73,7 +73,7 @@ function ContactoSection() {
           <Typography
             variant="subtitle2"
             sx={{
-              color: '#fbc02d',
+              color: '#D28251',
               fontWeight: 500,
               mb: 1,
               fontStyle: 'italic',
@@ -85,7 +85,7 @@ function ContactoSection() {
           <Typography
             variant="h4"
             sx={{
-              color: '#003366',
+              color: '#1a1773',
               fontWeight: 700,
               mb: 3,
               fontStyle: 'italic',
@@ -151,7 +151,7 @@ function ContactoSection() {
           <Button
             fullWidth
             sx={{
-              bgcolor: '#43b97f',
+              bgcolor: '#D28251',
               color: '#fff',
               fontWeight: 600,
               borderRadius: 5,
@@ -159,7 +159,7 @@ function ContactoSection() {
               fontSize: '1.2rem',
               textTransform: 'none',
               py: 1,
-              '&:hover': { bgcolor: '#ffd600' },
+              '&:hover': { bgcolor: '#9FBA47' },
               fontStyle: 'italic',
             }}
           >
@@ -180,15 +180,15 @@ function ContactoSection() {
             sx={{
               width: { xs: 240, sm: 320, md: 440 },
               height: { xs: 240, sm: 320, md: 440 },
-              border: '3px solid #43b36a',
+              border: '3px solid #9FBA47',
               borderRadius: 2,
               overflow: 'hidden',
               bgcolor: '#fff',
-              boxShadow: 2,
+              boxShadow: 4,
             }}
           >
             <img
-              src="/contacto.jpeg"
+              src="/cuadrouno.jpg"
               alt="Contacto"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
@@ -198,7 +198,7 @@ function ContactoSection() {
       {/* Barra inferior de contacto */}
       <Box
         sx={{
-          backgroundColor: '#003366',
+          backgroundColor: '#1a1773',
           p: 2,
           pr: { xs: 2, md: 6 },
           display: 'flex',

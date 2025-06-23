@@ -82,16 +82,16 @@ const AboutUs = () => {
       {/* Título principal */}
       <Typography variant="h2" align="center" sx={{ 
         mb: 6,
-        color: theme.palette.primary.dark,
+        color: '#1A1773',
         fontWeight: 700,
         position: 'relative',
-        fontSize: { xs: '2rem', md: '2.5rem' },
+        fontSize: { xs: '2rem', md: '2.5rem', xl: '3rem' },
         '&:after': {
           content: '""',
           display: 'block',
           width: 100,
           height: 4,
-          backgroundColor: '#FFD600',
+          backgroundColor: '#D28251',
           margin: '20px auto 0',
           borderRadius: 2,
         }
@@ -135,23 +135,23 @@ const AboutUs = () => {
           px: { xs: 0, md: 2 }
         }}>
           <Typography variant="h4" gutterBottom sx={{ 
-            color: theme.palette.primary.main,
+            color: '#1A1773',
             fontWeight: 600,
             mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem' }
+            fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.1rem'}
           }}>
             Nuestra Historia
           </Typography>
           <Typography paragraph sx={{ 
             color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem' }
+            fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem'}
           }}>
             Somos <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#D28251'
             }}>Carolina Fernández y Carolina Berthelon</Box>, ingenieras en alimentos y fundadoras de <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#9FBA47'
             }}>Asegal B&F</Box>. Comprometidas con el crecimiento de empresas en la industria alimentaria, brindamos soluciones personalizadas para cada necesidad.
           </Typography>
         </Box>
@@ -193,23 +193,23 @@ const AboutUs = () => {
           px: { xs: 0, md: 2 }
         }}>
           <Typography variant="h4" gutterBottom sx={{ 
-            color: theme.palette.primary.main,
+            color: '#1A1773',
             fontWeight: 600,
             mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem' }
+            fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.1rem' }
           }}>
             Nuestro Compromiso
           </Typography>
           <Typography paragraph sx={{ 
-            color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem' }
+            color: '#1A1773',
+            fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
           }}>
             Con <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#D28251'
             }}>experiencia y cercanía</Box> ofrecemos asesoría personalizada para fortalecer tu negocio, garantizando productos <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#D28251'
             }}>seguros y confiables</Box> que cumplen con normas regulatorias y estándares de calidad.
           </Typography>
         </Box>
@@ -222,9 +222,10 @@ const AboutUs = () => {
         flexDirection: { xs: 'column', md: 'row' },
         alignItems: 'center',
         gap: { xs: 4, md: 6 },
-        backgroundColor: 'rgba(255, 214, 0, 0.1)',
+        backgroundColor: '#82C6E820',
         borderRadius: '24px',
         p: { xs: 3, md: 5 },
+        
       }}>
         {/* Fotos del equipo */}
         <Box sx={{
@@ -238,8 +239,8 @@ const AboutUs = () => {
             src="/caro1.jpeg"
             alt="Carolina Fernández"
             sx={{
-              width: { xs: 160, md: 200 },
-              height: { xs: 160, md: 200 },
+              width: { xs: 160, md: 200, xl: 250 },
+              height: { xs: 160, md: 200, xl: 250 },
               border: `4px solid white`,
               boxShadow: 3,
               ...hoverStyles
@@ -249,10 +250,10 @@ const AboutUs = () => {
             src="/caro2.jpeg"
             alt="Carolina Berthelon"
             sx={{
-              width: { xs: 160, md: 200 },
-              height: { xs: 160, md: 200 },
+              width: { xs: 160, md: 200, xl: 250  },
+              height: { xs: 160, md: 200, xl: 250  },
               border: `4px solid white`,
-              boxShadow: 3,
+              boxShadow: 4,
               ...hoverStyles
             }}
           />
@@ -267,21 +268,21 @@ const AboutUs = () => {
             color: theme.palette.primary.main,
             fontWeight: 600,
             mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem' }
+            fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.2rem'}
           }}>
             Nuestro Equipo
           </Typography>
           <Typography paragraph sx={{ 
             color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem' },
+            fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
             mb: 3
           }}>
             Dos profesionales apasionadas por la <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#1A1773'
             }}>seguridad alimentaria</Box> y el <Box component="span" sx={{ 
               fontWeight: 600,
-              color: theme.palette.primary.dark
+              color: '#1A1773'
             }}>éxito de tus proyectos</Box>, combinando experiencia técnica con un enfoque personalizado para cada cliente.
           </Typography>
         </Box>
@@ -296,7 +297,7 @@ const AboutUs = () => {
           mb: 5, mt:8,
           color: theme.palette.primary.main,
           fontWeight: 600,
-          fontSize: { xs: '1.5rem', md: '1.75rem' }
+          fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.2rem'  },
         }}>
           Nuestros Valores
         </Typography>
@@ -320,7 +321,7 @@ const AboutUs = () => {
               }}
             >
               <Box sx={{ 
-                color: '#FFD600',
+                color: '#9FBA47',
                 fontSize: '3rem',
                 mb: 2,
                 lineHeight: 1
@@ -331,13 +332,13 @@ const AboutUs = () => {
                 mb: 1.5,
                 color: theme.palette.primary.main,
                 fontWeight: 600,
-                fontSize: '1.2rem'
+                fontSize: '1.5rem'
               }}>
                 {value.title}
               </Typography>
               <Typography variant="body1" sx={{ 
                 color: theme.palette.text.secondary,
-                fontSize: '0.95rem'
+                fontSize: '1.2rem'
               }}>
                 {value.description}
               </Typography>

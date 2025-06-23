@@ -12,8 +12,8 @@ function BannerNewsletter() {
   return (
     <Box
       sx={{
-        bgcolor: '#fae3c2',
-        py: 8,
+        bgcolor: '#82C6E8',
+        py: 4,
         px: 2,
         display: 'flex',
         flexDirection: 'column',
@@ -48,7 +48,7 @@ function BannerNewsletter() {
         }}
       >
         <InputBase
-          placeholder="TU CORREO@CORREO.CL"
+          placeholder="TUCORREO@CORREO.CL"
           value={email}
           onChange={e => setEmail(e.target.value)}
           sx={{
@@ -68,7 +68,7 @@ function BannerNewsletter() {
           type="submit"
           variant="contained"
           sx={{
-            bgcolor: '#43b36a',
+            bgcolor: '#9FBA47',
             color: '#fff',
             borderRadius: 3,
             px: 4,
@@ -78,7 +78,7 @@ function BannerNewsletter() {
             textTransform: 'uppercase',
             letterSpacing: 1,
             '&:hover': {
-              bgcolor: '#369a59',
+              bgcolor: '#9FBA47',
             },
           }}
           disabled={!email}

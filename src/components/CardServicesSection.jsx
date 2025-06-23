@@ -26,22 +26,22 @@ function CardServicesSection() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <Box sx={{ width: '100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 }, maxWidth: 1300, mx: 'auto' }}>
+    <Box sx={{ width: '100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 },  mx: 'auto' }}>
       <Typography
         variant="h4"
         sx={{
           fontWeight: 500,
-          color: '#003366',
-          letterSpacing: '0.12em',
-          mb: 3,
+          color: '#1A1773',
+          letterSpacing: '0.15em',
+          mb: 8,
           textTransform: 'uppercase',
-          fontSize: { xs: 24, md: 32 },
-          textShadow: '1px 2px 4px #e0e0e0'
+          fontSize: { xs: 24, md: 32, xl: 48 },
+          textShadow: '1px 2px 4px #82C6E8'
         }}
       >
         NUESTROS SERVICIOS
       </Typography>
-      <Grid container spacing={3}>
+      <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
         {services.map((service, idx) => (
           <Grid
             item
@@ -97,10 +97,11 @@ function CardServicesSection() {
                 <Typography
                   align="center"
                   sx={{
-                    color: '#003366',
+                    color: '#1a1773',
                     fontWeight: 400,
-                    fontSize: { xs: 16, md: 18 },
-                    mt: 1
+                    fontSize: { xs: 16, md: 18, xl:20 },
+                    mt: 1,
+                    mb:3
                   }}
                 >
                   {service.title}
@@ -116,7 +117,7 @@ function CardServicesSection() {
           href="/servicios"
           endIcon={<ArrowForwardIcon />}
           sx={{
-            backgroundColor: '#43B97F',
+            backgroundColor: '#1A1773',
             color: 'white',
             borderRadius: '24px',
             textTransform: 'none',
@@ -126,12 +127,12 @@ function CardServicesSection() {
             px: 4,
             py: 1.2,
             boxShadow: '0px 2px 4px 0px #0000001A',
-            border: '2px solid #43B97F',
+            border: '2px solid #82C6E8',
             transition: 'all 0.2s',
             '&:hover, &:active': {
               backgroundColor: '#fff',
-              color: '#43B97F',
-              border: '2px solid #43B97F'
+              color: '#9FBA47',
+              border: '2px solid #9FBA47'
             }
           }}
         >

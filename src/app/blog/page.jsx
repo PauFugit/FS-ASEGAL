@@ -72,7 +72,9 @@ function page() {
       />
 
       <Box sx={{ mt: 8, mb: 8, px: { xs: 1, sm: 2, md: 4 } }}>
-        <Typography variant="h5" sx={{ color: '#00325a', fontWeight: 500, mb:8 }}>
+        <Typography variant="h5" sx={{ color: '#00325a', fontWeight: 500, mb:8,
+          fontSize: { xs: '1rem', md: '1.5rem', xl: '3rem' }
+         }}>
           NOVEDADES Y CONSEJOS PARA TI
         </Typography>
         <Box

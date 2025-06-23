@@ -8,7 +8,7 @@ function BannerHomeTres() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#5ec491',
+        bgcolor: '#9FBA47',
         display: 'flex',
         flexDirection: { xs: 'column', sm: 'row' },
         alignItems: 'center',

@@ -14,8 +14,6 @@ function page() {
       />
       <ContactoSection/>
       <BannerCotizacion/>
-      <CotizaSection/>
-      <BannerHomeTres/>
       </div>
   )
 }

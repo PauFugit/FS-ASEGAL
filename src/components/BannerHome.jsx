@@ -205,7 +205,7 @@ const BannerHome = () => {
           href="/contacto"
           variant="contained"
           sx={{
-            backgroundColor: '#43B97F',
+            backgroundColor: '#D28251',
             color: 'white',
             borderRadius: '24px',
             textTransform: 'none',

@@ -2,6 +2,7 @@
 import ContactForm from '@/components/ContactForm';
 import AboutUs from '../../components/AboutUs';
 import BannerStatic from '../../components/BannerStatic';
+import BannerCierre from '@/components/BannerCierre';
 
 export default function NosotrasPage() {
   return (
@@ -11,6 +12,7 @@ export default function NosotrasPage() {
               text="QUIÉNES SOMOS"
             />
       <AboutUs />
+      <BannerCierre/>
     </main>
   );
 }

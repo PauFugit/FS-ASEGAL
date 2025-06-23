@@ -6,8 +6,8 @@ function BannerCotizacion() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#FFED9C',
-        py: { xs: 2, md: 2 },
+        bgcolor: '#9FBA4790',
+        py: { xs: 2, md: 2, xl:3 },
         px: { xs: 2, md: 0 },
         display: 'flex',
         alignItems: 'center',
@@ -28,8 +28,8 @@ function BannerCotizacion() {
         <Typography
           variant="subtitle1"
           sx={{
-            color: '#15355B',
-            fontSize: { xs: 15, md: 16 },
+            color: '#ffffff',
+            fontSize: { xs: 15, md: 16, xl:20 },
             textAlign: { xs: 'center', sm: 'left' },
             fontWeight: 500,
             flex: 1,
@@ -41,21 +41,21 @@ function BannerCotizacion() {
           href="/cotiza"
           variant="contained"
           sx={{
-            backgroundColor: '#15355B',
+            backgroundColor: '#1A1773',
             color: '#fff',
             borderRadius: '20px',
             fontWeight: 500,
             fontSize: 15,
             px: 4,
             py: 1,
-            boxShadow: '0px 2px 6px 0px #15355B33',
+            boxShadow: '0px 2px 6px 0px #1A177333',
             textTransform: 'none',
             transition: 'all 0.2s cubic-bezier(.4,2,.6,1)',
             '&:hover': {
-              backgroundColor: '#1a437a',
-              color: '#fff',
+              backgroundColor: '#ffffff',
+              color: '#9FBA47',
               transform: 'scale(1.04)',
-              boxShadow: '0px 4px 12px 0px #15355B44',
+              boxShadow: '0px 4px 12px 0px #1A177344',
             },
           }}
         >

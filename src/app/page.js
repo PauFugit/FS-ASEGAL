@@ -13,6 +13,7 @@ import NuestroEquipoSection from "@/components/NuestroEquipoSection";
 import PlantillasHomeSection from "@/components/PlantillasHomeSection";
 import Image from "next/image";
 import BannerHome from "@/components/BannerHome";
+import BannerCierre from "@/components/BannerCierre";
 
 
 export default function Home() {
@@ -34,7 +35,7 @@ export default function Home() {
 
     <ContactoSection/>
     <BannerHomeTres/>
-
+    <BannerCierre/>
     </div>
   );
 }

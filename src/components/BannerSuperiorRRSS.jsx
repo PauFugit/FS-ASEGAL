@@ -9,7 +9,7 @@ function BannerSuperiorRRSS() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#003366',
+        bgcolor: '#1A1773',
         minHeight: 34,
         display: 'flex',
         alignItems: 'center',
