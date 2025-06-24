@@ -39,8 +39,8 @@ const Navbar = () => {
             <Toolbar
                 sx={{
                     justifyContent: 'space-between',
-                    minHeight: { xs: 56, md: 72 },
-                    height: { xs: 100, md: 100 },
+                    minHeight: { xs: 56, md: 72, xl: 80 },
+                    height: { xs: 100, md: 100, xl: 120 },
                     flexDirection: 'row',
                     alignItems: 'center',
                     px: { xs: 1, md: 3 },
@@ -62,7 +62,7 @@ const Navbar = () => {
                         <Box
                             sx={{
                                 cursor: 'pointer',
-                                width: 150,
+                                width: 300,
                                 height: '100%',
                                 display: 'flex',
                                 alignItems: 'center'
@@ -71,8 +71,8 @@ const Navbar = () => {
                             <Image
                                 src="/logo.png"
                                 alt="Logo Asegal B&F"
-                                width={150}
-                                height={56}
+                                width={300}
+                                height={150}
                                 priority
                                 style={{
                                     objectFit: 'contain',
@@ -97,7 +97,7 @@ const Navbar = () => {
                                         sx={{
                                             textTransform: 'none',
                                             fontWeight: 500,
-                                            border: isActive ? '2px solid #9FBA47' : '2px solid transparent',
+                                            border: isActive ? '2px solid #F2AC57' : '2px solid transparent',
                                             borderRadius: '24px',
                                             backgroundColor: isActive ? 'white' : 'transparent',
                                             color: '#003366',
@@ -106,7 +106,7 @@ const Navbar = () => {
                                             fontSize: { xs: 14, md:12, xl: 18 },
                                             transition: 'border 0.2s, background 0.2s, color 0.2s',
                                             '&:hover': {
-                                                border: '2px solid #9FBA47',
+                                                border: '2px solid #F2AC57',
                                                 backgroundColor: 'white',
                                                 color: '#003366',
                                                 boxShadow: 'none',
@@ -129,7 +129,7 @@ const Navbar = () => {
                             <Button
                                 variant="contained"
                                 sx={{
-                                    backgroundColor: '#1A1773',
+                                    backgroundColor: '#F2AC57',
                                     color: 'white',
                                     borderRadius: '24px',
                                     textTransform: 'none',
@@ -138,7 +138,9 @@ const Navbar = () => {
                                     px: 3,
                                     boxShadow: '0px 2px 4px 0px #0000001A',
                                     '&:hover': {
-                                        backgroundColor: '#9FBA47',
+                                        backgroundColor: '#ffffff',
+                                        color: '#F2AC57',
+                                        border: '2px solid #F2AC57',
                                         boxShadow: '0px 2px 4px 0px #0000001A'
                                     }
                                 }}
@@ -181,7 +183,7 @@ const Navbar = () => {
                                                     onMouseEnter={() => setHoveredIndex(idx)}
                                                     onMouseLeave={() => setHoveredIndex(null)}
                                                     sx={{
-                                                        border: (isActive || isHovered) ? '2px solid #9FBA47' : '2px solid transparent',
+                                                        border: (isActive || isHovered) ? '2px solid #F2AC57' : '2px solid transparent',
                                                         borderRadius: '24px',
                                                         backgroundColor: (isActive || isHovered) ? 'white' : 'transparent',
                                                         mx: 1,
@@ -207,7 +209,7 @@ const Navbar = () => {
                                             variant="contained"
                                             fullWidth
                                             sx={{
-                                                backgroundColor: '#1A1773',
+                                                backgroundColor: '#F2AC57',
                                                 color: 'white',
                                                 borderRadius: '24px',
                                                 textTransform: 'none',
@@ -216,7 +218,9 @@ const Navbar = () => {
                                                 px: 3,
                                                 boxShadow: '0px 2px 4px 0px #0000001A',
                                                 '&:hover': {
-                                                    backgroundColor: '#82C6E8',
+                                                    backgroundColor: '#ffffff',
+                                                    color: '#F2AC57',
+                                                    border: '2px solid #F2AC57',
                                                     boxShadow: '0px 2px 4px 0px #0000001A'
                                                 }
                                             }}

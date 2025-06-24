@@ -1,96 +1,155 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
-import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-const team = [
-  {
-    name: 'Carolina Fernández',
-    img: '/team1.jpg',
-  },
-  {
-    name: 'Carolina Berthelon',
-    img: '/team2.jpg',
-  },
+const carouselImages = [
+  '/contacto.jpeg',
+  '/contacto2.jpeg',
+  '/caro1.jpeg',
+  '/caro2.jpeg'
 ];
 
 function NuestroEquipoSection() {
+  const [current, setCurrent] = useState(0);
+
+  // Carousel automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % carouselImages.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Fade in timeout={1200}>
-      <Box sx={{ py: 6, px: { xs: 2, md: 8 }, bgcolor: '#f5fafd' }}>
+      <Box
+        sx={{
+          py: { xs: 6, md: 10 },
+          px: { xs: 2, md: 8 },
+          bgcolor: '#f5fafd',
+          width: '100%',
+        }}
+      >
+        {/* Título */}
         <Typography
           variant="h4"
           sx={{
-            fontWeight: 700,
-            color: '#00325a',
-            mb: 3,
-            textAlign: 'center',
+            fontWeight: 400,
+            color: '#18148C',
+            mb: 6,
+            textAlign: 'flex-start',
             letterSpacing: 2,
+            fontSize: { xs: 28, md: 36, xl: 50 },
+            textTransform: 'uppercase',
+            textShadow: '1px 2px 4px #0D5B8C',
           }}
         >
           NUESTRO EQUIPO
         </Typography>
-        <Typography
-          variant="body1"
+
+        {/* Texto + Carrusel */}
+        <Box
           sx={{
-            color: '#333',
-            maxWidth: 700,
-            mx: 'auto',
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: { xs: 4, md: 8 },
             mb: 5,
-            textAlign: 'center',
-            fontSize: '1.15rem',
+            width: '100%',
           }}
         >
-          Somos Carolina Fernández y Carolina Berthelon, ingenieras en alimentos y fundadoras de Asegal B&F.
-          Acompañamos a empresas del sector alimentario en su crecimiento, ofreciendo asesoría personalizada y experta en calidad, inocuidad y cumplimiento normativo. Nuestro compromiso es ayudarte a desarrollar productos seguros, confiables y alineados con los más altos estándares del mercado.
-        </Typography>
-        <Grid container spacing={4} justifyContent="center">
-          {team.map((member, idx) => (
-            <Grid item xs={12} sm={6} md={4} key={idx}>
-              <Fade in timeout={1000 + idx * 500}>
-                <Box
-                  sx={{
-                    bgcolor: '#fff',
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    p: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    transition: 'transform 0.3s, box-shadow 0.3s',
-                    '&:hover': {
-                      transform: 'translateY(-8px) scale(1.03)',
-                      boxShadow: 6,
-                    },
-                  }}
-                >
-                  <Avatar
-                    src={member.img}
-                    alt={member.name}
-                    sx={{
-                      width: 100,
-                      height: 100,
-                      mb: 2,
-                      boxShadow: 2,
-                      border: '4px solid #e3f2fd',
-                    }}
-                  />
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1565c0' }}>
-                    {member.name}
-                  </Typography>
-                  <Typography variant="subtitle2" sx={{ color: '#43b36a', mb: 1 }}>
-                    {member.role}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: '#555', textAlign: 'center' }}>
-                    {member.desc}
-                  </Typography>
-                </Box>
-              </Fade>
-            </Grid>
-          ))}
-        </Grid>
+          {/* Texto a la izquierda */}
+          <Box
+            sx={{
+              flex: 1,
+              minWidth: 260,
+              maxWidth: 1000,
+              textAlign: { xs: 'center', md: 'left' },
+              mx: 'auto',
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                color: '#18148C',
+                fontSize: { xs: 18, md: 20, xl: 25 },
+                mb: 2,
+                fontWeight: 400,
+                lineHeight: 1.7,
+                px: { xs: 0, md: 2 }
+              }}
+            >
+              Somos <b>Carolina Fernández</b> y <b>Carolina Berthelon</b>, ingenieras en alimentos y fundadoras de <b>Asegal B&F</b>.
+              Acompañamos a empresas del sector alimentario en su crecimiento, ofreciendo asesoría personalizada y experta en calidad, inocuidad y cumplimiento normativo. Nuestro compromiso es ayudarte a desarrollar productos seguros, confiables y alineados con los más altos estándares del mercado.
+            </Typography>
+          </Box>
+
+          {/* Carrusel a la derecha */}
+          <Box
+            sx={{
+              flex: 1,
+              width: { xs: '100%', sm: 340, md: 400, xl: 500 },
+              height: { xs: 220, sm: 260, md: 320, xl: 500 },
+              position: 'relative',
+              borderRadius: 4,
+              overflow: 'hidden',
+              boxShadow: 2,
+              mx: 'auto',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgcolor: '#fff',
+            }}
+          >
+            <Box
+              component="img"
+              src={carouselImages[current]}
+              alt="Equipo Asegal"
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: 4,
+                transition: 'opacity 0.7s',
+                position: 'relative',
+                display: 'block', 
+              }}
+              onError={e => { e.target.src = '/team1.jpg'; }}
+            />
+          </Box>
+        </Box>
+
+        {/* Botón abajo centrado */}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 4 }}>
+          <Button
+            href="/nosotras"
+            variant="contained"
+            endIcon={<ArrowForwardIcon />}
+            sx={{
+              bgcolor: '#18148C',
+              color: '#fff',
+              borderRadius: 20,
+              px: 5,
+              py: 2,
+              fontWeight: 600,
+              fontSize: 18,
+              textTransform: 'none',
+              boxShadow: '0 2px 8px #0B5B8C',
+              '&:hover': {
+                bgcolor: '#ffffff',
+                color: '#F2AC57',
+                border: '2px solid #F2AC57',
+              },
+            }}
+          >
+            Saber más
+          </Button>
+        </Box>
       </Box>
     </Fade>
   );

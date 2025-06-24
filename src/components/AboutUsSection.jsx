@@ -23,26 +23,24 @@ function AboutUsSection() {
       <Typography
         variant="h4"
         sx={{
-          color: '#003366',
+          color: '#18148C',
           fontWeight: 500,
           letterSpacing: '0.18em',
           fontSize: { xs: 24, md: 32, xl: 48 },
           mb: 6,
           textTransform: 'uppercase',
-          textShadow: '1px 2px 4px #82C6E8'
+          textShadow: '1px 2px 4px #0B5B8C'
         }}
       >
         ASEGAL B&F ASESORÍAS
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-        {/* Línea y punto decorativo */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2, mt: 1 }}>
-        </Box>
+
         {/* Descripción */}
         <Typography
           variant="body1"
           sx={{
-            color: '#003366',
+            color: '#18148C',
             maxWidth: 1000,
             fontSize: { xs: 18, md: 20, xl: 25 },
             py:4,
@@ -50,7 +48,7 @@ function AboutUsSection() {
           }}
         >
             Profesionales expertas en seguridad alimentaria y cumplimiento regulatorio, comprometidas en potenciar tus proyectos gastronómicos para alcanzar nuevos mercados con productos confiables y seguros para tus clientes.        </Typography>
-        {/* Imagen superior derecha con línea y punto */}
+        {/* Imagen superior derecha */}
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', position: 'relative', minWidth: 250 }}>
           <Box
             component="img"
@@ -124,12 +122,12 @@ function AboutUsSection() {
           <Typography
             variant="h5"
             sx={{
-              color: '#1A1773',
+              color: '#18148C',
               fontWeight: 700,
               mb: 6,
-              textShadow: '1px 2px 4px #e0e0e0',
+              textShadow: '1px 2px 4px #0B5B8C',
               letterSpacing: '0.04em', 
-              fontSize: { xs: 20, md: 24, xl: 35 },
+              fontSize: { xs: 20, md: 25, xl: 40 },
             }}
           >
             ¿POR QUÉ ASEGAL B&F?
@@ -137,8 +135,8 @@ function AboutUsSection() {
           <Box>
             {features.map((feature, idx) => (
               <Box key={feature} sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <CheckCircleIcon sx={{ color: '#43b97f', fontSize: 52, mr: 2 }} />
-                <Typography variant="h6" sx={{ color: '#003366', fontWeight: 400, fontSize: 25 }}>
+                <CheckCircleIcon sx={{ color: '#43b97f', fontSize: 60, mr: 2 }} />
+                <Typography variant="h6" sx={{ color: '#18148C', fontWeight: 400, fontSize: 30 }}>
                   {feature}
                 </Typography>
               </Box>

@@ -9,7 +9,7 @@ function BannerSuperiorRRSS() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#1A1773',
+        bgcolor: '#18148C',
         minHeight: 34,
         display: 'flex',
         alignItems: 'center',
@@ -30,13 +30,18 @@ function BannerSuperiorRRSS() {
         </Link>
       </Stack>
 
-      {/* Textos a la derecha */}
-      <Stack direction="row" spacing={4} alignItems="center">
+      {/* Textos a la derecha, ocultos en xs */}
+      <Stack
+        direction="row"
+        spacing={4}
+        alignItems="center"
+        sx={{ display: { xs: 'none', sm: 'flex' } }}
+      >
         <Typography
           variant="caption"
           sx={{
             color: '#fff',
-            fontSize: 13,
+            fontSize: { xs: 10, md: 12, lg: 13 },
             letterSpacing: 0.2,
             fontWeight: 400,
             textTransform: 'uppercase',
@@ -48,7 +53,7 @@ function BannerSuperiorRRSS() {
           variant="caption"
           sx={{
             color: '#fff',
-            fontSize: 13,
+            fontSize: { xs: 10, md: 12, lg: 13 },
             letterSpacing: 0.2,
             fontWeight: 400,
             textTransform: 'uppercase',

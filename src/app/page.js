@@ -14,12 +14,13 @@ import PlantillasHomeSection from "@/components/PlantillasHomeSection";
 import Image from "next/image";
 import BannerHome from "@/components/BannerHome";
 import BannerCierre from "@/components/BannerCierre";
+import BannerHomePpal from "@/components/BannerHomePpal";
 
 
 export default function Home() {
   return (
     <div>
-    <BannerHome/>
+    <BannerHomePpal/>
     
     <CardServicesSection/>
     <AboutUsSection/>

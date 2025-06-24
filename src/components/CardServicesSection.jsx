@@ -5,7 +5,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const services = [
   {
-    title: 'Tramiación Resolución Sanitaria',
+    title: 'Tramitación Resolución Sanitaria',
     image: '/resolucionsanitaria.jpg',
   },
   {
@@ -31,12 +31,12 @@ function CardServicesSection() {
         variant="h4"
         sx={{
           fontWeight: 500,
-          color: '#1A1773',
+          color: '#18148C',
           letterSpacing: '0.15em',
           mb: 8,
           textTransform: 'uppercase',
           fontSize: { xs: 24, md: 32, xl: 48 },
-          textShadow: '1px 2px 4px #82C6E8'
+          textShadow: '1px 2px 4px #0B5B8C'
         }}
       >
         NUESTROS SERVICIOS
@@ -66,7 +66,7 @@ function CardServicesSection() {
                 boxShadow: 'none',
                 background: 'transparent',
                 width: '100%',
-                maxWidth: 250,
+                maxWidth: 400,
                 minWidth: 140,
                 display: 'flex',
                 flexDirection: 'column',
@@ -97,9 +97,9 @@ function CardServicesSection() {
                 <Typography
                   align="center"
                   sx={{
-                    color: '#1a1773',
+                    color: '#18148C',
                     fontWeight: 400,
-                    fontSize: { xs: 16, md: 18, xl:20 },
+                    fontSize: { xs: 16, md: 18, xl:30 },
                     mt: 1,
                     mb:3
                   }}
@@ -117,7 +117,7 @@ function CardServicesSection() {
           href="/servicios"
           endIcon={<ArrowForwardIcon />}
           sx={{
-            backgroundColor: '#1A1773',
+            backgroundColor: '#18148C',
             color: 'white',
             borderRadius: '24px',
             textTransform: 'none',
@@ -126,13 +126,13 @@ function CardServicesSection() {
             fontSize: 20,
             px: 4,
             py: 1.2,
-            boxShadow: '0px 2px 4px 0px #0000001A',
-            border: '2px solid #82C6E8',
+            boxShadow: '0px 2px 4px 0px #18148C',
+            border: '2px solid #18148C',
             transition: 'all 0.2s',
             '&:hover, &:active': {
               backgroundColor: '#fff',
-              color: '#9FBA47',
-              border: '2px solid #9FBA47'
+              color: '#18148C',
+              border: '2px solid #18148C'
             }
           }}
         >
