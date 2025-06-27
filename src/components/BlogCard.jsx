@@ -32,7 +32,7 @@ function BlogCard({ image, title, description }) {
         alt={title}
         sx={{
           objectFit: 'cover', width: '100%',
-          height: 140, // <-- Aquí puedes cambiar el valor
+          height: 140, 
           objectFit: 'cover',
           borderTopLeftRadius: 8,
           borderTopRightRadius: 8,
@@ -41,7 +41,7 @@ function BlogCard({ image, title, description }) {
         }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography gutterBottom variant="h6" component="div" sx={{ color: '#1565c0', fontWeight: 500 }}>
+        <Typography gutterBottom variant="h6" component="div" sx={{ color: '#18148C', fontWeight: 500 }}>
           {title}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ color: '#1565c0' }}>
@@ -51,9 +51,9 @@ function BlogCard({ image, title, description }) {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
         <IconButton
           sx={{
-            bgcolor: '#00325a',
+            bgcolor: '#18148C',
             color: '#fff',
-            '&:hover': { bgcolor: '#1565c0' },
+            '&:hover': { bgcolor: '#0B5B8C' },
             boxShadow: 2,
           }}
         >

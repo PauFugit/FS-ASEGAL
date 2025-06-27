@@ -57,9 +57,9 @@ const FloatingButtons = () => {
           aria-label="subir arriba"
           onClick={handleScrollTop}
           sx={{
-            backgroundColor: '#43B97F',
+            backgroundColor: '#18148C',
             color: 'white',
-            '&:hover': { backgroundColor: '#38a06d' }
+            '&:hover': { backgroundColor: '#F2AC57' }
           }}
         >
           <KeyboardArrowUpIcon />

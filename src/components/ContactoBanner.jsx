@@ -6,7 +6,7 @@ function ContactoBanner() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#003366',
+        bgcolor: '#18148C',
         py: { xs: 3, md: 3 },
         px: { xs: 2, md: 0 },
         display: 'flex',
@@ -40,7 +40,7 @@ function ContactoBanner() {
           href="/contacto"
           variant="contained"
           sx={{
-            backgroundColor: '#D28251',
+            backgroundColor: '#F2AC57',
             color: '#ffffff',
             borderRadius: '24px',
             fontWeight: 500,
@@ -52,7 +52,7 @@ function ContactoBanner() {
             textTransform: 'none',
             transition: 'all 0.2s cubic-bezier(.4,2,.6,1)',
             '&:hover': {
-              backgroundColor: '#9FBA47',
+              backgroundColor: '#0B5B8C',
               color: '#ffffff',
               transform: 'scale(1.05)',
               boxShadow: '0px 4px 16px 0px #FFC80044',

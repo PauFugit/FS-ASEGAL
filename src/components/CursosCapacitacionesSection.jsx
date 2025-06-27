@@ -70,7 +70,7 @@ const CourseCard = ({ title, image, index }) => {
         transition: 'transform 0.3s ease'
       }} />
       <Typography variant="h6" sx={{ 
-        color: '#1A1773',
+        color: '#18148C',
         fontWeight: 600,
         fontSize: '1.1rem',
         textAlign: 'center',
@@ -94,10 +94,11 @@ const CursosCapacitacionesSection = () => {
       <Typography variant="h4" sx={{ 
         mb: 8,
         fontWeight: 500,
-        color: '#1A1773',
+        color: '#18148C',
         textAlign: 'left',
         px: { xs: 2, sm: 0 },
-        fontSize: { xl:48 }
+        fontSize: { xs: '1.8rem', md: '2.125rem', xl:48 },
+        textShadow: '1px 2px 4px #0B5B8C'
       }}>
         CURSOS Y CAPACITACIONES
       </Typography>
@@ -134,7 +135,7 @@ const CursosCapacitacionesSection = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
           <Box sx={{
             flex: 1,
-            borderBottom: '2px solid #1565c0',
+            borderBottom: '2px solid #0B5B8C',
             mr: 3
           }} />
           <Button
@@ -153,7 +154,7 @@ const CursosCapacitacionesSection = () => {
               transition: 'background-color 0.3s ease',
               '&:hover': {
                 bgcolor: '#ffffff',
-                color: '#1A1773', 
+                color: '#F2AC57', 
                 boxShadow: '0px 4px 12px rgba(#82C6E8, 0.2)',
               }
             }}

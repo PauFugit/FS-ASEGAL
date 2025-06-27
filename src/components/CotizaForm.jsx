@@ -21,13 +21,13 @@ function CotizaForm() {
     >
       <Typography
         sx={{
-          color: '#1A1773',
+          color: '#18148C',
           fontWeight: 500,
           fontSize: 15,
           mb: 1,
         }}
       >
-        Completa el formulario y te contestaremos en menos de 12 horas
+        Completa el formulario y te contestaremos dentro de las próximas 12 horas
       </Typography>
 
       <TextField
@@ -106,7 +106,7 @@ function CotizaForm() {
         }}
         InputProps={{ disableUnderline: true }}
       >
-        <MenuItem value="" disabled>
+        <MenuItem value="" disabled >
           Selecciona el servicio que deseas cotizar
         </MenuItem>
         <MenuItem value="Tramitación resolución sanitaria">1. Tramitación resolución sanitaria</MenuItem>
@@ -140,7 +140,7 @@ function CotizaForm() {
         variant="contained"
         fullWidth
         sx={{
-          bgcolor: '#1A1773',
+          bgcolor: '#18148C',
           color: '#fff',
           borderRadius: '20px',
           fontWeight: 600,
@@ -151,7 +151,7 @@ function CotizaForm() {
           boxShadow: '0px 2px 8px 0px #1A177322',
           textTransform: 'none',
           '&:hover': {
-            bgcolor: '#9FBA47',
+            bgcolor: '#F2AC57',
             color: '#fff',
           },
         }}

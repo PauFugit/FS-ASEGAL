@@ -1,8 +1,7 @@
 // src/app/nosotras/page.jsx
-import ContactForm from '@/components/ContactForm';
 import AboutUs from '../../components/AboutUs';
 import BannerStatic from '../../components/BannerStatic';
-import BannerCierre from '@/components/BannerCierre';
+import BannerCierreDos from '@/components/BannerCierreDos';
 
 export default function NosotrasPage() {
   return (
@@ -12,7 +11,7 @@ export default function NosotrasPage() {
               text="QUIÉNES SOMOS"
             />
       <AboutUs />
-      <BannerCierre/>
+      <BannerCierreDos/>
     </main>
   );
 }

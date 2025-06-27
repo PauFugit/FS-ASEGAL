@@ -25,21 +25,21 @@ function BlogHomeSection() {
     <Box sx={{ width: '100%', bgcolor: '#fafbfc', py: 6, px: 2, position: 'relative' }}>
       {/* Línea decorativa y título */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="overline" sx={{ color: '#9AB240', fontWeight: 700, fontSize: 20, mr: 2, position: 'relative', top: 6 }}>
+        <Typography variant="overline" sx={{ color: '#F2AC57', fontWeight: 700, fontSize: 20, mr: 2, position: 'relative', top: 6 }}>
           BLOG
         </Typography>
-        <Box sx={{ flex: 1, borderBottom: '2px solid #1A1773', ml: 1 }} />
+        <Box sx={{ flex: 1, borderBottom: '2px solid #18148C', ml: 1 }} />
       </Box>
       <Typography
         variant="h4"
         sx={{
           fontWeight: 500,
-          color: '#003366',
+          color: '#18148C',
           letterSpacing: '0.12em',
           mb: 8,
           textTransform: 'uppercase',
           fontSize: { xs: 24, md: 32, xl:48 },
-          textShadow: '1px 2px 4px #82C6E8'
+          textShadow: '1px 2px 4px #0B5B8C'
         }}
       >
         NOVEDADES Y CONSEJOS PARA TI
@@ -67,14 +67,14 @@ function BlogHomeSection() {
       <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
         <Box sx={{
           flex: 1,
-          borderBottom: '2px solid #1A1773',
+          borderBottom: '2px solid #18148C',
           mr: 3
         }} />
         <Button
           variant="contained"
           href="/blog"
           sx={{
-            bgcolor: '#1a1773',
+            bgcolor: '#18148C',
             color: '#ffffff',
             borderRadius: '24px',
             fontWeight: 600,
@@ -84,7 +84,9 @@ function BlogHomeSection() {
             boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
             textTransform: 'italic',
             '&:hover': {
-              bgcolor: '#9AB240' 
+              bgcolor: '#ffffff',
+              color: '#F2AC57',
+              borderBottom: '2px solid #F2AC57'
             }
           }}
         >

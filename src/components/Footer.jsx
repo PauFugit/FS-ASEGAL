@@ -63,20 +63,39 @@ function Footer() {
               fontSize: '1.05rem',
               mb: 0.5,
               fontFamily: 'inherit',
+              '&:hover': {
+              color: '#F2AC57',
+              }
             }}
           >
             Sobre Asegal B&F
           </Link>
-          <Link href="/misionyvision" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/misionyvision" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5,
+            '&:hover': {
+              color: '#F2AC57',
+              }
+           }}>
             Misión y Visión
           </Link>
-          <Link href="/politicasdeprivacidad" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/politicasdeprivacidad" underline="none" sx={{ color: '#003366', fontWeight: 500, fontStyle: 'italic', mb: 0.5,
+            '&:hover': {
+              color: '#F2AC57',
+              }
+          }}>
             Políticas de Privacidad
           </Link>
-          <Link href="/contacto" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic', mb: 0.5 }}>
+          <Link href="/contacto" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic', mb: 0.5,
+            '&:hover': {
+              color: '#F2AC57',
+              }
+           }}>
             Contáctanos
           </Link>
-          <Link href="/cotiza" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic' }}>
+          <Link href="/cotiza" underline="none" sx={{ color: '#003366', fontWeight: 700, fontStyle: 'italic',
+            '&:hover': {
+              color: '#F2AC57',
+              }
+           }}>
             Cotiza
           </Link>
         </Box>

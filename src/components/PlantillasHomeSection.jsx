@@ -75,7 +75,7 @@ const TemplateCard = ({ title, image, index }) => {
           backgroundColor: '#f9f9f9'
         }}>
           <Typography variant="h6" align="center" sx={{ 
-            color: '#1A1773',
+            color: '#18148C',
             fontWeight: 600,
             fontSize: '1.3rem',
             lineHeight: 1.3
@@ -99,10 +99,11 @@ const PlantillasHomeSection = () => {
       <Typography variant="h4" sx={{ 
         mb: 8,
         fontWeight: 500,
-        color: '#1A1773',
+        color: '#18148C',
         textAlign: 'left',
         px: { xs: 2, sm: 0 },
-        fontSize: { xs: '1.8rem', md: '2.125rem', xl:48 }
+        fontSize: { xs: '1.8rem', md: '2.125rem', xl:48 },
+        textShadow: '1px 2px 4px #0B5B8C'
       }}>
         PLANTILLAS
       </Typography>
@@ -150,14 +151,15 @@ const PlantillasHomeSection = () => {
         >
           <Typography 
             sx={{ 
-              color: '#9FBA47',
+              color: '#F2AC57',
               fontWeight: 600,
               fontSize: '1.1rem',
               display: 'flex',
               alignItems: 'center',
               gap: 1,
               '&:hover': {
-                textDecoration: 'underline'
+                textDecoration: 'underline',
+                color: '#0B5B8C'
               }
             }}
           >

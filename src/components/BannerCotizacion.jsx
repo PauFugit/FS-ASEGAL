@@ -6,7 +6,7 @@ function BannerCotizacion() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#9FBA4790',
+        bgcolor: '#0B5B8C90',
         py: { xs: 2, md: 2, xl:3 },
         px: { xs: 2, md: 0 },
         display: 'flex',
@@ -35,7 +35,7 @@ function BannerCotizacion() {
             flex: 1,
           }}
         >
-          ¿Estás list@ para dar el siguiente paso?
+          ¿Estás listo/a para dar el siguiente paso?
         </Typography>
         <Button
           href="/cotiza"
@@ -53,7 +53,7 @@ function BannerCotizacion() {
             transition: 'all 0.2s cubic-bezier(.4,2,.6,1)',
             '&:hover': {
               backgroundColor: '#ffffff',
-              color: '#9FBA47',
+              color: '#F2AC57',
               transform: 'scale(1.04)',
               boxShadow: '0px 4px 12px 0px #1A177344',
             },

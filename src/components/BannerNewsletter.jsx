@@ -12,7 +12,7 @@ function BannerNewsletter() {
   return (
     <Box
       sx={{
-        bgcolor: '#82C6E8',
+        bgcolor: '#F2AC57',
         py: 4,
         px: 2,
         display: 'flex',
@@ -24,7 +24,7 @@ function BannerNewsletter() {
         variant="subtitle1"
         sx={{
           mb: 2,
-          color: '#222',
+          color: '#000000',
           fontSize: '1.25rem',
           textAlign: 'center',
         }}
@@ -44,7 +44,7 @@ function BannerNewsletter() {
         }}
         onSubmit={e => {
           e.preventDefault();
-          // Aquí puedes manejar el submit
+          // Aquí manejar el submit
         }}
       >
         <InputBase
@@ -68,7 +68,7 @@ function BannerNewsletter() {
           type="submit"
           variant="contained"
           sx={{
-            bgcolor: '#9FBA47',
+            bgcolor: '#18148C',
             color: '#fff',
             borderRadius: 3,
             px: 4,
@@ -78,7 +78,7 @@ function BannerNewsletter() {
             textTransform: 'uppercase',
             letterSpacing: 1,
             '&:hover': {
-              bgcolor: '#9FBA47',
+              bgcolor: '#0F07D9',
             },
           }}
           disabled={!email}

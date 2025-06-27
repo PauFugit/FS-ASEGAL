@@ -27,7 +27,7 @@ function BannerStatic({ image, text, color }) {
           position: 'absolute',
           left: 0,
           bottom: 0,
-          bgcolor: '#1A1773',
+          bgcolor: '#18148C',
           color: '#fff',
           px: 3,
           py: 1,

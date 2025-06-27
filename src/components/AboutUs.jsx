@@ -82,7 +82,7 @@ const AboutUs = () => {
       {/* Título principal */}
       <Typography variant="h2" align="center" sx={{ 
         mb: 6,
-        color: '#1A1773',
+        color: '#18148C',
         fontWeight: 700,
         position: 'relative',
         fontSize: { xs: '2rem', md: '2.5rem', xl: '3rem' },
@@ -91,7 +91,7 @@ const AboutUs = () => {
           display: 'block',
           width: 100,
           height: 4,
-          backgroundColor: '#D28251',
+          backgroundColor: '#F2AC57',
           margin: '20px auto 0',
           borderRadius: 2,
         }
@@ -135,7 +135,7 @@ const AboutUs = () => {
           px: { xs: 0, md: 2 }
         }}>
           <Typography variant="h4" gutterBottom sx={{ 
-            color: '#1A1773',
+            color: '#18148C',
             fontWeight: 600,
             mb: 3,
             fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.1rem'}
@@ -148,10 +148,10 @@ const AboutUs = () => {
           }}>
             Somos <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#D28251'
+              color: '#F2AC57'
             }}>Carolina Fernández y Carolina Berthelon</Box>, ingenieras en alimentos y fundadoras de <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#9FBA47'
+              color: '#18148C'
             }}>Asegal B&F</Box>. Comprometidas con el crecimiento de empresas en la industria alimentaria, brindamos soluciones personalizadas para cada necesidad.
           </Typography>
         </Box>
@@ -193,7 +193,7 @@ const AboutUs = () => {
           px: { xs: 0, md: 2 }
         }}>
           <Typography variant="h4" gutterBottom sx={{ 
-            color: '#1A1773',
+            color: '#18148C',
             fontWeight: 600,
             mb: 3,
             fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.1rem' }
@@ -201,15 +201,15 @@ const AboutUs = () => {
             Nuestro Compromiso
           </Typography>
           <Typography paragraph sx={{ 
-            color: '#1A1773',
+            color: '#18148C',
             fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
           }}>
             Con <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#D28251'
+              color: '#18148C'
             }}>experiencia y cercanía</Box> ofrecemos asesoría personalizada para fortalecer tu negocio, garantizando productos <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#D28251'
+              color: '#18148C'
             }}>seguros y confiables</Box> que cumplen con normas regulatorias y estándares de calidad.
           </Typography>
         </Box>
@@ -279,10 +279,10 @@ const AboutUs = () => {
           }}>
             Dos profesionales apasionadas por la <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#1A1773'
+              color: '#18148C'
             }}>seguridad alimentaria</Box> y el <Box component="span" sx={{ 
               fontWeight: 600,
-              color: '#1A1773'
+              color: '#18148C'
             }}>éxito de tus proyectos</Box>, combinando experiencia técnica con un enfoque personalizado para cada cliente.
           </Typography>
         </Box>
@@ -321,7 +321,7 @@ const AboutUs = () => {
               }}
             >
               <Box sx={{ 
-                color: '#9FBA47',
+                color: '#F26A1B',
                 fontSize: '3rem',
                 mb: 2,
                 lineHeight: 1

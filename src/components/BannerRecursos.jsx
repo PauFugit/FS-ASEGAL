@@ -67,7 +67,7 @@ function BannerRecursos() {
           type="submit"
           variant="contained"
           sx={{
-            bgcolor: '#369a59',
+            bgcolor: '#F2AC57',
             color: '#fff',
             borderRadius: 3,
             px: 4,
@@ -77,8 +77,8 @@ function BannerRecursos() {
             textTransform: 'uppercase',
             letterSpacing: 1,
             '&:hover': {
-              bgcolor: '#FFFFFF',
-              color: '#369a59',
+              bgcolor: '#0B5B8C',
+              color: '#ffffff',
             },
           }}
           disabled={!email}

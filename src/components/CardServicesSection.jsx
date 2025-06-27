@@ -66,7 +66,7 @@ function CardServicesSection() {
                 boxShadow: 'none',
                 background: 'transparent',
                 width: '100%',
-                maxWidth: 400,
+                maxWidth: 300,
                 minWidth: 140,
                 display: 'flex',
                 flexDirection: 'column',

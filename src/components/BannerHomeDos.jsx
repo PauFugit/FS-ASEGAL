@@ -6,7 +6,7 @@ function BannerHomeDos() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#e6f6fd', // Amarillo de fondo
+        bgcolor: '#e6f6fd', 
         py: 4,
         display: 'flex',
         justifyContent: 'center', // Centra horizontalmente
@@ -19,9 +19,9 @@ function BannerHomeDos() {
       <Typography
         variant="body1"
         sx={{
-          color: '#003366', // Azul oscuro para el texto
+          color: '#18148C', // Azul oscuro para el texto
           fontSize: { xs: '1rem', md: '1.2rem', xl: 22 },
-          textAlign: 'center', // Centra el texto dentro de su contenedor
+          textAlign: 'center', 
         }}
       >
         Obtén tu Resolución Sanitaria de manera rápida y efectiva
@@ -32,8 +32,8 @@ function BannerHomeDos() {
         variant="contained"
         href="/cotiza"
         sx={{
-          bgcolor: '#003366', // Azul oscuro para el botón
-          color: '#fff', // Texto blanco
+          bgcolor: '#18148C', 
+          color: '#fff', 
           borderRadius: '24px',
           fontSize: { xs: '1rem', md: '1.2rem',xl:18 },
           px: 3,
@@ -41,8 +41,9 @@ function BannerHomeDos() {
           textTransform: 'uppercase',
           boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.25)',
           '&:hover': {
-            bgcolor: '#ffffff', // Un tono más claro al pasar el mouse
-            color: '#9FBA47'
+            bgcolor: '#ffffff', 
+            color: '#F2AC57',
+            borderBottom: '2px solid #F2AC57'
           },
         }}
       >

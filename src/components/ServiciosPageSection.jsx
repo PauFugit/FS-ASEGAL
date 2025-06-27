@@ -86,7 +86,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
             <Typography
               variant="h3"
               sx={{
-                color: '#1A1773',
+                color: '#18148C',
                 fontWeight: 700,
                 mb: 3,
                 fontSize: { xs: '1.2rem', md: '1.5rem', xl: '2.2rem' },
@@ -101,7 +101,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
             <Typography
               variant="body1"
               sx={{
-                color: '#4b6b8a',
+                color: '#0B5B8C',
                 mb: 3,
                 lineHeight: 1.6,
                 fontSize: { xs: '0.98rem', md: '1.05rem', xl: '1.3rem' },
@@ -114,7 +114,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
             <Typography
               variant="h4"
               sx={{
-                color: '#1A1773',
+                color: '#18148C',
                 fontWeight: 600,
                 fontSize: { xs: '0.98rem', md: '1.05rem', xl: '1.3rem' },
                 mb: 2,
@@ -134,7 +134,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
               }}
             >
               <AccordionSummary
-                expandIcon={<ExpandMoreIcon sx={{ color: '#43B97F' }} />}
+                expandIcon={<ExpandMoreIcon sx={{ color: '#F2AC57' }} />}
                 sx={{
                   p: 0,
                   minHeight: 'auto',
@@ -147,7 +147,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: '#D28251',
+                    color: '#F26A1B',
                     fontWeight: 500,
                     display: 'flex',
                     alignItems: 'center',
@@ -167,7 +167,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                       mb: 1.2,
                       pl: 1,
                       '&::marker': {
-                        color: '#1A1773',
+                        color: '#18148C',
                         fontWeight: 700,
                       },
                     },
@@ -175,7 +175,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                 >
                   {steps.map((step, index) => (
                     <li key={index}>
-                      <Typography variant="body2" sx={{ color: '#4b6b8a',
+                      <Typography variant="body2" sx={{ color: '#18148C',
                 fontSize: { xs: '0.6rem', md: '0.8rem', xl: '1rem' }
                        }}>
                         {step}
@@ -190,7 +190,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: '#9FBA47',
+                  backgroundColor: '#F2AC57',
                   color: 'white',
                   borderRadius: '24px',
                   px: 4,
@@ -198,11 +198,11 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                   fontSize: { xs: '0.6rem', md: '0.8rem', xl: '1rem' },
                   fontWeight: 600,
                   textTransform: 'none',
-                  boxShadow: '0px 2px 8px 0px #9FBA4722',
+                  boxShadow: '0px 2px 8px 0px #F2AC5722',
                   '&:hover': {
                     backgroundColor: '#ffffff',
-                    color: '#9FBA47',
-                    border: '2px solid #9FBA47',
+                    color: '#F2AC57',
+                    border: '2px solid #F2AC57',
                   },
                 }}
               >

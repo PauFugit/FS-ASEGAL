@@ -9,7 +9,7 @@ const CotizaSection = () => {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#eaf6fb',
+        bgcolor: '#18148C',
         py: { xs: 4, md: 6 },
         px: { xs: 1, sm: 3, md: 6 },
         display: 'flex',

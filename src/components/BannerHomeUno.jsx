@@ -7,7 +7,7 @@ function BannerHomeUno() {
     <Box
       sx={{
         width: '100%',
-        bgcolor: '#ffffff',
+        bgcolor: '#18148C',
         display: 'flex',
         alignItems: 'center',
         py: 4,
@@ -15,12 +15,12 @@ function BannerHomeUno() {
       }}
     >
       {/* Línea izquierda */}
-      <Box sx={{ flex: 1, height: 2, bgcolor: '#1A1773', mx: 1 }} />
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#ffffff', mx: 1 }} />
 
       {/* Texto */}
       <Typography
         sx={{
-          color: '#1A1773',
+          color: '#ffffff',
           fontSize: 22,
           letterSpacing: '0.2em',
           fontWeight: 400,
@@ -32,7 +32,7 @@ function BannerHomeUno() {
       </Typography>
 
       {/* Línea central corta */}
-      <Box sx={{ flex: 1, height: 2, bgcolor: '#1A1773', mx: 1, maxWidth: 40 }} />
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#ffffff', mx: 1, maxWidth: 40 }} />
 
       {/* Botón */}
       <Button
@@ -49,7 +49,7 @@ function BannerHomeUno() {
           boxShadow: '0px 4px 8px #aee9b6',
           mx: 2,
           '&:hover': {
-            bgcolor: '#9FBA47',
+            bgcolor: '#F2AC57',
           },
         }}
       >
@@ -57,7 +57,7 @@ function BannerHomeUno() {
       </Button>
 
       {/* Línea derecha */}
-      <Box sx={{ flex: 1, height: 2, bgcolor: '#1A1773', mx: 1 }} />
+      <Box sx={{ flex: 1, height: 2, bgcolor: '#ffffff', mx: 1 }} />
     </Box>
   );
 }

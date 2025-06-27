@@ -46,10 +46,10 @@ const ScrollTopButton = () => {
           size="medium"
           aria-label="subir arriba"
           sx={{
-            backgroundColor: '#43B97F',
+            backgroundColor: '#18148C',
             color: 'white',
             '&:hover': {
-              backgroundColor: '#38a06d',
+              backgroundColor: '#F2AC57',
             }
           }}
         >
