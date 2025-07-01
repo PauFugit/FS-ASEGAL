@@ -1,48 +1,54 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardContent } from '@mui/material';
+import { Box, Typography, Card, CardContent, Dialog, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 const templates = [
   {
     title: "Control recepción materias primas",
-    image: "/plantilla1.jpg"
+    image: "/plantilla1.jpg",
+    pdf: "/pdfs/RegistroControlRecepcion.pdf"
   },
   {
     title: "Control temperaturas alimentos",
-    image: "/plantilla2.jpg"
+    image: "/plantilla2.jpg",
+    pdf: "/pdfs/plantilla2.pdf"
   },
   {
     title: "Control sanitización alimentos",
-    image: "/plantilla3.jpg"
+    image: "/plantilla3.jpg",
+    pdf: "/pdfs/RegistroControlLimpiezaSanitizaciones.pdf"
   },
   {
     title: "Control de desechos",
-    image: "/plantillla4.jpg"
+    image: "/plantillla4.jpg",
+    pdf: "/pdfs/plantilla4.pdf"
   },
   {
     title: "Limpieza y sanitización de superficies.",
-    image: "/plantilla5.jpg"
+    image: "/plantilla5.jpg",
+    pdf: "/pdfs/RegistroControlLimpiezaSanitizaciones.pdf"
   },
   {
     title: "Control aspecto del personal",
-    image: "/plantilla6.webp"
+    image: "/plantilla6.webp",
+    pdf: "/pdfs/RegistroControlHigienePersonal.pdf"
   },
   {
     title: "Control de producción (trazabilidad)",
-    image: "/plantilla7.webp"
+    image: "/plantilla7.webp",
+    pdf: "/pdfs/plantilla7.pdf"
   }
 ];
 
-const TemplateCard = ({ title, image, index }) => {
+const TemplateCard = ({ title, image, index, onClick }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Animación de entrada con delay basado en el índice
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, index * 100);
-    
     return () => clearTimeout(timer);
   }, [index]);
 
@@ -57,6 +63,7 @@ const TemplateCard = ({ title, image, index }) => {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       <Card sx={{
         width: '100%',
@@ -103,6 +110,19 @@ const TemplateCard = ({ title, image, index }) => {
 };
 
 const PlantillasPageSection = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedPdf, setSelectedPdf] = useState(null);
+
+  const handleOpen = (pdf) => {
+    setSelectedPdf(pdf);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedPdf(null);
+  };
+
   return (
     <Box sx={{ 
       py: 6,
@@ -146,11 +166,39 @@ const PlantillasPageSection = () => {
             <TemplateCard 
               title={template.title} 
               image={template.image}
-              index={index} 
+              index={index}
+              onClick={() => handleOpen(template.pdf)}
             />
           </Box>
         ))}
       </Box>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="lg"
+        fullWidth
+        PaperProps={{
+          sx: { height: { xs: '90vh', md: '90vh' }, background: '#222' }
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
+          <IconButton onClick={handleClose} sx={{ color: '#fff' }}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+        <Box sx={{ flex: 1, height: { xs: '80vh', md: '80vh' }, p: 0 }}>
+          {selectedPdf && (
+            <iframe
+              src={selectedPdf}
+              title="Plantilla PDF"
+              width="100%"
+              height="100%"
+              style={{ border: 'none' }}
+            />
+          )}
+        </Box>
+      </Dialog>
     </Box>
   );
 };
