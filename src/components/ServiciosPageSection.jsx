@@ -218,80 +218,226 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
 
 const ServiciosSection = () => {
   const servicios = [
-    {
-      title: "RESOLUCIÓN SANITARIA (RS)",
-      description: "Te brindamos asesoría y acompañamiento en cada etapa del proceso para obtener la resolución sanitaria de tu negocio y abrirte a nuevos mercados.",
-      image: "/resolucionsanitaria.jpg",
-      steps: [
-        "1. Reunión inicial online: Diagnostico de las necesidades de tu empresa",
-        "2. Visita a la instalación: Evaluación de infraestructura y layout",
-        "3. Preparación de documentos: Recopilación y confección de protocolos de manejo seguro de los alimentos BPM.",
-        "4. Entrega de documentos: Tramitación en plataforma SEREMI y seguimiento.",
-        "5. Obtención de la resolución sanitaria."
-      ]
-    },
-    {
-      title: "BUENAS PRÁCTICAS DE MANIPULACIÓN (BPM)",
-      description: "Uno de las exigencias para obtener la RS de tu negocio gastronómico, es contar con un Manual de BPM para garantizar la inocuidad de tus productos.",
-      image: "/auditorias.jpg",
-      steps: [
-        "1. Reunión inicial online: Diagnostico de las necesidades de tu empresa.",
-        "2. Preparación de documentos: Recopilación de información, confección de protocolos y registros de manejo seguro de los alimentos, que incluye:",
-        "◦ Aspecto del personal",
-        "◦ Seguridad del agua",
-        "◦ Manejo de productos químicos",
-        "◦ Limpieza y sanitización",
-        "◦ Manejo integrado de plagas",
-        "◦ Mantención de equipos",
-        "◦ Control de temperaturas",
-        "◦ Otros.",
-        "3. Entrega de documentos: Manual de BPM adaptado de tu negocio" 
-      ],
-      reverse: true
-    },
-    {
-      title: "Auditorias de BPM",
-      description: "Somos tu aliado estratégico de confianza, mediante un auditor interno que revisa, examina y evalúa el cumplimiento de las BPM de tus procesos productivos según las normativas sanitarias vigentes.",
-      image: "/gestioncalidad.jpg",
-      steps: [
-        "1. Visita de instalaciones: Se aplica un check list sanitario de BPM para ver el estado de cumplimiento regulatorio de los procesos.",
-        "2. Plan de acción: Se hace entrega del informe técnico con las mejoras, detallando cada actividad a realizarse.",
-        "3. Seguimiento: Te brindamos apoyo ante dudas o consultas para la implementación de las mejoras durante 1 mes. Además, puedes establecer una frecuencia de auditorías internas para mantener controladas tus BPM en la producción y evitar sanciones sanitarias y/o clausura de local."
-      ],
-      reverse: false
-    },
-    {
-      title: "ETIQUETADO NUTRICIONAL",
-      description: "En Asegal B&F ponemos nuestro conocimiento y experiencia a tu disposición para ayudarte a generar un rotulado nutricional confiable de tus productos. Utilizando el método oficial de tablas de composición, hacemos los cálculos nutricionales y desarrollamos la etiqueta de tu producto.",
-      image: "/burbujatres.jpg",
-      steps: [
-        "1. Reunión inicial online: Recopilación de información",
-        "2. Desarrollo etiqueta nutricional: cálculos nutricionales según receta, identificación de sellos, alergenos y mensajes saludables según corresponda.",
-        "3. Entrega de etiqueta: En formato digital lista para impresión y certificado profesional acreditando fuentes de cálculo."
-      ],
-      reverse: true
-    },
-    {
-      title: "CAPACITACIONES",
-      description: "El primer paso para crear alimentos seguros es la formación íntegra y de calidad de tus manipuladores de alimentos, es por esto que contamos con los siguientes programas de capacitación:",
-      image: "/etiquetado.jpg",
-      steps: [
-        "1) Programa BPM: Se capacita a tu personal sobre las BPM de tus procesos productivos que abarca los siguientes items:",
-        "◦ Aspecto del personal",
-        "◦ Seguridad del agua",
-        "◦ Manejo de productos químicos",
-        "◦ Limpieza y sanitización",
-        "◦ Manejo integrado de plagas",
-        "◦ Mantención de equipos",
-        "◦ Control de temperaturas",
-        "◦ Otros: Contaminación cruzada, Manejo de residuos",
-        "2) Programa Trazabilidad: Se capacita a todo el personal sobre la importancia de la trazabilidad en la producción y los registros asociados, que abarcan desde la recepción de MP, hasta la elaboración del producto final.",
-        "3) Obtención Resolución Sanitaria.",
-      ],
-      reverse: false
-    }
-  ];
-
+  {
+    title: "RESOLUCIÓN SANITARIA (RS)",
+    description: "Te brindamos asesoría y acompañamiento en cada etapa del proceso para obtener la resolución sanitaria de tu negocio y abrirte a nuevos mercados.",
+    image: "/resolucionsanitaria.jpg",
+    steps: [
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          1. Reunión inicial online:
+        </span>
+        {" Diagnóstico de las necesidades de tu empresa"}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          2. Visita a la instalación:
+        </span>
+        {" Evaluación de infraestructura y layout"}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          3. Preparación de documentos:
+        </span>
+        {" Recopilación y confección de protocolos de manejo seguro de los alimentos BPM."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          4. Entrega de documentos:
+        </span>
+        {" Tramitación en plataforma SEREMI y seguimiento."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          5. Obtención de la resolución sanitaria.
+        </span>
+      </>
+    ]
+  },
+  {
+    title: "BUENAS PRÁCTICAS DE MANIPULACIÓN (BPM)",
+    description: "Uno de las exigencias para obtener la RS de tu negocio gastronómico, es contar con un Manual de BPM para garantizar la inocuidad de tus productos.",
+    image: "/auditorias.jpg",
+    steps: [
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          1. Reunión inicial online:
+        </span>
+        {" Diagnóstico de las necesidades de tu empresa."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          2. Preparación de documentos:
+        </span>
+        {" Recopilación de información, confección de protocolos y registros de manejo seguro de los alimentos, que incluye:"}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Aspecto del personal
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Seguridad del agua
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Manejo de productos químicos
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Limpieza y sanitización
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Manejo integrado de plagas
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Mantención de equipos
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Control de temperaturas
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Otros.
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          3. Entrega de documentos:
+        </span>
+        {" Manual de BPM adaptado de tu negocio"}
+      </>
+    ],
+    reverse: true
+  },
+  {
+    title: "Auditorias de BPM",
+    description: "Somos tu aliado estratégico de confianza, mediante un auditor interno que revisa, examina y evalúa el cumplimiento de las BPM de tus procesos productivos según las normativas sanitarias vigentes.",
+    image: "/gestioncalidad.jpg",
+    steps: [
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          1. Visita de instalaciones:
+        </span>
+        {" Se aplica un check list sanitario de BPM para ver el estado de cumplimiento regulatorio de los procesos."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          2. Plan de acción:
+        </span>
+        {" Se hace entrega del informe técnico con las mejoras, detallando cada actividad a realizarse."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          3. Seguimiento:
+        </span>
+        {" Te brindamos apoyo ante dudas o consultas para la implementación de las mejoras durante 1 mes. Además, puedes establecer una frecuencia de auditorías internas para mantener controladas tus BPM en la producción y evitar sanciones sanitarias y/o clausura de local."}
+      </>
+    ],
+    reverse: false
+  },
+  {
+    title: "ETIQUETADO NUTRICIONAL",
+    description: "En Asegal B&F ponemos nuestro conocimiento y experiencia a tu disposición para ayudarte a generar un rotulado nutricional confiable de tus productos. Utilizando el método oficial de tablas de composición, hacemos los cálculos nutricionales y desarrollamos la etiqueta de tu producto.",
+    image: "/burbujatres.jpg",
+    steps: [
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          1. Reunión inicial online:
+        </span>
+        {" Recopilación de información"}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          2. Desarrollo etiqueta nutricional:
+        </span>
+        {" cálculos nutricionales según receta, identificación de sellos, alergenos y mensajes saludables según corresponda."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          3. Entrega de etiqueta:
+        </span>
+        {" En formato digital lista para impresión y certificado profesional acreditando fuentes de cálculo."}
+      </>
+    ],
+    reverse: true
+  },
+  {
+    title: "CAPACITACIONES",
+    description: "El primer paso para crear alimentos seguros es la formación íntegra y de calidad de tus manipuladores de alimentos, es por esto que contamos con los siguientes programas de capacitación:",
+    image: "/etiquetado.jpg",
+    steps: [
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          1) Programa BPM:
+        </span>
+        {" Se capacita a tu personal sobre las BPM de tus procesos productivos que abarca los siguientes items:"}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Aspecto del personal
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Seguridad del agua
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Manejo de productos químicos
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Limpieza y sanitización
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Manejo integrado de plagas
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Mantención de equipos
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Control de temperaturas
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          ◦ Otros: Contaminación cruzada, Manejo de residuos
+        </span>
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          2) Programa Trazabilidad:
+        </span>
+        {" Se capacita a todo el personal sobre la importancia de la trazabilidad en la producción y los registros asociados, que abarcan desde la recepción de MP, hasta la elaboración del producto final."}
+      </>,
+      <>
+        <span style={{ fontWeight: 'bold' }}>
+          3) Obtención Resolución Sanitaria.
+        </span>
+      </>
+    ],
+    reverse: false
+  }
+];
   return (
     <Box sx={{
       py: 8,

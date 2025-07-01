@@ -14,20 +14,20 @@ import CloseIcon from '@mui/icons-material/Close'
 const cards = [
   {
     image: 'blogcard1.jpg',
-    title: 'Buenas prácticas en la gastronomía',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
+    title: 'Lo que necesitas para iniciar tu negocio...',
+    description: '¿Estás pensando en emprender en el mundo de la gastronomía? Aquí te dejamos una guía con los pasos esenciales para comenzar tu negocio de manera exitosa...',
     fullContent: 'Aquí va el contenido completo de la nota 1. Puedes agregar más texto, imágenes o lo que necesites para mostrar en el modal.'
   },
   {
     image: 'blogcard2.jpg',
-    title: 'Buenas prácticas en la gastronomía',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
+    title: 'Tips para enfrentar con éxito una fiscalización de SEREMI',
+    description: '¿Te preocupa una posible fiscalización de SEREMI? Aquí te compartimos consejos prácticos para estar preparado y cumplir con las normativas vigentes...',
     fullContent: 'Aquí va el contenido completo de la nota 2. Puedes agregar más texto, imágenes o lo que necesites para mostrar en el modal.'
   },
   {
     image: 'blogcard3.jpg',
-    title: 'Buenas prácticas en la gastronomía',
-    description: '¿Cuántas veces cometemos errores de los cuales ni nos percatamos que están mal? Acá van una serie de tips que te permiten generar buenas prácticas en la cocina...',
+    title: '¿Qué información debe contener una etiqueta nutricional?',
+    description: 'La etiqueta nutricional es fundamental para informar a los consumidores sobre los productos alimenticios. Descubre qué información debe incluir y cómo interpretarla correctamente...',
     fullContent: 'Aquí va el contenido completo de la nota 3. Puedes agregar más texto, imágenes o lo que necesites para mostrar en el modal.'
   },
   {
@@ -50,7 +50,7 @@ const cards = [
   },
 ];
 
-function page() {
+function Page() {
   const [open, setOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -159,4 +159,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
