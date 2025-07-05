@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique(map: "email")
+  username          String    @unique(map: "username")
+  name              String
+  lastname          String
+  password          String    @db.VarChar(255)
+  phone             String?
+  image             String?
+  role              Role
+  active            Boolean   @default(true)
+  resetToken        String?
+  resetTokenExpires DateTime? @db.DateTime(0)
+  company           String?
+  companyEmail      String?
+  companyPhone      String?
+  companyRUT        String?
+  driveURL          String?
+  createdAt         DateTime  @default(now()) @db.DateTime(0)
+  updatedAt         DateTime  @default(now()) @updatedAt @db.DateTime(0)
+}
+
+model Blog{
+  id              Int @id @default(autoincrement())
+  titulo          String
+  creadoPor       String?
+  resena          String
+  cuerpoTexto     String
+  referencias     String?
+  imagenUrl       String
+  createdAt         DateTime  @default(now()) @db.DateTime(0)
+
+
+}
+
+model ContactForm {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  apellido  String
+  correo    String
+  telefono  String?
+  mensaje   String   @db.Text
+  createdAt DateTime @default(now()) @db.DateTime(0)
+}
+
+model CotizationForm {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  apellido  String
+  correo    String
+  telefono  String?
+  servicio  String
+  mensaje   String   @db.Text
+  createdAt DateTime @default(now()) @db.DateTime(0)
+}
+
+model RoleEnum {
+  value RoleEnum_value @id
+}
+
+enum Role {
+  ADMIN
+  TEAM
+  CLIENT
+}
+
+enum RoleEnum_value {
+  ADMIN
+  TEAM
+  CLIENT
+}

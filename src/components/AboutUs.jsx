@@ -15,16 +15,15 @@ const AboutUs = () => {
 
   // Imágenes para los carruseles
   const galleryImages = [
-    '/burbujatres.jpg',
-    '/blogcard1.jpg',
-    '/blogcard2.jpg',
-    '/blogcard3.jpg'
+    '/2.png',
+    '/3.png',
+    '/4.png',
   ];
 
   const commitmentImages = [
-    '/blogcard4.jpg',
-    '/blogcard5.jpg',
-    '/blogcard6.webp'
+    '/6.png',
+    '/8.png',
+    '/p.png'
   ];
 
   // Cambio automático de imágenes con efecto fade CSS
@@ -236,7 +235,7 @@ const AboutUs = () => {
           justifyContent: 'center'
         }}>
           <Avatar
-            src="/caro1.jpeg"
+            src="/burbujanosotras1.5.png"
             alt="Carolina Fernández"
             sx={{
               width: { xs: 160, md: 200, xl: 250 },
@@ -247,7 +246,7 @@ const AboutUs = () => {
             }}
           />
           <Avatar
-            src="/caro2.jpeg"
+            src="/burbujanosotras2.png"
             alt="Carolina Berthelon"
             sx={{
               width: { xs: 160, md: 200, xl: 250  },
