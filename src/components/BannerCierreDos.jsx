@@ -28,7 +28,7 @@ export default function BannerCierreDos() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/burbujatres.jpg)', // Reemplaza con tu imagen
+        backgroundImage: 'url(/servicios2.jpg)', // Reemplaza con tu imagen
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

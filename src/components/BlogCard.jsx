@@ -48,18 +48,7 @@ function BlogCard({ image, title, description }) {
           {description}
         </Typography>
       </CardContent>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-        <IconButton
-          sx={{
-            bgcolor: '#18148C',
-            color: '#fff',
-            '&:hover': { bgcolor: '#0B5B8C' },
-            boxShadow: 2,
-          }}
-        >
-          <ArrowForwardIcon />
-        </IconButton>
-      </Box>
+      
     </Card>
   );
 }

@@ -5,19 +5,19 @@ import { Box, Typography, Card, CardContent, Stack, Link } from '@mui/material';
 const templates = [
   {
     title: "Control recepción materias primas",
-    image: "/plantilla1.jpg"
+    image: "/contactosection2.jpg"
   },
   {
     title: "Control temperaturas alimentos",
-    image: "/plantilla2.jpg"
+    image: "/cntactosection.jpg"
   },
   {
     title: "Control sanitización alimentos",
-    image: "/plantilla3.jpg"
+    image: "/plantillaextra1.jpg"
   },
   {
     title: "Control de desechos",
-    image: "/plantillla4.jpg"
+    image: "/plantillaextra2.jpg"
   }
 ];
 

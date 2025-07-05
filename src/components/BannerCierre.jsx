@@ -28,7 +28,7 @@ export default function HeroBanner() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/burbujados.jpg)', // Reemplaza con tu imagen
+        backgroundImage: 'url(/xqasegal1.jpg)', // Reemplaza con tu imagen
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

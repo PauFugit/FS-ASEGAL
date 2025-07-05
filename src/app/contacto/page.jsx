@@ -9,7 +9,7 @@ import CotizaSection from '@/components/CotizaSection'
 function page() {
   return (
     <div> <BannerStatic
-        image="bannerBlog.jpg"
+        image="bannerextra2.jpg"
         text="CONTÁCTANOS"
       />
       <ContactoSection/>

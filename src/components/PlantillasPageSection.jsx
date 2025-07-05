@@ -6,37 +6,37 @@ import CloseIcon from '@mui/icons-material/Close';
 const templates = [
   {
     title: "Control recepción materias primas",
-    image: "/plantilla1.jpg",
+    image: "/contactosection2.jpg",
     pdf: "/pdfs/RegistroControlRecepcion.pdf"
   },
   {
     title: "Control temperaturas alimentos",
-    image: "/plantilla2.jpg",
+    image: "/cntactosection.jpg",
     pdf: "/pdfs/plantilla2.pdf"
   },
   {
     title: "Control sanitización alimentos",
-    image: "/plantilla3.jpg",
+    image: "/plantillaextra1.jpg",
     pdf: "/pdfs/RegistroControlLimpiezaSanitizaciones.pdf"
   },
   {
     title: "Control de desechos",
-    image: "/plantillla4.jpg",
+    image: "/plantillaextra2.jpg",
     pdf: "/pdfs/plantilla4.pdf"
   },
   {
     title: "Limpieza y sanitización de superficies.",
-    image: "/plantilla5.jpg",
+    image: "/plantillaextra4.jpg",
     pdf: "/pdfs/RegistroControlLimpiezaSanitizaciones.pdf"
   },
   {
     title: "Control aspecto del personal",
-    image: "/plantilla6.webp",
+    image: "/servicios1.jpg",
     pdf: "/pdfs/RegistroControlHigienePersonal.pdf"
   },
   {
     title: "Control de producción (trazabilidad)",
-    image: "/plantilla7.webp",
+    image: "/plantillaextra5.jpg",
     pdf: "/pdfs/plantilla7.pdf"
   }
 ];

@@ -12,7 +12,7 @@ function page() {
   return (
     <div>
        <BannerStatic
-        image="bannerservicios.jpg"
+        image="bannerServicios2.jpg"
         text="NUESTROS SERVICIOS"
       />
       <ServiciosSection/>

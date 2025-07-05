@@ -221,7 +221,7 @@ const ServiciosSection = () => {
   {
     title: "RESOLUCIÓN SANITARIA (RS)",
     description: "Te brindamos asesoría y acompañamiento en cada etapa del proceso para obtener la resolución sanitaria de tu negocio y abrirte a nuevos mercados.",
-    image: "/resolucionsanitaria.jpg",
+    image: "/cardservicios1.jpg",
     steps: [
       <>
         <span style={{ fontWeight: 'bold' }}>
@@ -257,7 +257,7 @@ const ServiciosSection = () => {
   {
     title: "BUENAS PRÁCTICAS DE MANIPULACIÓN (BPM)",
     description: "Uno de las exigencias para obtener la RS de tu negocio gastronómico, es contar con un Manual de BPM para garantizar la inocuidad de tus productos.",
-    image: "/auditorias.jpg",
+    image: "/cardservicios3.jpg",
     steps: [
       <>
         <span style={{ fontWeight: 'bold' }}>
@@ -323,7 +323,7 @@ const ServiciosSection = () => {
   {
     title: "Auditorias de BPM",
     description: "Somos tu aliado estratégico de confianza, mediante un auditor interno que revisa, examina y evalúa el cumplimiento de las BPM de tus procesos productivos según las normativas sanitarias vigentes.",
-    image: "/gestioncalidad.jpg",
+    image: "/cardservicios4.jpg",
     steps: [
       <>
         <span style={{ fontWeight: 'bold' }}>
@@ -349,7 +349,7 @@ const ServiciosSection = () => {
   {
     title: "ETIQUETADO NUTRICIONAL",
     description: "En Asegal B&F ponemos nuestro conocimiento y experiencia a tu disposición para ayudarte a generar un rotulado nutricional confiable de tus productos. Utilizando el método oficial de tablas de composición, hacemos los cálculos nutricionales y desarrollamos la etiqueta de tu producto.",
-    image: "/burbujatres.jpg",
+    image: "/servicios3.jpg",
     steps: [
       <>
         <span style={{ fontWeight: 'bold' }}>
@@ -375,7 +375,7 @@ const ServiciosSection = () => {
   {
     title: "CAPACITACIONES",
     description: "El primer paso para crear alimentos seguros es la formación íntegra y de calidad de tus manipuladores de alimentos, es por esto que contamos con los siguientes programas de capacitación:",
-    image: "/etiquetado.jpg",
+    image: "/bannerServicios1.jpg",
     steps: [
       <>
         <span style={{ fontWeight: 'bold' }}>

@@ -6,19 +6,19 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 const services = [
   {
     title: 'Tramitación Resolución Sanitaria',
-    image: '/resolucionsanitaria.jpg',
+    image: '/servicios1.jpg',
   },
   {
     title: 'Sistemas Gestión de Calidad',
-    image: '/gestioncalidad.jpg',
+    image: '/servicios5.jpg',
   },
   {
     title: 'Auditorías',
-    image: '/auditorias.jpg',
+    image: '/servicios4.jpg',
   },
   {
     title: 'Etiquetado Nutricional',
-    image: '/etiquetado.jpg',
+    image: '/servicios3.jpg',
   },
 ];
 

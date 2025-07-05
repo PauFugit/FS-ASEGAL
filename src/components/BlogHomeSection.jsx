@@ -17,7 +17,12 @@ const blogPosts = [
     image: '/blogcard3.jpg',
     title: '¿Qué información debe contener una etiqueta nutricional?',
     description: 'La etiqueta nutricional es fundamental para informar a los consumidores sobre los productos alimenticios. Descubre qué información debe incluir y cómo interpretarla correctamente...'
-  }
+  },
+  {
+    image: 'blogcard4.jpg',
+    title: 'Ley 20.606 de Etiquetado de Alimentos en Chile',
+    description: 'La Ley 20.606 regula el etiquetado de alimentos en Chile para promover una alimentación saludable. Conoce todo lo relativo a la ley, sus objetivos y cómo afecta a los productos alimenticios...'
+  },
 ];
 
 function BlogHomeSection() {

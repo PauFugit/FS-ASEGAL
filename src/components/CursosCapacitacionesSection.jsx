@@ -1,24 +1,23 @@
 'use client'
-import React from 'react';
-import { Box, Typography, Button, Stack, Link } from '@mui/material';
-import { useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Box, Typography, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 const courses = [
   {
     title: "BPM",
-    image: "/capahome1.jpg"
+    image: "/bannerServicios2.jpg"
   },
   {
     title: "Resolución Sanitaria",
-    image: "/capahome2.jpg"
+    image: "/cursoextra5.jpg"
   },
   {
     title: "Etiquetado Nutricional",
-    image: "/capahome3.webp"
+    image: "/cursoextra2.jpg"
   }
 ];
 
-const CourseCard = ({ title, image, index }) => {
+const CourseCard = ({ title, image, index, onClick }) => {
   const cardRef = useRef(null);
 
   useEffect(() => {
@@ -47,11 +46,13 @@ const CourseCard = ({ title, image, index }) => {
   return (
     <Box 
       ref={cardRef}
+      onClick={onClick}
       sx={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         gap: 2,
+        cursor: 'pointer',
         '&:hover': {
           transform: 'scale(1.05)',
           transition: 'transform 0.3s ease'
@@ -83,6 +84,23 @@ const CourseCard = ({ title, image, index }) => {
 };
 
 const CursosCapacitacionesSection = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState(null);
+
+  const handleOpen = (course) => {
+    setSelectedCourse(course);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedCourse(null);
+  };
+
+  const handleContact = () => {
+    window.location.href = '/contacto';
+  };
+
   return (
     <Box sx={{ 
       py: 8,
@@ -126,7 +144,8 @@ const CursosCapacitacionesSection = () => {
               key={index}
               title={course.title} 
               image={course.image}
-              index={index} 
+              index={index}
+              onClick={() => handleOpen(course)}
             />
           ))}
         </Stack>
@@ -163,6 +182,66 @@ const CursosCapacitacionesSection = () => {
           </Button>
         </Box>
       </Box>
+
+      {/* Modal para agendar sesión */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth="xs"
+        fullWidth
+        aria-labelledby="agendar-capacitacion-title"
+      >
+        <DialogTitle
+          id="agendar-capacitacion-title"
+          sx={{
+            color: '#18148C',
+            fontWeight: 700,
+            fontSize: { xs: '1.2rem', sm: '1.4rem' },
+            textAlign: 'center'
+          }}
+        >
+          {selectedCourse?.title && (
+            <>¿Te interesa <span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
+          )}
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
+          <Typography sx={{ mb: 2, color: '#00325a' }}>
+            Agenda una sesión con nuestro equipo para gestionar tu capacitación personalizada.
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+          <Button
+            variant="contained"
+            onClick={handleContact}
+            sx={{
+              bgcolor: '#18148C',
+              color: '#fff',
+              borderRadius: '24px',
+              fontWeight: 600,
+              px: 4,
+              py: 1.2,
+              fontSize: 18,
+              textTransform: 'none',
+              '&:hover': {
+                bgcolor: '#F2AC57',
+                color: '#18148C'
+              }
+            }}
+          >
+            Ir a contacto
+          </Button>
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: '#18148C',
+              fontWeight: 500,
+              ml: 2
+            }}
+          >
+            Cancelar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

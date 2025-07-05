@@ -3,10 +3,10 @@ import { Box, Typography } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const images = [
-  '/cuadrouno.jpg', // superior izquierda
-  '/cuadrodos.jpg', // centro izquierda
-  '/cuadrotres.jpg', // inferior izquierda
-  '/cuadrosuperior.jpg'  // derecha
+  '/xqasegal2.jpg', // superior izquierda
+  '/xqasegal4.jpg', // centro izquierda
+  '/xqasegal3.jpg', // inferior izquierda
+  '/xqasegal5.jpg'  // derecha
 ];
 
 const features = [

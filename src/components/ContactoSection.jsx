@@ -188,7 +188,7 @@ function ContactoSection() {
             }}
           >
             <img
-              src="/cuadrouno.jpg"
+              src="/cntactosection.jpg"
               alt="Contacto"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />
