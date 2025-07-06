@@ -3,8 +3,8 @@ import prisma from '@/lib/prisma'
 
 export async function GET() {
     try {
-        const resources = await prisma.resources.findMany();
-        return NextResponse.json({ data: resources }, { status: 200 });
+        const services = await prisma.services.findMany();
+        return NextResponse.json({ data: services }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
@@ -14,25 +14,26 @@ export async function POST(request) {
     try {
         const data = await request.json();
 
-        // Validar unicidad de nombre
-        const existingResource = await prisma.resources.findUnique({
+        // Validar servicio único
+        const existingService = await prisma.services.findUnique({
             where: { name: data.name }
         });
-        if (existingResource) {
+        if (existingService) {
             return NextResponse.json(
-                { error: "El recurso ya existe" },
+                { error: "El servicio ya existe" },
                 { status: 400 }
             );
         }
 
-        const newResource = await prisma.resources.create({
+        // Crear servicio
+        const newService = await prisma.services.create({
             data
         });
 
-        return NextResponse.json(newResource, { status: 201 });
+        return NextResponse.json(newService, { status: 201 });
     } catch (error) {
         return NextResponse.json(
-            { error: error.message || "Un error ocurrió al crear el recurso. Por favor, inténtalo nuevamente." },
+            { error: error.message || "Un error ocurrió al crear el servicio. Por favor, inténtalo nuevamente." },
             { status: 500 }
         );
     }

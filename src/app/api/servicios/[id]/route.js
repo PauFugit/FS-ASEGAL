@@ -4,31 +4,31 @@ import prisma from '@/lib/prisma'
 export async function GET(request, { params }) {
     const id = parseInt(params.id)
     try {
-        const resource = await prisma.resources.findUnique({
+        const service = await prisma.services.findUnique({
             where: { id }
         });
-        if (!resource) {
+        if (!service) {
             return NextResponse.json(
-                { error: `Recurso con la ID ${id} no ha sido encontrado` },
+                { error: `Servicio con la ID ${id} no ha sido encontrado` },
                 { status: 404 }
             );
         }
-        return NextResponse.json(resource, { status: 200 });
+        return NextResponse.json(service, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: 'Error al obtener el recurso' }, { status: 500 });
+        return NextResponse.json({ error: 'Error fetching service' }, { status: 500 });
     }
 }
 
 export async function DELETE(request, { params }) {
     const id = parseInt(params.id)
     try {
-        await prisma.resources.delete({
+        await prisma.services.delete({
             where: { id }
         });
-        return NextResponse.json({ message: "Recurso eliminado correctamente." }, { status: 200 });
+        return NextResponse.json({ message: "Servicio eliminado correctamente." }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
-            { error: error.message || "Ha ocurrido un error al eliminar el recurso." },
+            { error: error.message || "Ha ocurrido un error al eliminar al servicio." },
             { status: 500 }
         );
     }
@@ -42,31 +42,31 @@ export async function PUT(request, { params }) {
 
         // Validar unicidad de nombre si se actualiza el nombre
         if (updateData.name) {
-            const existingResource = await prisma.resources.findFirst({
+            const existingService = await prisma.services.findFirst({
                 where: {
                     name: updateData.name,
                     id: { not: id }
                 }
             });
-            if (existingResource) {
+            if (existingService) {
                 return NextResponse.json(
-                    { error: "El nombre del recurso ya está en uso" },
+                    { error: "El nombre del servicio ya está en uso" },
                     { status: 400 }
                 );
             }
         }
 
-        const updatedResource = await prisma.resources.update({
+        const updatedService = await prisma.services.update({
             where: { id },
             data: updateData
         });
         return NextResponse.json({
-            message: "Recurso actualizado correctamente.",
-            data: updatedResource
+            message: "Servicio actualizado correctamente.",
+            data: updatedService
         }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
-            { error: error.message || "Ha ocurrido un error al actualizar el recurso." },
+            { error: error.message || "Ha ocurrido un error al actualizar el servicio." },
             { status: 500 }
         );
     }

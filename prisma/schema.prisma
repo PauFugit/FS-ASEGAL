@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-}
+  }
 
 model Users {
   id                Int       @id @default(autoincrement())
@@ -29,52 +29,75 @@ model Users {
   updatedAt         DateTime  @default(now()) @updatedAt @db.DateTime(0)
 }
 
+model Services{
+  id              Int @id @default(autoincrement())
+  name            String @unique
+  createdBy       String?
+  description     String
+  price           String?
+  imageUrl        String
+  createdAt       DateTime  @default(now()) @db.DateTime(0)
+
+
+}
+
+model Resources{
+  id              Int @id @default(autoincrement())
+  name            String @unique
+  summary         String
+  createdBy       String?
+  type            TypeResource
+  description     String?
+  linkUrl         String?
+  references      String?
+  imageUrl        String
+  createdAt       DateTime  @default(now()) @db.DateTime(0)
+
+
+}
+
 model Blog{
   id              Int @id @default(autoincrement())
-  titulo          String
-  creadoPor       String?
-  resena          String
-  cuerpoTexto     String
-  referencias     String?
-  imagenUrl       String
-  createdAt         DateTime  @default(now()) @db.DateTime(0)
+  title           String @unique
+  author          String?
+  summary         String
+  link            String?
+  bodyText        String?
+  references      String?
+  imageUrl        String
+  createdAt       DateTime  @default(now()) @db.DateTime(0)
 
 
 }
 
 model ContactForm {
   id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  correo    String
-  telefono  String?
-  mensaje   String   @db.Text
+  name      String
+  lastname  String
+  email     String   @db.VarChar(255) @unique
+  phone     String?
+  mesagge   String   @db.Text
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
 
 model CotizationForm {
   id        Int      @id @default(autoincrement())
-  nombre    String
-  apellido  String
-  correo    String
-  telefono  String?
-  servicio  String
-  mensaje   String   @db.Text
+  name      String
+  lastname  String
+  email     String  @db.VarChar(255) @unique
+  phone     String?
+  service   String
+  message   String   @db.Text
   createdAt DateTime @default(now()) @db.DateTime(0)
-}
-
-model RoleEnum {
-  value RoleEnum_value @id
 }
 
 enum Role {
   ADMIN
-  TEAM
   CLIENT
 }
 
-enum RoleEnum_value {
-  ADMIN
-  TEAM
-  CLIENT
+
+enum TypeResource {
+  CAPACITACION
+  PLANTILLA
 }

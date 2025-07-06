@@ -8,27 +8,66 @@ const corsHeaders = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
 
-export async function POST(request) {
-    console.log('API Route: POST /api/cotization started');
+export async function GET() {
     try {
-        const data = await request.json()
-        console.log('Received data:', data);
+        const cotizations = await prisma.cotizationForm.findMany();
+        return new NextResponse(JSON.stringify({ data: cotizations }), {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json",
+                ...corsHeaders
+            }
+        });
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ error: error.message }), {
+            status: 500,
+            headers: {
+                "Content-Type": "application/json",
+                ...corsHeaders
+            }
+        });
+    }
+}
 
-        console.log('Creating cotization form entry in database...');
+export async function POST(request) {
+    try {
+        const data = await request.json();
+
+        // Validar unicidad de email
+        const existingCotization = await prisma.cotizationForm.findUnique({
+            where: { email: data.email }
+        });
+        if (existingCotization) {
+            return new NextResponse(JSON.stringify({ error: "El email ya ha sido registrado en una cotización" }), {
+                status: 400,
+                headers: {
+                    "Content-Type": "application/json",
+                    ...corsHeaders
+                }
+            });
+        }
+
+        // Crear cotización en la base de datos
         const cotizationForm = await prisma.cotizationForm.create({
-            data: data
-        })
-        console.log('Cotization form entry created:', cotizationForm);
+            data: {
+                name: data.name,
+                lastname: data.lastname,
+                email: data.email,
+                phone: data.phone,
+                service: data.service,
+                message: data.message
+            }
+        });
 
+        // Enviar correo con SendGrid (o tu función sendEmail)
         const emailText = `
-        Nombre: ${data.nombre} ${data.apellido}
-        Correo: ${data.correo}
-        Teléfono: ${data.telefono}
-        Servicio a cotizar: ${data.servicio}
-        Mensaje: ${data.mensaje}
+Nombre: ${data.name} ${data.lastname}
+Correo: ${data.email}
+Teléfono: ${data.phone || '-'}
+Servicio a cotizar: ${data.service}
+Mensaje: ${data.message}
         `;
 
-        console.log('Attempting to send email...');
         const emailSent = await sendEmail(
             'contacto@asesoriasvaldivia.cl',
             'contacto@asesoriasvaldivia.cl',
@@ -37,37 +76,25 @@ export async function POST(request) {
         );
 
         if (!emailSent) {
-            throw new Error('Failed to send email');
+            throw new Error('No se pudo enviar el correo');
         }
 
-        console.log("Formulario de cotización enviado y correo enviado exitosamente.")
         return new NextResponse(JSON.stringify(cotizationForm), {
             status: 201,
             headers: {
                 "Content-Type": "application/json",
                 ...corsHeaders
             }
-        })
+        });
     } catch (error) {
-        console.error("Error en la API de cotización:", error)
         return new NextResponse(JSON.stringify({ error: error.message }), {
             status: 500,
             headers: {
                 "Content-Type": "application/json",
                 ...corsHeaders
             }
-        })
+        });
     }
-}
-
-export async function GET() {
-    return new NextResponse(JSON.stringify({ message: "This endpoint only accepts POST requests" }), {
-        status: 405,
-        headers: {
-            "Content-Type": "application/json",
-            ...corsHeaders
-        }
-    })
 }
 
 export async function OPTIONS() {

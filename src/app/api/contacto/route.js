@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
-import sgMail from '@sendgrid/mail'
 
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
@@ -8,70 +7,47 @@ const corsHeaders = {
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
 }
 
-export async function POST(request) {
-    console.log('API Route: POST /api/contact started');
+export async function GET() {
     try {
-        const data = await request.json()
-        console.log('Received data:', data);
-
-        console.log('Creating contact form entry in database...');
-        const contactForm = await prisma.contactForm.create({
-            data: data
-        })
-        console.log('Contact form entry created:', contactForm);
-
-        console.log('Setting up SendGrid...');
-        const apiKey = process.env.SENDGRID_API_KEY;
-        console.log('API Key length:', apiKey ? apiKey.length : 'undefined');
-        sgMail.setApiKey(apiKey);
-
-        const msg = {
-            to: 'contacto@asesoriasvaldivia.cl',
-            from: 'contacto@asesoriasvaldivia.cl', // Make sure this is verified in SendGrid
-            subject: "Nuevo mensaje de contacto",
-            text: `
-        Nombre: ${data.nombre} ${data.apellido}
-        Correo: ${data.correo}
-        Teléfono: ${data.telefono}
-        Mensaje: ${data.mensaje}
-      `,
-        }
-        
-        console.log('Attempting to send email...');
-        const result = await sgMail.send(msg);
-        console.log('SendGrid response:', result);
-
-        console.log("Formulario de contacto enviado y correo enviado exitosamente.")
-        return new NextResponse(JSON.stringify(contactForm), {
-            status: 201,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        })
+        const contacts = await prisma.contactForm.findMany();
+        return NextResponse.json({ data: contacts }, { status: 200, headers: corsHeaders });
     } catch (error) {
-        console.error("Error en la API de contacto:", error)
-        if (error.response) {
-            console.error('SendGrid Error Response:', error.response.body)
-        }
-        return new NextResponse(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        })
+        return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
     }
 }
 
-export async function GET() {
-    return new NextResponse(JSON.stringify({ message: "This endpoint only accepts POST requests" }), {
-        status: 405,
-        headers: {
-            "Content-Type": "application/json",
-            ...corsHeaders
+export async function POST(request) {
+    try {
+        const data = await request.json();
+
+        // Validar unicidad de email
+        const existingContact = await prisma.contactForm.findUnique({
+            where: { email: data.email }
+        });
+        if (existingContact) {
+            return NextResponse.json(
+                { error: "El email ya ha sido registrado en un contacto" },
+                { status: 400, headers: corsHeaders }
+            );
         }
-    })
+
+        const newContact = await prisma.contactForm.create({
+            data: {
+                name: data.name,
+                lastname: data.lastname,
+                email: data.email,
+                phone: data.phone,
+                mesagge: data.mesagge
+            }
+        });
+
+        return NextResponse.json(newContact, { status: 201, headers: corsHeaders });
+    } catch (error) {
+        return NextResponse.json(
+            { error: error.message || "Un error ocurrió al crear el contacto." },
+            { status: 500, headers: corsHeaders }
+        );
+    }
 }
 
 export async function OPTIONS() {

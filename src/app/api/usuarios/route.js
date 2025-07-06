@@ -5,53 +5,57 @@ import bcrypt from 'bcrypt'
 
 export async function GET() {
     try {
-        const user = await prisma.users.findMany();
-        return NextResponse.json({ data: user }, { status: 200 });
+        const users = await prisma.users.findMany();
+        return NextResponse.json({ data: users }, { status: 200 });
     } catch (error) {
-        return new NextResponse(error.message, { status: 500 })
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
-
 export async function POST(request) {
     try {
-        const data = await request.json()
+        const data = await request.json();
 
-        // Check if username already exists
+        // Validar username único
         const existingUser = await prisma.users.findUnique({
             where: { username: data.username }
-        })
-
+        });
         if (existingUser) {
             return NextResponse.json(
                 { error: "El usuario ya existe" },
                 { status: 400 }
-            )
+            );
         }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(data.password, 10)
+        // Validar email único
+        const existingEmail = await prisma.users.findUnique({
+            where: { email: data.email }
+        });
+        if (existingEmail) {
+            return NextResponse.json(
+                { error: "El email ya está registrado" },
+                { status: 400 }
+            );
+        }
+
+        // Hash de la contraseña
+        const hashedPassword = await bcrypt.hash(data.password, 10);
 
         const user = await prisma.users.create({
             data: {
                 ...data,
                 password: hashedPassword
             }
-        })
+        });
 
-        console.log("Usuario creado correctamente.")
-        
-        // Remove password from the response
-        const { password, ...userWithoutPassword } = user
+        // Eliminar password de la respuesta
+        const { password, ...userWithoutPassword } = user;
 
-        return NextResponse.json(userWithoutPassword, {
-            status: 201
-        })
+        return NextResponse.json(userWithoutPassword, { status: 201 });
     } catch (error) {
-        console.error('Error al crear al usuario:', error);
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el usuario. Por favor, inténtalo nuevamente." },
             { status: 500 }
-        )
+        );
     }
 }
 
