@@ -1,5 +1,5 @@
-const mysql = require('mysql2/promise');
-const { PrismaClient } = require('@prisma/client');
+import mysql from 'mysql2/promise'
+import { PrismaClient } from '@prisma/client'
 
 // Conexión directa con MySQL2 (para operaciones crudas)
 const pool = mysql.createPool({

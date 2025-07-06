@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 
+
 const corsHeaders = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, PUT, DELETE, OPTIONS",
@@ -20,7 +21,7 @@ export async function GET(request, { params }) {
             );
         }
         return NextResponse.json(contact, { status: 200, headers: corsHeaders });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json({ error: 'Error al obtener el contacto' }, { status: 500, headers: corsHeaders });
     }
 }
@@ -55,7 +56,7 @@ export async function PUT(request, { params }) {
             message: "Contacto actualizado correctamente.",
             data: updatedContact
         }, { status: 200, headers: corsHeaders });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al actualizar el contacto." },
             { status: 500, headers: corsHeaders }
@@ -70,7 +71,7 @@ export async function DELETE(request, { params }) {
             where: { id }
         });
         return NextResponse.json({ message: "Contacto eliminado correctamente." }, { status: 200, headers: corsHeaders });
-    } catch (error) {
+    } catch (error){
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al eliminar el contacto." },
             { status: 500, headers: corsHeaders }

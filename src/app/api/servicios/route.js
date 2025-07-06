@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const services = await prisma.services.findMany();
         return NextResponse.json({ data: services }, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -31,7 +31,7 @@ export async function POST(request) {
         });
 
         return NextResponse.json(newService, { status: 201 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el servicio. Por favor, inténtalo nuevamente." },
             { status: 500 }

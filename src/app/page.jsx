@@ -7,12 +7,8 @@ import BlogHomeSection from "@/components/BlogHomeSection";
 import CardServicesSection from "@/components/CardServicesSection";
 import ContactoSection from "@/components/ContactoSection";
 import CursosCapacitacionesSection from "@/components/CursosCapacitacionesSection";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import NuestroEquipoSection from "@/components/NuestroEquipoSection";
 import PlantillasHomeSection from "@/components/PlantillasHomeSection";
-import Image from "next/image";
-import BannerHome from "@/components/BannerHome";
 import BannerCierre from "@/components/BannerCierre";
 import BannerHomePpal from "@/components/BannerHomePpal";
 

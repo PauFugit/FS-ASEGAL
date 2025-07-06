@@ -18,12 +18,33 @@ const menuLinks = [
 ];
 
 const Navbar = () => {
+    const [mounted, setMounted] = React.useState(false);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-    const [drawerOpen, setDrawerOpen] = React.useState(false);
-    const [hoveredIndex, setHoveredIndex] = React.useState(null); // Para hover en Drawer
     const pathname = usePathname();
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [hoveredIndex, setHoveredIndex] = React.useState(null);
+    
+    // Usamos useMediaQuery con noSsr para evitar discrepancias
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
+
+    if (!mounted) {
+        return (
+            <AppBar position="static" elevation={0} sx={{
+                backgroundColor: 'white',
+                color: 'black',
+                py: 0,
+                borderBottom: '1px solid rgba(0, 0, 0, 0.12)'
+            }}>
+                <Toolbar sx={{ minHeight: '80px' }} />
+            </AppBar>
+        );
+    }
 
     return (
         <AppBar
@@ -47,7 +68,7 @@ const Navbar = () => {
                     position: 'relative'
                 }}
             >
-                {/* Logo SIEMPRE a la izquierda */}
+                {/* Logo */}
                 <Box
                     sx={{
                         display: 'flex',
@@ -58,8 +79,9 @@ const Navbar = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    <Link href="/" passHref>
+                    <Link href="/" passHref legacyBehavior>
                         <Box
+                            component="a"
                             sx={{
                                 cursor: 'pointer',
                                 width: 300,
@@ -88,11 +110,12 @@ const Navbar = () => {
                 {/* Menú Desktop */}
                 {!isMobile && (
                     <Box sx={{ display: 'flex', flex: 1, justifyContent: 'center', gap: 3 }}>
-                        {menuLinks.map((link, idx) => {
+                        {menuLinks.map((link) => {
                             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
                             return (
-                                <Link href={link.href} passHref key={link.href}>
+                                <Link href={link.href} passHref legacyBehavior key={link.href}>
                                     <Button
+                                        component="a"
                                         color="inherit"
                                         sx={{
                                             textTransform: 'none',
@@ -125,8 +148,9 @@ const Navbar = () => {
                 {/* Botón Desktop */}
                 {!isMobile && (
                     <Box sx={{ ml: 2 }}>
-                        <Link href="/contacto" passHref>
+                        <Link href="/contacto" passHref legacyBehavior>
                             <Button
+                                component="a"
                                 variant="contained"
                                 sx={{
                                     backgroundColor: '#F2AC57',
@@ -177,8 +201,9 @@ const Navbar = () => {
                                     const isHovered = hoveredIndex === idx;
                                     return (
                                         <ListItem key={link.href} disablePadding>
-                                            <Link href={link.href} passHref>
+                                            <Link href={link.href} passHref legacyBehavior>
                                                 <ListItemButton
+                                                    component="a"
                                                     onClick={handleDrawerToggle}
                                                     onMouseEnter={() => setHoveredIndex(idx)}
                                                     onMouseLeave={() => setHoveredIndex(null)}
@@ -204,8 +229,9 @@ const Navbar = () => {
                                     );
                                 })}
                                 <ListItem sx={{ justifyContent: 'center', mt: 1 }}>
-                                    <Link href="/contacto" passHref>
+                                    <Link href="/contacto" passHref legacyBehavior>
                                         <Button
+                                            component="a"
                                             variant="contained"
                                             fullWidth
                                             sx={{

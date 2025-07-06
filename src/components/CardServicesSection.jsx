@@ -1,24 +1,41 @@
 'use client';
 import React, { useState } from 'react';
-import { Box, Typography, Grid, Card, CardMedia, CardContent, Button } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
+import Image from 'next/image';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const services = [
   {
     title: 'Tramitación Resolución Sanitaria',
-    image: '/servicios1.jpg',
+    image: {
+      src: '/servicios1.jpg',
+      width: 300,
+      height: 400
+    },
   },
   {
     title: 'Sistemas Gestión de Calidad',
-    image: '/servicios5.jpg',
+    image: {
+      src: '/servicios5.jpg',
+      width: 300,
+      height: 400
+    },
   },
   {
     title: 'Auditorías',
-    image: '/servicios4.jpg',
+    image: {
+      src: '/servicios4.jpg',
+      width: 300,
+      height: 400
+    },
   },
   {
     title: 'Etiquetado Nutricional',
-    image: '/servicios3.jpg',
+    image: {
+      src: '/servicios3.jpg',
+      width: 300,
+      height: 400
+    },
   },
 ];
 
@@ -26,7 +43,7 @@ function CardServicesSection() {
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
-    <Box sx={{ width: '100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 },  mx: 'auto' }}>
+    <Box sx={{ width: '100%', px: { xs: 2, md: 6 }, py: { xs: 4, md: 6 }, mx: 'auto' }}>
       <Typography
         variant="h4"
         sx={{
@@ -61,9 +78,9 @@ function CardServicesSection() {
               onMouseLeave={() => setActiveIndex(null)}
               onTouchStart={() => setActiveIndex(idx)}
               onTouchEnd={() => setActiveIndex(null)}
+              aria-label={`Servicio: ${service.title}`}
               sx={{
                 borderRadius: 0,
-                boxShadow: 'none',
                 background: 'transparent',
                 width: '100%',
                 maxWidth: 300,
@@ -80,17 +97,20 @@ function CardServicesSection() {
                 }
               }}
             >
-              <CardMedia
-                component="img"
-                image={service.image}
+              <Image
+                src={service.image.src}
                 alt={service.title}
-                sx={{
+                width={service.image.width}
+                height={service.image.height}
+                style={{
                   width: '100%',
                   aspectRatio: '1 / 2',
                   objectFit: 'cover',
                   borderRadius: 0,
                   border: 'none',
-                  mb: 1
+                  marginBottom: '8px',
+                  filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
+                  transition: 'filter 0.2s'
                 }}
               />
               <CardContent sx={{ p: 0, flexGrow: 1 }}>

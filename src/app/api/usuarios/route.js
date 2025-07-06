@@ -7,7 +7,7 @@ export async function GET() {
     try {
         const users = await prisma.users.findMany();
         return NextResponse.json({ data: users }, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -48,10 +48,10 @@ export async function POST(request) {
         });
 
         // Eliminar password de la respuesta
-        const { password, ...userWithoutPassword } = user;
+        const { password: _, ...userWithoutPassword } = user;
 
         return NextResponse.json(userWithoutPassword, { status: 201 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el usuario. Por favor, inténtalo nuevamente." },
             { status: 500 }
@@ -83,7 +83,7 @@ export async function PUT(request){
             message: "Usuario actualizado correctamente.",
             data: userWithoutPassword
         }, { status: 200 })
-    } catch (error) {
+    } catch (error){
         console.error('Error actualizando usuario:', error);
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al actualizar al usuario." },

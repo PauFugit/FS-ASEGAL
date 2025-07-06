@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const resources = await prisma.resources.findMany();
         return NextResponse.json({ data: resources }, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -30,7 +30,7 @@ export async function POST(request) {
         });
 
         return NextResponse.json(newResource, { status: 201 });
-    } catch (error) {
+    } catch (error){
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el recurso. Por favor, inténtalo nuevamente." },
             { status: 500 }

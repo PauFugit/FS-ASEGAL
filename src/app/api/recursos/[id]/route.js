@@ -14,7 +14,7 @@ export async function GET(request, { params }) {
             );
         }
         return NextResponse.json(resource, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json({ error: 'Error al obtener el recurso' }, { status: 500 });
     }
 }
@@ -26,7 +26,7 @@ export async function DELETE(request, { params }) {
             where: { id }
         });
         return NextResponse.json({ message: "Recurso eliminado correctamente." }, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al eliminar el recurso." },
             { status: 500 }
@@ -64,7 +64,7 @@ export async function PUT(request, { params }) {
             message: "Recurso actualizado correctamente.",
             data: updatedResource
         }, { status: 200 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al actualizar el recurso." },
             { status: 500 }

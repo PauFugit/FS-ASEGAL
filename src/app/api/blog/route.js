@@ -5,7 +5,7 @@ export async function GET() {
     try {
         const blogs = await prisma.blog.findMany();
         return NextResponse.json({ data: blogs }, { status: 200 });
-    } catch (error) {
+    } catch (error){
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }
@@ -30,7 +30,7 @@ export async function POST(request) {
         });
 
         return NextResponse.json(newBlog, { status: 201 });
-    } catch (error) {
+    } catch(error) {
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el blog. Por favor, inténtalo nuevamente." },
             { status: 500 }

@@ -1,13 +1,29 @@
+'use client'
+
 import React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+import Image from 'next/image';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Box from '@mui/material/Box';
 
 function BlogCard({ image, title, description }) {
+  // Función para normalizar la ruta de la imagen
+  const normalizeImagePath = (img) => {
+    // Si no hay imagen, retornar una por defecto
+    if (!img) return '/default-blog-image.jpg';
+    
+    // Si ya es una ruta absoluta (comienza con /) o URL completa, usarla tal cual
+    if (img.startsWith('/') || img.startsWith('http')) {
+      return img;
+    }
+    
+    // Si es un nombre de archivo sin ruta, agregar / al inicio
+    return `/${img}`;
+  };
+
+  const imageSrc = normalizeImagePath(image);
+  const [imageError, setImageError] = React.useState(false);
+
   return (
     <Card
       sx={{
@@ -26,20 +42,20 @@ function BlogCard({ image, title, description }) {
         minHeight: 370,
       }}
     >
-      <CardMedia
-        component="img"
-        image={image}
-        alt={title}
-        sx={{
-          objectFit: 'cover', width: '100%',
-          height: 140, 
-          objectFit: 'cover',
-          borderTopLeftRadius: 8,
-          borderTopRightRadius: 8,
-          transition: 'filter 0.2s',
-          padding: 2,
-        }}
-      />
+      <div style={{ position: 'relative', width: '100%', height: 140 }}>
+        <Image
+          src={imageError ? '/default-blog-image.jpg' : imageSrc}
+          alt={title || 'Imagen del blog'}
+          fill
+          style={{
+            objectFit: 'cover',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+          }}
+          sizes="(max-width: 768px) 100vw, 300px"
+          onError={() => setImageError(true)}
+        />
+      </div>
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h6" component="div" sx={{ color: '#18148C', fontWeight: 500 }}>
           {title}
@@ -48,7 +64,6 @@ function BlogCard({ image, title, description }) {
           {description}
         </Typography>
       </CardContent>
-      
     </Card>
   );
 }

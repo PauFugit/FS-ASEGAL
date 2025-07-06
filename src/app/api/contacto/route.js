@@ -11,7 +11,7 @@ export async function GET() {
     try {
         const contacts = await prisma.contactForm.findMany();
         return NextResponse.json({ data: contacts }, { status: 200, headers: corsHeaders });
-    } catch (error) {
+    } catch(error){
         return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
     }
 }
@@ -42,7 +42,7 @@ export async function POST(request) {
         });
 
         return NextResponse.json(newContact, { status: 201, headers: corsHeaders });
-    } catch (error) {
+    } catch(error){
         return NextResponse.json(
             { error: error.message || "Un error ocurrió al crear el contacto." },
             { status: 500, headers: corsHeaders }

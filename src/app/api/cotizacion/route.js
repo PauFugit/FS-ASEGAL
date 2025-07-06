@@ -18,7 +18,7 @@ export async function GET() {
                 ...corsHeaders
             }
         });
-    } catch (error) {
+    } catch(error) {
         return new NextResponse(JSON.stringify({ error: error.message }), {
             status: 500,
             headers: {
@@ -86,7 +86,7 @@ Mensaje: ${data.message}
                 ...corsHeaders
             }
         });
-    } catch (error) {
+    } catch (error){
         return new NextResponse(JSON.stringify({ error: error.message }), {
             status: 500,
             headers: {

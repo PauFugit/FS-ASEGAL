@@ -14,9 +14,9 @@ export async function GET(request, { params }) {
                 { status: 404 }
             );
         }
-        const { password, ...userWithoutPassword } = user;
+        const { password: _, ...userWithoutPassword } = user;
         return NextResponse.json(userWithoutPassword, { status: 200 });
-    } catch (error) {
+    } catch (error){
         return NextResponse.json({ error: 'Error fetching user' }, { status: 500 });
     }
 }
@@ -29,7 +29,7 @@ export async function DELETE(request, { params }) {
             where: { id }
         });
         return NextResponse.json({ message: "Usuario eliminado correctamente." }, { status: 200 });
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al eliminar al usuario." },
             { status: 500 }
@@ -75,7 +75,7 @@ export async function PUT(request, { params }) {
             message: "Usuario actualizado correctamente.",
             data: userWithoutPassword
         }, { status: 200 });
-    } catch (error) {
+    } catch (error){
         return NextResponse.json(
             { error: error.message || "Ha ocurrido un error al actualizar al usuario." },
             { status: 500 }

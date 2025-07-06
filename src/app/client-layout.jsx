@@ -1,16 +1,20 @@
-import "./globals.css";
+'use client'
+
 import Providers from "@/providers/Providers";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BannerSuperiorRRSS from "@/components/BannerSuperiorRRSS";
 import FloatingButtons from "@/components/FloatingButtons";
+import dynamic from 'next/dynamic';
 
-export const metadata = {
-  title: "Asegal B&F",
-  description: "Asesorías para el aseguramiento de calidad...",
-};
+// Carga dinámica del Navbar con SSR deshabilitado
+const Navbar = dynamic(() => import('@/components/Navbar'), { 
+  ssr: false,
+  loading: () => (
+    <div style={{ height: '80px', backgroundColor: 'white', borderBottom: '1px solid rgba(0, 0, 0, 0.12)' }} />
+  )
+});
 
-export default function RootLayout({ children }) {
+export default function ClientLayout({ children }) {
   return (
     <html lang="en">
       <body>
