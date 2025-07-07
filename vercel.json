@@ -9,14 +9,14 @@
   "routes": [
     {
       "src": "/_next/static/(.*)",
+      "headers": {
+        "Content-Type": "application/javascript"
+      },
       "dest": "/_next/static/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/$1",
-      "headers": {
-        "Content-Type": "text/javascript; charset=utf-8"
-      }
+      "dest": "/$1"
     }
   ]
 }
