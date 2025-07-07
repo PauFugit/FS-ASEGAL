@@ -201,7 +201,7 @@ const CursosCapacitacionesSection = () => {
           }}
         >
           {selectedCourse?.title && (
-            <>¿Te interesa <span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
+            <>¿Te interesa capacitarte sobre<span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
           )}
         </DialogTitle>
         <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
@@ -228,7 +228,7 @@ const CursosCapacitacionesSection = () => {
               }
             }}
           >
-            Ir a contacto
+            Contáctanos
           </Button>
           <Button
             onClick={handleClose}
