@@ -7,6 +7,7 @@ import ContactoBanner from '@/components/ContactoBanner'
 import React from 'react'
 import BannerHomeUno from '@/components/BannerHomeUno'
 import BannerHomeTres from '@/components/BannerHomeTres'
+import ServiciosOld from '@/components/ServiciosOld'
 
 function page() {
   return (
@@ -15,7 +16,7 @@ function page() {
         image="bannerServicios2.jpg"
         text="NUESTROS SERVICIOS"
       />
-      <ServiciosSection/>
+      <ServiciosOld/>
       <ContactoBanner/>
       <PlantillasHomeSection/>
       <CursosCapacitacionesSection/>

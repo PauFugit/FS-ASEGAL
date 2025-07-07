@@ -28,7 +28,7 @@ export default function BannerCierreDos() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundImage: 'url(/bannerblogcierre.jpg)', // Reemplaza con tu imagen
+        backgroundImage: 'url(/blogbannerextra3.jpg)', // Reemplaza con tu imagen
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',

@@ -15,15 +15,15 @@ const AboutUs = () => {
 
   // Imágenes para los carruseles
   const galleryImages = [
-    '/2.png',
-    '/3.png',
-    '/4.png',
+    '/bannerplus5.jpg',
+    '/bannerplus3.jpg',
+    '/bannerplus2.jpg',
   ];
 
   const commitmentImages = [
-    '/6.png',
-    '/8.png',
-    '/p.png'
+    '/bannerplus7.jpg',
+    '/bannerplus1.jpg',
+    '/bannerplus4.jpg'
   ];
 
   // Cambio automático de imágenes con efecto fade CSS

@@ -5,24 +5,37 @@ import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Image from 'next/image';
 
 const carouselImages = [
-  '/contacto.jpeg',
-  '/contacto2.jpeg',
-  '/caro1.jpeg',
-  '/caro2.jpeg'
+  '/2.png',
+  '/3.png',
+  '/4.png',
+  '/6.png',
+  '/1.png',
+  '/9.png',
+  '/10.png',
+  '/8.png',
 ];
 
 function NuestroEquipoSection() {
   const [current, setCurrent] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
-  // Carousel automático
+  // Carousel automático (se pausa al hacer hover)
   useEffect(() => {
+    if (isHovered) return;
+    
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % carouselImages.length);
     }, 3500);
     return () => clearInterval(interval);
-  }, []);
+  }, [isHovered]);
+
+  // Función para manejar el cambio manual de imágenes
+  const goToImage = (index) => {
+    setCurrent(index);
+  };
 
   return (
     <Fade in timeout={1200}>
@@ -40,7 +53,7 @@ function NuestroEquipoSection() {
           sx={{
             fontWeight: 400,
             color: '#18148C',
-            mb: 6,
+            mb: 1,
             textAlign: 'flex-start',
             letterSpacing: 2,
             fontSize: { xs: 28, md: 36, xl: 50 },
@@ -59,7 +72,7 @@ function NuestroEquipoSection() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: { xs: 4, md: 8 },
-            mb: 5,
+            mb: 8,
             width: '100%',
           }}
         >
@@ -77,7 +90,7 @@ function NuestroEquipoSection() {
               variant="body1"
               sx={{
                 color: '#18148C',
-                fontSize: { xs: 18, md: 20, xl: 25 },
+                fontSize: { xs: 18, md: 20, xl: 30 },
                 mb: 2,
                 fontWeight: 400,
                 lineHeight: 1.7,
@@ -89,39 +102,52 @@ function NuestroEquipoSection() {
             </Typography>
           </Box>
 
-          {/* Carrusel a la derecha */}
+          {/* Carrusel circular a la derecha */}
           <Box
             sx={{
               flex: 1,
-              width: { xs: '100%', sm: 340, md: 400, xl: 500 },
-              height: { xs: 220, sm: 260, md: 320, xl: 500 },
-              position: 'relative',
-              borderRadius: 4,
-              overflow: 'hidden',
-              boxShadow: 2,
-              mx: 'auto',
               display: 'flex',
+              flexDirection: 'column',
               alignItems: 'center',
-              justifyContent: 'center',
-              bgcolor: '#fff',
+              gap: 3,
+              maxWidth: { xs: 300, sm: 400, md: 450 },
             }}
           >
+            {/* Imagen circular principal */}
             <Box
-              component="img"
-              src={carouselImages[current]}
-              alt="Equipo Asegal"
               sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: 4,
-                transition: 'opacity 0.7s',
+                width: { xs: 220, sm: 280, md: 320, lg: 550 },
+                height: { xs: 220, sm: 280, md: 320, lg: 550 },
+                borderRadius: '50%',
+                overflow: 'hidden',
                 position: 'relative',
-                display: 'block', 
+                boxShadow: '0 8px 20px rgba(24, 20, 140, 0.3)',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  boxShadow: '0 12px 25px rgba(24, 20, 140, 0.4)',
+                },
               }}
-              onError={e => { e.target.src = '/team1.jpg'; }}
-            />
-          </Box>
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <Image
+                src={carouselImages[current]}
+                alt={`Miembro del equipo ${current + 1}`}
+                fill
+                style={{
+                  objectFit: 'cover',
+                  objectPosition: 'center',
+                }}
+                quality={90}
+                priority={current === 0}
+                onError={(e) => {
+                  e.target.src = '/team1.jpg';
+                }}
+              />
+            </Box>
+
+            </Box>
         </Box>
 
         {/* Botón abajo centrado */}

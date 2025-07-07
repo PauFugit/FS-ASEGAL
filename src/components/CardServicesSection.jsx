@@ -10,7 +10,7 @@ const services = [
     image: {
       src: '/servicios1.jpg',
       width: 300,
-      height: 400
+      height: 600
     },
   },
   {
@@ -18,7 +18,7 @@ const services = [
     image: {
       src: '/servicios5.jpg',
       width: 300,
-      height: 400
+      height: 600
     },
   },
   {
@@ -26,7 +26,7 @@ const services = [
     image: {
       src: '/servicios4.jpg',
       width: 300,
-      height: 400
+      height: 600
     },
   },
   {
@@ -34,7 +34,7 @@ const services = [
     image: {
       src: '/servicios3.jpg',
       width: 300,
-      height: 400
+      height: 600
     },
   },
 ];
@@ -83,7 +83,7 @@ function CardServicesSection() {
                 borderRadius: 0,
                 background: 'transparent',
                 width: '100%',
-                maxWidth: 300,
+                maxWidth: 400,
                 minWidth: 140,
                 display: 'flex',
                 flexDirection: 'column',

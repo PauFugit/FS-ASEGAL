@@ -1,8 +1,18 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Image from 'next/image';
 
 function BannerStatic({ image, text, color }) {
+  // Normalizar la ruta de la imagen
+  const normalizeImagePath = (img) => {
+    if (!img) return '/default-banner.jpg';
+    if (img.startsWith('/') || img.startsWith('http')) return img;
+    return `/${img}`;
+  };
+
+  const imageSrc = normalizeImagePath(image);
+
   return (
     <Box
       sx={{
@@ -12,15 +22,16 @@ function BannerStatic({ image, text, color }) {
         overflow: 'hidden',
       }}
     >
-      <Box
-        component="img"
-        src={image}
-        alt={text}
-        sx={{
-          width: '100%',
-          height: '100%',
+      <Image
+        src={imageSrc}
+        alt={text || 'Banner'}
+        fill
+        style={{
           objectFit: 'cover',
         }}
+        quality={80}
+        priority
+        sizes="100vw"
       />
       <Box
         sx={{

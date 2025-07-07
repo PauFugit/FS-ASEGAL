@@ -7,7 +7,7 @@ export default function NosotrasPage() {
   return (
     <main>
       <BannerStatic
-              image="BannerAboutUs2.jpg"
+              image="bannerplus6.jpg"
               text="QUIÉNES SOMOS"
             />
       <AboutUs />
