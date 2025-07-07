@@ -11,9 +11,9 @@ const templates = [
     pdf: "/pdfs/RegistroControlRecepcion.pdf"
   },
   {
-    title: "Control temperaturas alimentos",
-    image: "/cntactosection.jpg",
-    pdf: "/pdfs/plantilla2.pdf"
+    title: "Control de Lavado y Desinfección de Frutas y Verduras",
+    image: "/cardservicios2.jpg",
+    pdf: "/pdfs/RegistroControlLavadoDesinfeccion.pdf"
   },
   {
     title: "Control sanitización alimentos",
@@ -23,7 +23,7 @@ const templates = [
   {
     title: "Control de desechos",
     image: "/plantillaextra2.jpg",
-    pdf: "/pdfs/plantilla4.pdf"
+    pdf: "/pdfs/RegistroControlDesechos.pdf"
   },
   {
     title: "Limpieza y sanitización de superficies.",
@@ -36,9 +36,9 @@ const templates = [
     pdf: "/pdfs/RegistroControlHigienePersonal.pdf"
   },
   {
-    title: "Control de producción (trazabilidad)",
-    image: "/plantillaextra5.jpg",
-    pdf: "/pdfs/plantilla7.pdf"
+    title: "Rotulación y Etiquetado de Alimentos",
+    image: "/cntactosection.jpg",
+    pdf: "/pdfs/RegistroRotulacionEtiquetado.pdf"
   }
 ];
 
