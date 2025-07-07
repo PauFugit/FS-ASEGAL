@@ -156,26 +156,24 @@ const BannerHomePpal = () => {
         </Stack>
       </Box>
 
-      {/* Círculos con imágenes a la derecha */}
+      {/* Círculos con imágenes a la derecha - Ocultos en móvil */}
       <Box
         sx={{
           position: 'relative',
-          width: { xs: '100%', md: '40%' },
-          height: { xs: '250px', sm: '300px', md: '500px' },
-          minHeight: { xs: '250px', md: 'auto' },
-          display: 'flex',
+          width: { xs: '0', md: '40%' }, // Oculto en móvil
+          height: { xs: '0', md: '500px' }, // Oculto en móvil
+          display: { xs: 'none', md: 'flex' }, // Oculto en móvil
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 1,
-          mt: { xs: 2, md: 0 }
         }}
       >
         {/* Círculo 1 (Grande, centrado) */}
         <Box
           sx={{
             position: 'absolute',
-            width: { xs: '150px', sm: '180px', md: '300px' },
-            height: { xs: '150px', sm: '180px', md: '300px' },
+            width: '300px',
+            height: '300px',
             borderRadius: '50%',
             overflow: 'hidden',
             border: '4px solid #fff',
@@ -196,14 +194,14 @@ const BannerHomePpal = () => {
         <Box
           sx={{
             position: 'absolute',
-            width: { xs: '100px', sm: '120px', md: '200px' },
-            height: { xs: '100px', sm: '120px', md: '200px' },
+            width: '200px',
+            height: '200px',
             borderRadius: '50%',
             overflow: 'hidden',
             border: '3px solid #F2AC57',
             boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-            top: { xs: '5%', md: '5%' },
-            right: { xs: '5%', sm: '10%', md: '-5%' },
+            top: '5%',
+            right: '-5%',
             zIndex: 2
           }}
         >
@@ -219,14 +217,14 @@ const BannerHomePpal = () => {
         <Box
           sx={{
             position: 'absolute',
-            width: { xs: '120px', sm: '150px', md: '180px' },
-            height: { xs: '120px', sm: '150px', md: '180px' },
+            width: '180px',
+            height: '180px',
             borderRadius: '50%',
             overflow: 'hidden',
             border: '3px solid #fff',
             boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
-            bottom: { xs: '5%', md: '-10%' },
-            right: { xs: '5%', sm: '5%', md: '10%' },
+            bottom: '-10%',
+            right: '10%',
             zIndex: 1
           }}
         >

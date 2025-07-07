@@ -9,17 +9,17 @@ const blogPosts = [
     description: '¿Estás pensando en emprender en el mundo de la gastronomía? Aquí te dejamos una guía con los pasos esenciales para comenzar tu negocio de manera exitosa...'
   },
   {
-    image: '/blogcard2.jpg',
+    image: '/servicios2.jpg',
     title: 'Tips para enfrentar con éxito una fiscalización de SEREMI',
     description: '¿Te preocupa una posible fiscalización de SEREMI? Aquí te compartimos consejos prácticos para estar preparado y cumplir con las normativas vigentes...'
   },
   {
-    image: '/blogcard3.jpg',
+    image: '/cardservicios3.jpg',
     title: '¿Qué información debe contener una etiqueta nutricional?',
     description: 'La etiqueta nutricional es fundamental para informar a los consumidores sobre los productos alimenticios. Descubre qué información debe incluir y cómo interpretarla correctamente...'
   },
   {
-    image: 'blogcard4.jpg',
+    image: 'bannerblog2.jpg',
     title: 'Ley 20.606 de Etiquetado de Alimentos en Chile',
     description: 'La Ley 20.606 regula el etiquetado de alimentos en Chile para promover una alimentación saludable. Conoce todo lo relativo a la ley, sus objetivos y cómo afecta a los productos alimenticios...'
   },

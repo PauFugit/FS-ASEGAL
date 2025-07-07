@@ -60,8 +60,8 @@ const CourseCard = ({ title, image, index, onClick }) => {
       }}
     >
       <Box sx={{
-        width: 300,
-        height: 300,
+        width: { xs: 220, sm: 240, md: 300 },
+        height: { xs: 220, sm: 240, md: 300 },
         borderRadius: '50%',
         backgroundImage: `url(${image})`,
         backgroundSize: 'cover',
@@ -73,7 +73,7 @@ const CourseCard = ({ title, image, index, onClick }) => {
       <Typography variant="h6" sx={{ 
         color: '#18148C',
         fontWeight: 600,
-        fontSize: '1.1rem',
+        fontSize: { xs: '1rem', md: '1.1rem' },
         textAlign: 'center',
         mt: 1
       }}>
@@ -86,6 +86,7 @@ const CourseCard = ({ title, image, index, onClick }) => {
 const CursosCapacitacionesSection = () => {
   const [open, setOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [visibleCourses, setVisibleCourses] = useState(courses);
 
   const handleOpen = (course) => {
     setSelectedCourse(course);
@@ -101,21 +102,49 @@ const CursosCapacitacionesSection = () => {
     window.location.href = '/contacto';
   };
 
+  // Determinar cuántas cards mostrar según el tamaño de pantalla
+  const getVisibleCourses = () => {
+    const width = window.innerWidth;
+    if (width < 600) { // Mobile
+      return [courses[0]]; // Solo la primera card
+    } else if (width < 900) { // Tablet
+      return courses.slice(0, 2); // Primeras 2 cards
+    } else { // Desktop
+      return courses; // Todas las cards
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setVisibleCourses(getVisibleCourses());
+    };
+
+    // Establecer el estado inicial
+    setVisibleCourses(getVisibleCourses());
+    
+    // Escuchar cambios de tamaño
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <Box sx={{ 
-      py: 8,
-      px: { xs: 3, sm: 6, md: 8, lg: 12 },
+      py: { xs: 4, md: 8 },
+      px: { xs: 2, sm: 4, md: 8, lg: 12 },
       maxWidth: 1600,
       mx: 'auto',
       position: 'relative'
     }}>
       <Typography variant="h4" sx={{ 
-        mb: 8,
+        mb: { xs: 4, md: 8 },
         fontWeight: 500,
         color: '#18148C',
-        textAlign: 'left',
+        textAlign: { xs: 'center', md: 'left' },
         px: { xs: 2, sm: 0 },
-        fontSize: { xs: '1.8rem', md: '2.125rem', xl:48 },
+        fontSize: { xs: '1.5rem', sm: '1.8rem', md: '2.125rem', xl: '3rem' },
         textShadow: '1px 2px 4px #0B5B8C'
       }}>
         CURSOS Y CAPACITACIONES
@@ -126,36 +155,50 @@ const CursosCapacitacionesSection = () => {
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-        <Stack 
-          direction="row"
-          spacing={6}
-          sx={{
-            width: '100%',
-            justifyContent: 'center',
-            overflowX: 'auto',
-            pb: 3,
-            scrollbarWidth: 'none',
-            '&::-webkit-scrollbar': { display: 'none' },
-            mb: 4,
-          }}
-        >
-          {courses.map((course, index) => (
-            <CourseCard 
-              key={index}
-              title={course.title} 
-              image={course.image}
-              index={index}
-              onClick={() => handleOpen(course)}
-            />
-          ))}
-        </Stack>
+        <Box sx={{
+          width: '100%',
+          overflowX: 'auto',
+          pb: 3,
+          scrollbarWidth: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
+          mb: 4,
+        }}>
+          <Stack 
+            direction="row"
+            spacing={{ xs: 4, sm: 6, md: 6 }}
+            sx={{
+              width: 'max-content',
+              mx: 'auto',
+              px: { xs: 2, sm: 0 }
+            }}
+          >
+            {visibleCourses.map((course, index) => (
+              <CourseCard 
+                key={index}
+                title={course.title} 
+                image={course.image}
+                index={index}
+                onClick={() => handleOpen(course)}
+              />
+            ))}
+          </Stack>
+        </Box>
 
         {/* Línea decorativa inferior y botón "Leer más" */}
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          alignItems: 'center', 
+          width: '100%',
+          mt: { xs: 4, md: 6 },
+          px: { xs: 2, sm: 0 }
+        }}>
           <Box sx={{
             flex: 1,
             borderBottom: '2px solid #0B5B8C',
-            mr: 3
+            mr: { xs: 0, sm: 3 },
+            mb: { xs: 3, sm: 0 },
+            width: { xs: '80%', sm: 'auto' }
           }} />
           <Button
             variant="contained"
@@ -167,7 +210,7 @@ const CursosCapacitacionesSection = () => {
               fontWeight: 600,
               py: 1.2,
               px: 4,
-              fontSize: 20,
+              fontSize: { xs: 16, sm: 20 },
               boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
               textTransform: 'italic',
               transition: 'background-color 0.3s ease',
@@ -201,7 +244,7 @@ const CursosCapacitacionesSection = () => {
           }}
         >
           {selectedCourse?.title && (
-            <>¿Te interesa capacitarte sobre<span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
+            <>¿Te interesa capacitarte sobre <span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
           )}
         </DialogTitle>
         <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
@@ -209,7 +252,12 @@ const CursosCapacitacionesSection = () => {
             Agenda una sesión con nuestro equipo para gestionar tu capacitación personalizada.
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', pb: 2 }}>
+        <DialogActions sx={{ 
+          justifyContent: 'center', 
+          pb: 2,
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 1, sm: 0 }
+        }}>
           <Button
             variant="contained"
             onClick={handleContact}
@@ -220,8 +268,9 @@ const CursosCapacitacionesSection = () => {
               fontWeight: 600,
               px: 4,
               py: 1.2,
-              fontSize: 18,
+              fontSize: { xs: 16, sm: 18 },
               textTransform: 'none',
+              width: { xs: '100%', sm: 'auto' },
               '&:hover': {
                 bgcolor: '#F2AC57',
                 color: '#18148C'
@@ -235,7 +284,9 @@ const CursosCapacitacionesSection = () => {
             sx={{
               color: '#18148C',
               fontWeight: 500,
-              ml: 2
+              ml: { xs: 0, sm: 2 },
+              mt: { xs: 1, sm: 0 },
+              width: { xs: '100%', sm: 'auto' }
             }}
           >
             Cancelar

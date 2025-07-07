@@ -53,7 +53,7 @@ function NuestroEquipoSection() {
           sx={{
             fontWeight: 400,
             color: '#18148C',
-            mb: 1,
+            mb: {xs: 4, md: 1},
             textAlign: 'flex-start',
             letterSpacing: 2,
             fontSize: { xs: 28, md: 36, xl: 50 },

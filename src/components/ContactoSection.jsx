@@ -166,11 +166,11 @@ function ContactoSection() {
             Enviar
           </Button>
         </Box>
-        {/* Imagen a la derecha */}
+        {/* Imagen a la derecha - Oculto en móvil */}
         <Box
           sx={{
             mt: { xs: 4, md: 0 },
-            display: 'flex',
+            display: { xs: 'none', md: 'flex' }, // Oculto en móvil
             alignItems: 'center',
             justifyContent: 'center',
             zIndex: 1,
@@ -178,8 +178,8 @@ function ContactoSection() {
         >
           <Box
             sx={{
-              width: { xs: 240, sm: 320, md: 440 },
-              height: { xs: 240, sm: 320, md: 440 },
+              width: 440,
+              height: 440,
               border: '3px solid #9FBA47',
               borderRadius: 2,
               overflow: 'hidden',

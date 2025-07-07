@@ -40,7 +40,7 @@ const CotizaSection = () => {
         >
           <Box
             component="img"
-            src="/cotizasection.jpg"
+            src="/bannerplus1.jpg"
             alt="Cotiza"
             sx={{
               width: 500,
