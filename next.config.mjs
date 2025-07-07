@@ -1,12 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@mui/material', '@mui/system', '@mui/icons-material'],
-  eslint: {
-    ignoreDuringBuilds: true,
+  reactStrictMode: true,
+  images: {
+    domains: [
+      'asegalbyfasesorias.cl',
+      'www.asegalbyfasesorias.cl',
+      'fs-asegal.vercel.app',
+      'fs-asegal-*.vercel.app'
+    ],
+    unoptimized: true,
   },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  trailingSlash: true,
+  output: 'standalone',
 };
 
+// Usa export default en lugar de module.exports
 export default nextConfig;

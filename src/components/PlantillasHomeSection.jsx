@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, Stack, Link } from '@mui/material';
+import Image from 'next/image';
 
 const templates = [
   {

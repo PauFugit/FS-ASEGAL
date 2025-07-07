@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, Dialog, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import Image from 'next/image';
 
 const templates = [
   {
