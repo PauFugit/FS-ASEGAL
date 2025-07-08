@@ -51,7 +51,8 @@ function MisionVision() {
             fontSize: '1.15rem',
             lineHeight: '1.7'
           }}>
-            Brindar soluciones innovadoras y de alta calidad en el sector, superando las expectativas de nuestros clientes y contribuyendo al desarrollo sostenible de la comunidad.
+            Nuestra misión es hacer realidad tus proyectos, facilitando el proceso de formalización, acompañándote en cada paso, para que solo pongas foco en tu negocio gastronómico. <br />
+            Somos profesionales expertas en garantizar la seguridad alimentaria y el complimiento regulatorio, con nuestra cercanía y confiabilidad hacemos que tu emprendimiento logre que cada alimento servido sea de la más alta calidad, impulsando tu negocio al siguiente nivel.
           </p>
         </div>
         <div style={{
@@ -82,7 +83,7 @@ function MisionVision() {
             fontSize: '1.15rem',
             lineHeight: '1.7'
           }}>
-            Ser líderes reconocidos por nuestra excelencia, compromiso y responsabilidad, impulsando el crecimiento y la innovación en cada proyecto que emprendemos.
+            Ser la empresa líder en asesorías sobre seguridad alimentaria en la zona norte de Chile. Impulsar la cultura de la inocuidad alimentaria como prioridad en todos los emprendedores gastronómicos tanto nacionales como extranjeros, ser un aliado confiable y estratégico para su crecimiento y fortalecimiento en el mundo culinario. Promoviendo además incorporación de prácticas sustentables que permitan preservar nuestro medio ambiente.
           </p>
         </div>
       </div>

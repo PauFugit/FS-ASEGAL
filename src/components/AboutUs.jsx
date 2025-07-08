@@ -276,13 +276,16 @@ const AboutUs = () => {
             fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
             mb: 3
           }}>
-            Dos profesionales apasionadas por la <Box component="span" sx={{ 
+            Somos <Box component="span" sx={{ 
               fontWeight: 600,
               color: '#18148C'
-            }}>seguridad alimentaria</Box> y el <Box component="span" sx={{ 
+            }}>Carolina Fernández y Carolina Berthelón</Box>, ingenieras en alimentos con más de 10 años de experiencia en la industria alimentaria.
+            
+            <br/> Dos profesionales apasionadas por la  <Box component="span" sx={{ 
               fontWeight: 600,
               color: '#18148C'
-            }}>éxito de tus proyectos</Box>, combinando experiencia técnica con un enfoque personalizado para cada cliente.
+            }}>inocuidad alimentaria</Box>, combinando experiencia técnica con un enfoque personalizado para cada cliente.
+            
           </Typography>
         </Box>
       </Box>
