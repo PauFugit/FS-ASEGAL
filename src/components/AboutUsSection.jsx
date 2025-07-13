@@ -54,6 +54,7 @@ function AboutUsSection() {
         {/* Descripción */}
         <Typography
           variant="body1"
+          align="justify"
           sx={{
             color: '#18148C',
             maxWidth: 1000,

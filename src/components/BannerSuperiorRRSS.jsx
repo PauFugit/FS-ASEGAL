@@ -22,10 +22,7 @@ function BannerSuperiorRRSS() {
         <Link href="https://www.instagram.com/asegalbf" target="_blank" rel="noopener" sx={{ color: '#fff', fontSize: 20 }}>
           <InstagramIcon fontSize="small" />
         </Link>
-        <Link href="https://facebook.com" target="_blank" rel="noopener" sx={{ color: '#fff', fontSize: 20 }}>
-          <FacebookIcon fontSize="small" />
-        </Link>
-        <Link href="mailto:correo@ejemplo.com" sx={{ color: '#fff', fontSize: 20 }}>
+        <Link href="mailto:contacto@asegalbyfasesorias.cl" sx={{ color: '#fff', fontSize: 20 }}>
           <EmailIcon fontSize="small" />
         </Link>
       </Stack>

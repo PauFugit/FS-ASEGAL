@@ -158,6 +158,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                             {title}
                         </Typography>
                         <Typography
+                            align="justify"
                             variant="body1"
                             sx={{
                                 color: '#0B5B8C',
@@ -269,6 +270,7 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                         <Box sx={{ mt: 2 }}>
                             <Button
                                 variant="contained"
+                                href="/cotiza"
                                 sx={{
                                     backgroundColor: '#F2AC57',
                                     color: 'white',

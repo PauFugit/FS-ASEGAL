@@ -6,7 +6,7 @@ const theme = createTheme({
     primary: {
       main: '#1A1773',
       light: '#3A3791',
-      dark: '#0A0755',
+      dark: '#18148C',
       contrastText: '#FFFFFF',
     },
     secondary: {
@@ -37,8 +37,16 @@ const theme = createTheme({
     },
     // Puedes agregar más configuraciones de tipografía aquí
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 1024, // Desktop desde 1024px
+      lg: 1300, // Desktop grande desde 1300px
+      xl: 1536,
+    },
+  },
   components: {
-    // Puedes personalizar componentes específicos de MUI aquí
     MuiButton: {
       styleOverrides: {
         root: {

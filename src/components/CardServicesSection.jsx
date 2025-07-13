@@ -58,45 +58,44 @@ function CardServicesSection() {
       >
         NUESTROS SERVICIOS
       </Typography>
-      <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
-        {services.map((service, idx) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={2.4}
-            key={service.title}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <Card
-              elevation={0}
-              onMouseEnter={() => setActiveIndex(idx)}
-              onMouseLeave={() => setActiveIndex(null)}
-              onTouchStart={() => setActiveIndex(idx)}
-              onTouchEnd={() => setActiveIndex(null)}
-              aria-label={`Servicio: ${service.title}`}
-              sx={{
-                borderRadius: 0,
-                background: 'transparent',
-                width: '100%',
-                maxWidth: 400,
-                minWidth: 140,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                transition: 'transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1)',
-                transform: activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
-                boxShadow: activeIndex === idx ? '0 8px 24px 0 rgba(67,185,127,0.18)' : 'none',
-                '& .MuiCardMedia-root': {
-                  filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
-                  transition: 'filter 0.2s'
-                }
-              }}
-            >
+      <Grid container 
+      spacing={4} 
+      columns = {{ xs: 1, sm: 2, md: 4 }}
+      sx={{ justifyContent: 'center' }}>
+  {services.map((service, idx) => (
+    <Grid
+      key={service.title}
+      gridColumn={{ xs: 'span 1', sm: 'span 1', md: 'span 1' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Card
+        elevation={0}
+        onMouseEnter={() => setActiveIndex(idx)}
+        onMouseLeave={() => setActiveIndex(null)}
+        onTouchStart={() => setActiveIndex(idx)}
+        onTouchEnd={() => setActiveIndex(null)}
+        aria-label={`Servicio: ${service.title}`}
+        sx={{
+          borderRadius: 0,
+          background: 'transparent',
+          width: '100%',
+          maxWidth: { xs: 340, sm: 340, md: 300, lg: 280 },
+          minWidth: 140,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          transition: 'transform 0.25s cubic-bezier(.4,2,.6,1), box-shadow 0.25s cubic-bezier(.4,2,.6,1)',
+          transform: activeIndex === idx ? 'translateY(-8px) scale(1.04)' : 'none',
+          boxShadow: activeIndex === idx ? '0 8px 24px 0 rgba(67,185,127,0.18)' : 'none',
+          '& .MuiCardMedia-root': {
+            filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
+            transition: 'filter 0.2s'
+          }
+        }}
+      >
               <Image
                 src={service.image.src}
                 alt={service.title}
@@ -119,9 +118,9 @@ function CardServicesSection() {
                   sx={{
                     color: '#18148C',
                     fontWeight: 400,
-                    fontSize: { xs: 16, md: 18, xl:30 },
+                    fontSize: { xs: 16, md: 18, xl: 30 },
                     mt: 1,
-                    mb:3
+                    mb: 3
                   }}
                 >
                   {service.title}

@@ -8,14 +8,14 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Image from 'next/image';
 
 const carouselImages = [
-  '/2.png',
-  '/3.png',
-  '/4.png',
-  '/6.png',
-  '/1.png',
-  '/9.png',
-  '/10.png',
-  '/8.png',
+  '/nosotras2.png',
+  '/nosotras1.png',
+  '/carolina2.png',
+  '/nosotras3.png',
+  '/carolina1.png',
+  '/carolina2.1.png',
+  '/carolina1.1.png',
+  '/carolina2.2.png',
 ];
 
 function NuestroEquipoSection() {
@@ -25,7 +25,7 @@ function NuestroEquipoSection() {
   // Carousel automático (se pausa al hacer hover)
   useEffect(() => {
     if (isHovered) return;
-    
+
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % carouselImages.length);
     }, 3500);
@@ -53,7 +53,7 @@ function NuestroEquipoSection() {
           sx={{
             fontWeight: 400,
             color: '#18148C',
-            mb: {xs: 4, md: 1},
+            mb: { xs: 4, md: 1 },
             textAlign: 'flex-start',
             letterSpacing: 2,
             fontSize: { xs: 28, md: 36, xl: 50 },
@@ -88,6 +88,7 @@ function NuestroEquipoSection() {
           >
             <Typography
               variant="body1"
+              align="justify" // Justifica el texto
               sx={{
                 color: '#18148C',
                 fontSize: { xs: 18, md: 20, xl: 30 },
@@ -118,7 +119,7 @@ function NuestroEquipoSection() {
               sx={{
                 width: { xs: 220, sm: 280, md: 320, lg: 550 },
                 height: { xs: 220, sm: 280, md: 320, lg: 550 },
-                borderRadius: '50%',
+                borderRadius: '10%',
                 overflow: 'hidden',
                 position: 'relative',
                 boxShadow: '0 8px 20px rgba(24, 20, 140, 0.3)',
@@ -147,7 +148,7 @@ function NuestroEquipoSection() {
               />
             </Box>
 
-            </Box>
+          </Box>
         </Box>
 
         {/* Botón abajo centrado */}

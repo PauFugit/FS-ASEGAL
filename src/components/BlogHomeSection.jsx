@@ -50,7 +50,7 @@ function BlogHomeSection() {
         NOVEDADES Y CONSEJOS PARA TI
       </Typography>
 
-      {/* Cards alineadas */}
+      {/* Cards */}
       <Grid container spacing={4} justifyContent="center">
         {blogPosts.map((post, index) => (
           <Grid item xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -59,7 +59,7 @@ function BlogHomeSection() {
               title={post.title}
               description={post.description}
               sx={{
-                height: { xs: 270, md: 260 }, // altura más pequeña
+                height: { xs: 270, md: 260 }, 
                 maxHeight: 270,
                 minHeight: 230
               }}

@@ -125,7 +125,7 @@ function Footer() {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Stack direction="row" spacing={1.5} sx={{ mb: 1 }}>
             <IconButton
-              href="#"
+              href="www.instagram.com/asegalbf"
               sx={{
                 color: '#e4405f',
                 width: 40,
@@ -135,19 +135,9 @@ function Footer() {
             >
               <InstagramIcon />
             </IconButton>
+          
             <IconButton
-              href="#"
-              sx={{
-                color: '#1877f3',
-                width: 40,
-                height: 40,
-                '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
-              }}
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              href="#"
+              href="mailto:contacto@asegalbyfasesorias.cl"
               sx={{
                 color: '#ea4335',
                 width: 40,
@@ -188,7 +178,7 @@ function Footer() {
         >
           <PhoneIcon sx={{ color: '#003366', fontSize: 20 }} />
           <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>
-            +56 9 9492 8092
+            +56 9 4232 7704
           </Typography>
           <EmailIcon sx={{ color: '#003366', fontSize: 20, ml: 2 }} />
           <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>

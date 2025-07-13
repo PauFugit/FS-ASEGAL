@@ -60,7 +60,7 @@ function BlogCard({ image, title, description }) {
         <Typography gutterBottom variant="h6" component="div" sx={{ color: '#18148C', fontWeight: 500 }}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ color: '#1565c0' }}>
+        <Typography variant="body2" align="justify" color="text.secondary" sx={{ color: '#1565c0' }}>
           {description}
         </Typography>
       </CardContent>

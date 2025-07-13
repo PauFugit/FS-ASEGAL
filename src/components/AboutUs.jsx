@@ -6,6 +6,7 @@ import {
   GppGood as QualityIcon,
   Handshake as CommitmentIcon,
 } from '@mui/icons-material';
+import Equipo from './Equipo'; 
 
 const AboutUs = () => {
   const theme = useTheme();
@@ -79,7 +80,7 @@ const AboutUs = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       {/* Título principal */}
-      <Typography variant="h2" align="center" sx={{ 
+      <Typography variant="h1" align="center" sx={{ 
         mb: 6,
         color: '#18148C',
         fontWeight: 700,
@@ -141,7 +142,7 @@ const AboutUs = () => {
           }}>
             Nuestra Historia
           </Typography>
-          <Typography paragraph sx={{ 
+          <Typography align="justify" paragraph sx={{ 
             color: theme.palette.text.secondary,
             fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem'}
           }}>
@@ -199,7 +200,7 @@ const AboutUs = () => {
           }}>
             Nuestro Compromiso
           </Typography>
-          <Typography paragraph sx={{ 
+          <Typography align="justify" paragraph sx={{ 
             color: '#18148C',
             fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
           }}>
@@ -214,95 +215,29 @@ const AboutUs = () => {
         </Box>
       </Box>
 
-      
-      {/* Sección del Equipo */}
-      <Box sx={{ 
-        display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
-        alignItems: 'center',
-        gap: { xs: 4, md: 6 },
-        backgroundColor: '#82C6E820',
-        borderRadius: '24px',
-        p: { xs: 3, md: 5 },
-        
-      }}>
-        {/* Fotos del equipo */}
-        <Box sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
-          gap: 4,
-          flex: 1,
-          justifyContent: 'center'
-        }}>
-          <Avatar
-            src="/burbujanosotras1.5.png"
-            alt="Carolina Fernández"
-            sx={{
-              width: { xs: 160, md: 200, xl: 250 },
-              height: { xs: 160, md: 200, xl: 250 },
-              border: `4px solid white`,
-              boxShadow: 3,
-              ...hoverStyles
-            }}
-          />
-          <Avatar
-            src="/burbujanosotras2.png"
-            alt="Carolina Berthelon"
-            sx={{
-              width: { xs: 160, md: 200, xl: 250  },
-              height: { xs: 160, md: 200, xl: 250  },
-              border: `4px solid white`,
-              boxShadow: 4,
-              ...hoverStyles
-            }}
-          />
-        </Box>
-
-        {/* Texto del equipo */}
-        <Box sx={{ 
-          flex: 1,
-          textAlign: { xs: 'center', md: 'left' }
-        }}>
-          <Typography variant="h4" gutterBottom sx={{ 
-            color: theme.palette.primary.main,
-            fontWeight: 600,
-            mb: 3,
-            fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.2rem'}
-          }}>
-            Nuestro Equipo
-          </Typography>
-          <Typography paragraph sx={{ 
-            color: theme.palette.text.secondary,
-            fontSize: { xs: '1rem', md: '1.1rem', xl: '1.3rem' },
-            mb: 3
-          }}>
-            Somos <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: '#18148C'
-            }}>Carolina Fernández y Carolina Berthelón</Box>, ingenieras en alimentos con más de 10 años de experiencia en la industria alimentaria.
-            
-            <br/> Dos profesionales apasionadas por la  <Box component="span" sx={{ 
-              fontWeight: 600,
-              color: '#18148C'
-            }}>inocuidad alimentaria</Box>, combinando experiencia técnica con un enfoque personalizado para cada cliente.
-            
-          </Typography>
-        </Box>
-      </Box>
+{/* Sección del Equipo */}
+      <Equipo/>
 
       {/* Sección de Valores */}
       <Box sx={{ 
         mb: 6,
         px: { xs: 0, md: 4 }
       }}>
-        <Typography variant="h4" align="center" sx={{ 
-          mb: 5, mt:8,
-          color: theme.palette.primary.main,
-          fontWeight: 600,
-          fontSize: { xs: '1.5rem', md: '1.75rem', xl: '2.2rem'  },
-        }}>
-          Nuestros Valores
-        </Typography>
+        <Typography
+                variant="h4"
+                align="center"
+                sx={{
+                  color: '#18148C',
+                  fontWeight: 700,
+                  mt: 8,
+                  mb: 4,
+                  fontSize: { xs: '2rem', md: '2.5rem', xl: '3rem' },
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                NUESTROS VALORES
+              </Typography>
         
         <Box sx={{
           display: 'grid',
