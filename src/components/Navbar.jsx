@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+
 const menuLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/nosotras', label: '¿Quiénes Somos?' },
@@ -79,7 +80,7 @@ const Navbar = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    <Link href="/" passHref legacyBehavior>
+                    <Link href="/" passHref legacyBehavior prefetch>
                         <Box
                             component="a"
                             sx={{
@@ -113,7 +114,7 @@ const Navbar = () => {
                         {menuLinks.map((link) => {
                             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
                             return (
-                                <Link href={link.href} passHref legacyBehavior key={link.href}>
+                                <Link href={link.href} passHref legacyBehavior prefetch key={link.href}>
                                     <Button
                                         component="a"
                                         color="inherit"
@@ -148,7 +149,7 @@ const Navbar = () => {
                 {/* Botón Desktop */}
                 {!isMobile && (
                     <Box sx={{ ml: 2 }}>
-                        <Link href="/contacto" passHref legacyBehavior>
+                        <Link href="/contacto" passHref prefetch legacyBehavior>
                             <Button
                                 component="a"
                                 variant="contained"
@@ -201,7 +202,7 @@ const Navbar = () => {
                                     const isHovered = hoveredIndex === idx;
                                     return (
                                         <ListItem key={link.href} disablePadding>
-                                            <Link href={link.href} passHref legacyBehavior>
+                                            <Link href={link.href} prefetch passHref legacyBehavior>
                                                 <ListItemButton
                                                     component="a"
                                                     onClick={handleDrawerToggle}
@@ -229,7 +230,7 @@ const Navbar = () => {
                                     );
                                 })}
                                 <ListItem sx={{ justifyContent: 'center', mt: 1 }}>
-                                    <Link href="/contacto" passHref legacyBehavior>
+                                    <Link href="/contacto" prefetch passHref legacyBehavior>
                                         <Button
                                             component="a"
                                             variant="contained"

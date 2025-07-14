@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['asegalbyfasesorias.cl', 'www.asegalbyfasesorias.cl', 'fs-asegal.vercel.app'],
-    unoptimized: true, // Desactiva optimización si hay problemas
+    unoptimized: false, // Desactiva optimización si hay problemas
   },
   output: 'standalone', // Para mejor compatibilidad con Vercel
   trailingSlash: true,

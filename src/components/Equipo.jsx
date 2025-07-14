@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
+import Image from 'next/image';
 
 const equipoData = [
   {
@@ -106,17 +107,18 @@ function Equipo() {
                 overflow: 'hidden',
               }}
             >
-              <Box
-                component="img"
+              <Image
                 src={member.images[carouselIndex[idx]]}
                 alt={member.name}
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  borderRadius: 0,
-                  transition: 'opacity 0.5s',
-                }}
+                width={400} // Ajusta según el tamaño real de tus imágenes
+    height={600} // Ajusta según el tamaño real de tus imágenes
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      borderRadius: 0,
+      transition: 'opacity 0.5s',
+    }}
               />
             </Box>
             <CardContent

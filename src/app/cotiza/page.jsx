@@ -1,9 +1,8 @@
 'use client'
 import BannerStatic from '@/components/BannerStatic'
-import ServiciosPageSection from '@/components/ServiciosPageSection'
 import CotizaSection from '@/components/CotizaSection'
 import React from 'react'
-import ServiciosSection from '@/components/ServiciosPageSection'
+
 
 function page() {
   return (

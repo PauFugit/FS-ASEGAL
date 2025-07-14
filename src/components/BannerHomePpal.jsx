@@ -210,6 +210,7 @@ const BannerHomePpal = () => {
             alt="Imagen 2"
             fill
             style={{ objectFit: 'cover' }}
+            priority
           />
         </Box>
 
@@ -233,6 +234,7 @@ const BannerHomePpal = () => {
             alt="Imagen 3"
             fill
             style={{ objectFit: 'cover' }}
+            priority
           />
         </Box>
       </Box>
