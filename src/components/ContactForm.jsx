@@ -14,23 +14,43 @@ const ContactForm = ({ showImage = true }) => {
     const [success, setSuccess] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const validationErrors = validate();
 
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             setSuccess(false);
-        } else {
-            setSubmitting(true);
-            setErrors({});
-            // Simula envío
-            setTimeout(() => {
+            return;
+        }
+
+        setSubmitting(true);
+        setErrors({});
+
+        try {
+            const res = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    message: formData.message
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
                 setSuccess(true);
-                setSubmitting(false);
-                setFormData({ name: '', email: '', telefono: '', message: '' });
-                setTimeout(() => setSuccess(false), 3000); // Oculta mensaje de éxito después de 3s
-            }, 1500);
+                setFormData({ name: '', lastname: '', email: '', phone: '', message: '' });
+                setTimeout(() => setSuccess(false), 3000);
+            } else {
+                setErrors({ form: data.error || 'Error al enviar el mensaje' });
+            }
+        } catch (err) {
+            console.error(err);
+            setErrors({ form: 'Error de red al intentar enviar' });
+        } finally {
+            setSubmitting(false);
         }
     };
 
@@ -98,6 +118,16 @@ const ContactForm = ({ showImage = true }) => {
                     sx={{ mb: 2 }}
                     disabled={submitting}
                 />
+                <TextField
+                    label="Apellido"
+                    fullWidth
+                    value={formData.lastname}
+                    onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                    error={!!errors.lastname}
+                    helperText={errors.lastname}
+                    sx={{ mb: 2 }}
+                    disabled={submitting}
+                />
 
                 <TextField
                     label="Correo Electrónico"
@@ -121,6 +151,7 @@ const ContactForm = ({ showImage = true }) => {
                     sx={{ mb: 2 }}
                     disabled={submitting}
                 />
+                
 
                 <TextField
                     label="Mensaje"
@@ -149,43 +180,43 @@ const ContactForm = ({ showImage = true }) => {
 
             {/* Imagen y/o información de contacto, solo visible en desktop */}
             {showImage && (
-    <Box
-        sx={{
-            display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' }, // Solo visible en lg (1200px+) y md (>=900px)
-            '@media (max-width:1199.95px)': { display: 'none' }, // Oculta en md y menores
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            minWidth: 320,
-            maxWidth: 440,
-            width: '100%',
-            mt: { md: 0 }
-        }}
-    >
-        <Box
-            sx={{
-                width: 320,
-                height: 320,
-                border: '3px solid #43b36a',
-                borderRadius: 2,
-                overflow: 'hidden',
-                bgcolor: '#fff',
-                boxShadow: 2,
-                mb: 2
-            }}
-        >
-            <img
-                src="/contacto.jpeg"
-                alt="Ubicación"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-        </Box>
-        <Typography sx={{ color: '#003366', fontWeight: 500, mt: 1 }}>
-            contacto@asegalbyfasesorias.cl<br />
-            +56 9 9492 8092
-        </Typography>
-    </Box>
-)}
+                <Box
+                    sx={{
+                        display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' }, // Solo visible en lg (1200px+) y md (>=900px)
+                        '@media (max-width:1199.95px)': { display: 'none' }, // Oculta en md y menores
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                        minWidth: 320,
+                        maxWidth: 440,
+                        width: '100%',
+                        mt: { md: 0 }
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: 320,
+                            height: 320,
+                            border: '3px solid #43b36a',
+                            borderRadius: 2,
+                            overflow: 'hidden',
+                            bgcolor: '#fff',
+                            boxShadow: 2,
+                            mb: 2
+                        }}
+                    >
+                        <img
+                            src="/contacto.jpeg"
+                            alt="Ubicación"
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                    </Box>
+                    <Typography sx={{ color: '#003366', fontWeight: 500, mt: 1 }}>
+                        contacto@asegalbyfasesorias.cl<br />
+                        +56 9 9492 8092
+                    </Typography>
+                </Box>
+            )}
         </Box>
     );
 };
