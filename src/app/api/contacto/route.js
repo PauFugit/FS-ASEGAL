@@ -56,7 +56,7 @@ export async function POST(request) {
         lastname: data.lastname,
         email: data.email,
         phone: data.phone,
-        mesagge: data.message, // Asegúrate que tu modelo Prisma tenga este campo como "mesagge"
+        message: data.message, 
       },
     });
 
