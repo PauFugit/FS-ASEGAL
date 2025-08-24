@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
-  }
+}
 
 model Users {
   id                Int       @id @default(autoincrement())
@@ -19,55 +19,49 @@ model Users {
   role              Role
   active            Boolean   @default(true)
   resetToken        String?
-  resetTokenExpires DateTime? @db.DateTime(0)
+  resetTokenExpires DateTime?
   company           String?
   companyEmail      String?
   companyPhone      String?
   companyRUT        String?
   driveURL          String?
-  createdAt         DateTime  @default(now()) @db.DateTime(0)
-  updatedAt         DateTime  @default(now()) @updatedAt @db.DateTime(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
 }
 
-model Services{
-  id              Int @id @default(autoincrement())
-  name            String @unique
-  createdBy       String?
-  description     String
-  price           String?
-  imageUrl        String
-  createdAt       DateTime  @default(now()) @db.DateTime(0)
-
-
+model Services {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  createdBy   String?
+  description String
+  price       String?
+  imageUrl    String
+  createdAt   DateTime @default(now())
 }
 
-model Resources{
-  id              Int @id @default(autoincrement())
-  name            String @unique
-  summary         String
-  createdBy       String?
-  type            TypeResource
-  description     String?
-  linkUrl         String?
-  references      String?
-  imageUrl        String
-  createdAt       DateTime  @default(now()) @db.DateTime(0)
-
-
+model Resources {
+  id          Int            @id @default(autoincrement())
+  name        String         @unique
+  summary     String
+  createdBy   String?
+  type        TypeResource
+  description String?
+  linkUrl     String?
+  references  String?
+  imageUrl    String
+  createdAt   DateTime       @default(now())
 }
 
-model Blog{
-  id              Int @id @default(autoincrement())
-  title           String @unique
-  author          String?
-  summary         String
-  link            String?
-  bodyText        String?
-  references      String?
-  imageUrl        String
-  createdAt       DateTime  @default(now()) @db.DateTime(0)
-
-
+model Blog {
+  id          Int      @id @default(autoincrement())
+  title       String   @unique
+  author      String?
+  summary     String
+  link        String?
+  bodyText    String?
+  references  String?
+  imageUrl    String
+  createdAt   DateTime @default(now())
 }
 
 model ContactForm {
@@ -77,18 +71,18 @@ model ContactForm {
   email     String   @db.VarChar(255) @unique
   phone     String?
   message   String   @db.Text
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 model CotizationForm {
   id        Int      @id @default(autoincrement())
   name      String
   lastname  String
-  email     String  @db.VarChar(255) @unique
+  email     String   @db.VarChar(255) @unique
   phone     String?
   service   String
   message   String   @db.Text
-  createdAt DateTime @default(now()) @db.DateTime(0)
+  createdAt DateTime @default(now())
 }
 
 enum Role {
@@ -96,9 +90,7 @@ enum Role {
   CLIENT
 }
 
-
 enum TypeResource {
   CAPACITACION
   PLANTILLA
-  
 }
