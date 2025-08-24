@@ -1,105 +1,103 @@
-import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
-import { sendEmail } from '@/utils/sendEmail'
+// app/api/cotizacion/route.js
+import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma';
+import sgMail from '@sendgrid/mail';
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-}
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+};
 
 export async function GET() {
-    try {
-        const cotizations = await prisma.cotizationForm.findMany();
-        return new NextResponse(JSON.stringify({ data: cotizations }), {
-            status: 200,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        });
-    } catch(error) {
-        return new NextResponse(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        });
-    }
+  try {
+    const cotizations = await prisma.cotizationForm.findMany();
+    return NextResponse.json({ data: cotizations }, { status: 200, headers: corsHeaders });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
+  }
 }
 
 export async function POST(request) {
-    try {
-        const data = await request.json();
+  try {
+    const data = await request.json();
 
-        // Validar unicidad de email
-        const existingCotization = await prisma.cotizationForm.findUnique({
-            where: { email: data.email }
-        });
-        if (existingCotization) {
-            return new NextResponse(JSON.stringify({ error: "El email ya ha sido registrado en una cotización" }), {
-                status: 400,
-                headers: {
-                    "Content-Type": "application/json",
-                    ...corsHeaders
-                }
-            });
-        }
-
-        // Crear cotización en la base de datos
-        const cotizationForm = await prisma.cotizationForm.create({
-            data: {
-                name: data.name,
-                lastname: data.lastname,
-                email: data.email,
-                phone: data.phone,
-                service: data.service,
-                message: data.message
-            }
-        });
-
-        // Enviar correo con SendGrid (o tu función sendEmail)
-        const emailText = `
-Nombre: ${data.name} ${data.lastname}
-Correo: ${data.email}
-Teléfono: ${data.phone || '-'}
-Servicio a cotizar: ${data.service}
-Mensaje: ${data.message}
-        `;
-
-        const emailSent = await sendEmail(
-            'contacto@asesoriasvaldivia.cl',
-            'contacto@asesoriasvaldivia.cl',
-            "Nueva solicitud de cotización",
-            emailText
-        );
-
-        if (!emailSent) {
-            throw new Error('No se pudo enviar el correo');
-        }
-
-        return new NextResponse(JSON.stringify(cotizationForm), {
-            status: 201,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        });
-    } catch (error){
-        return new NextResponse(JSON.stringify({ error: error.message }), {
-            status: 500,
-            headers: {
-                "Content-Type": "application/json",
-                ...corsHeaders
-            }
-        });
+    // Validar campos requeridos
+    if (!data.name || !data.lastname || !data.email || !data.service) {
+      return NextResponse.json(
+        { error: 'Faltan campos requeridos: nombre, apellido, email o servicio.' },
+        { status: 400, headers: corsHeaders }
+      );
     }
+
+    // Validar unicidad de email
+    const existingCotization = await prisma.cotizationForm.findUnique({
+      where: { email: data.email },
+    });
+    if (existingCotization) {
+      return NextResponse.json(
+        { error: 'El email ya ha sido registrado en una cotización' },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Guardar en la base de datos
+    const newCotization = await prisma.cotizationForm.create({
+      data: {
+        name: data.name,
+        lastname: data.lastname,
+        email: data.email,
+        phone: data.phone,
+        service: data.service,
+        message: data.message,
+      },
+    });
+
+    // ✅ Enviar correo con SendGrid
+    const msg = {
+      to: 'contacto@asegalbyfasesorias.cl',
+      from: 'contacto@asegalbyfasesorias.cl',
+      replyTo: data.email,
+      subject: `Nueva solicitud de cotización: ${data.service}`,
+      text: `
+        Tienes una nueva solicitud de cotización:
+
+        Nombre: ${data.name} ${data.lastname}
+        Email: ${data.email}
+        Teléfono: ${data.phone || 'No proporcionado'}
+        Servicio: ${data.service}
+        Mensaje: ${data.message}
+      `,
+      html: `
+        <p>Tienes una nueva solicitud de cotización:</p>
+        <ul>
+          <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
+          <li><strong>Email:</strong> ${data.email}</li>
+          <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
+          <li><strong>Servicio:</strong> ${data.service}</li>
+          <li><strong>Mensaje:</strong></li>
+          <p>${data.message}</p>
+        </ul>
+      `,
+    };
+
+    await sgMail.send(msg);
+
+    return NextResponse.json(newCotization, { status: 201, headers: corsHeaders });
+  } catch (error) {
+    console.error('Error en POST /api/cotizacion:', error);
+    return NextResponse.json(
+      { error: error.message || 'Error al procesar la cotización' },
+      { status: 500, headers: corsHeaders }
+    );
+  }
 }
 
 export async function OPTIONS() {
-    return new NextResponse(null, {
-        status: 200,
-        headers: corsHeaders
-    })
+  return NextResponse.json(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
 }
