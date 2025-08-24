@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
@@ -149,9 +149,9 @@ const Navbar = () => {
                 {/* Botón Desktop */}
                 {!isMobile && (
                     <Box sx={{ ml: 2 }}>
-                        <Link href="/contacto" passHref prefetch legacyBehavior>
+                        <Link href="/contacto" passHref legacyBehavior prefetch>
                             <Button
-                                component="a"
+                                component="button"  // ← Cambiado de "a" a "button"
                                 variant="contained"
                                 sx={{
                                     backgroundColor: '#F2AC57',
@@ -232,7 +232,7 @@ const Navbar = () => {
                                 <ListItem sx={{ justifyContent: 'center', mt: 1 }}>
                                     <Link href="/contacto" prefetch passHref legacyBehavior>
                                         <Button
-                                            component="a"
+                                            component="button"  // ← Cambiado de "a" a "button"
                                             variant="contained"
                                             fullWidth
                                             sx={{
