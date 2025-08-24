@@ -76,7 +76,7 @@ model ContactForm {
   lastname  String
   email     String   @db.VarChar(255) @unique
   phone     String?
-  mesagge   String   @db.Text
+  message   String   @db.Text
   createdAt DateTime @default(now()) @db.DateTime(0)
 }
 
