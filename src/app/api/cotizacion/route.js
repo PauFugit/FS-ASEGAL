@@ -56,43 +56,57 @@ export async function POST(request) {
     });
 
     // ✅ Enviar correo con SendGrid
-    const msg = {
-      to: 'contacto@asegalbyfasesorias.cl',
-      from: 'contacto@asegalbyfasesorias.cl',
-      replyTo: data.email,
-      subject: `Nueva solicitud de cotización: ${data.service}`,
-      text: `
-        Tienes una nueva solicitud de cotización:
+const msg = {
+  to: 'contacto@asegalbyfasesorias.cl',
+  from: {
+    email: 'contacto@asegalbyfasesorias.cl',
+    name: 'Formulario de Cotización - Asegal by F Asesorías'
+  },
+  replyTo: data.email,
+  subject: `Nueva solicitud de cotización: ${data.service}`,
+  text: `
+Hola equipo Asegal,
 
-        Nombre: ${data.name} ${data.lastname}
-        Email: ${data.email}
-        Teléfono: ${data.phone || 'No proporcionado'}
-        Servicio: ${data.service}
-        Mensaje: ${data.message}
-      `,
-      html: `
-        <p>Tienes una nueva solicitud de cotización:</p>
-        <ul>
-          <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
-          <li><strong>Email:</strong> ${data.email}</li>
-          <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
-          <li><strong>Servicio:</strong> ${data.service}</li>
-          <li><strong>Mensaje:</strong></li>
-          <p>${data.message}</p>
-        </ul>
-      `,
-    };
+Tienes una nueva solicitud de cotización:
 
-    await sgMail.send(msg);
+Nombre: ${data.name} ${data.lastname}
+Email: ${data.email}
+Teléfono: ${data.phone || 'No proporcionado'}
+Servicio: ${data.service}
+Mensaje: ${data.message}
 
-    return NextResponse.json(newCotization, { status: 201, headers: corsHeaders });
-  } catch (error) {
-    console.error('Error en POST /api/cotizacion:', error);
-    return NextResponse.json(
-      { error: error.message || 'Error al procesar la cotización' },
-      { status: 500, headers: corsHeaders }
-    );
-  }
+Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.
+
+Saludos,
+Sistema de cotización de asegalbyfasesorias.cl
+  `,
+  html: `
+<p>Hola <strong>equipo Asegal</strong>,</p>
+<p>Tienes una nueva <strong>solicitud de cotización</strong>:</p>
+<ul>
+  <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
+  <li><strong>Email:</strong> ${data.email}</li>
+  <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
+  <li><strong>Servicio:</strong> ${data.service}</li>
+  <li><strong>Mensaje:</strong></li>
+  <p>${data.message}</p>
+</ul>
+<p><em>Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.</em></p>
+<p>Saludos,<br/>
+<small><strong>Sistema de cotización</strong><br/>Asegal by F Asesorías</small></p>
+  `,
+};
+
+await sgMail.send(msg);
+
+return NextResponse.json(newCotization, { status: 201, headers: corsHeaders });
+} catch (error) {
+  console.error('Error en POST /api/cotizacion:', error);
+  return NextResponse.json(
+    { error: error.message || 'Error al procesar la cotización' },
+    { status: 500, headers: corsHeaders }
+  );
+}
 }
 
 export async function OPTIONS() {

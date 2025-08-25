@@ -56,33 +56,47 @@ export async function POST(request) {
         lastname: data.lastname,
         email: data.email,
         phone: data.phone,
-        message: data.message, 
+        message: data.message,
       },
     });
 
     // ✅ Enviar correo con SendGrid
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
-      from: 'contacto@asegalbyfasesorias.cl', // Debe estar verificado en SendGrid
-      replyTo: data.email, // Para que puedas responder desde tu cliente de correo
+      from: {
+        email: 'contacto@asegalbyfasesorias.cl',
+        name: 'Formulario de Contacto - Asegal by F Asesorías'
+      },
+      replyTo: data.email, // Así puedes responder directamente al cliente
       subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname}`,
       text: `
+        Hola equipo Asegal,
+
         Tienes un nuevo mensaje desde el formulario de contacto:
 
         Nombre: ${data.name} ${data.lastname}
         Email: ${data.email}
         Teléfono: ${data.phone || 'No proporcionado'}
         Mensaje: ${data.message}
-      `,
+
+        Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.
+
+      Saludos,
+      Sistema de contacto de asegalbyfasesorias.cl
+  `,
       html: `
-        <p>Tienes un nuevo mensaje desde el formulario de contacto:</p>
-        <ul>
-          <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
-          <li><strong>Email:</strong> ${data.email}</li>
-          <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
-          <li><strong>Mensaje:</strong></li>
-          <p>${data.message}</p>
-        </ul>
+      <p>Hola <strong>equipo Asegal</strong>,</p>
+      <p>Tienes un nuevo mensaje desde el <strong>formulario de contacto</strong>:</p>
+      <ul>
+        <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
+        <li><strong>Email:</strong> ${data.email}</li>
+        <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
+        <li><strong>Mensaje:</strong></li>
+        <p>${data.message}</p>
+      </ul>
+      <p><em>Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.</em></p>
+      <p>Saludos,<br/>
+      <small><strong>Sistema de contacto</strong><br/>Asegal by F Asesorías</small></p>
       `,
     };
 
