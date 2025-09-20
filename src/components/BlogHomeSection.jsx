@@ -1,31 +1,41 @@
-import React from 'react';
-import { Box, Typography, Grid, Button } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Typography, Grid, Button, CircularProgress } from '@mui/material';
 import BlogCard from './BlogCard';
 
-const blogPosts = [
-  {
-    image: '/blogcard1.jpg',
-    title: 'Lo que necesitas para iniciar tu negocio...',
-    description: '¿Estás pensando en emprender en el mundo de la gastronomía? Aquí te dejamos una guía con los pasos esenciales para comenzar tu negocio de manera exitosa...'
-  },
-  {
-    image: '/servicios2.jpg',
-    title: 'Tips para enfrentar con éxito una fiscalización de SEREMI',
-    description: '¿Te preocupa una posible fiscalización de SEREMI? Aquí te compartimos consejos prácticos para estar preparado y cumplir con las normativas vigentes...'
-  },
-  {
-    image: '/cardservicios3.jpg',
-    title: '¿Qué información debe contener una etiqueta nutricional?',
-    description: 'La etiqueta nutricional es fundamental para informar a los consumidores sobre los productos alimenticios. Descubre qué información debe incluir y cómo interpretarla correctamente...'
-  },
-  {
-    image: 'bannerblog2.jpg',
-    title: 'Ley 20.606 de Etiquetado de Alimentos en Chile',
-    description: 'La Ley 20.606 regula el etiquetado de alimentos en Chile para promover una alimentación saludable. Conoce todo lo relativo a la ley, sus objetivos y cómo afecta a los productos alimenticios...'
-  },
-];
-
 function BlogHomeSection() {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadPosts = async () => {
+      try {
+        const res = await fetch('/api/public/blog?limit=4');
+        if (res.ok) {
+          const data = await res.json();
+          setPosts(data.slice(0, 4)); // Mostrar solo 4 posts
+        }
+      } catch (error) {
+        console.error('Error loading posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (posts.length === 0) {
+    return null; // No mostrar la sección si no hay posts
+  }
+
   return (
     <Box sx={{ width: '100%', bgcolor: '#fafbfc', py: 6, px: 2, position: 'relative' }}>
       {/* Línea decorativa y título */}
@@ -52,12 +62,12 @@ function BlogHomeSection() {
 
       {/* Cards */}
       <Grid container spacing={4} justifyContent="center">
-        {blogPosts.map((post, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index} sx={{ display: 'flex', justifyContent: 'center' }}>
+        {posts.map((post, index) => (
+          <Grid item xs={12} sm={6} md={4} key={post.id} sx={{ display: 'flex', justifyContent: 'center' }}>
             <BlogCard
-              image={post.image}
+              image={post.imageUrl}
               title={post.title}
-              description={post.description}
+              description={post.summary}
               sx={{
                 height: { xs: 270, md: 260 }, 
                 maxHeight: 270,

@@ -1,92 +1,58 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react';
-import { Box, Typography, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-
-const courses = [
-  {
-    title: "BPM",
-    image: "/bannerServicios2.jpg"
-  },
-  {
-    title: "Resolución Sanitaria",
-    image: "/cursoextra5.jpg"
-  },
-  {
-    title: "Etiquetado Nutricional",
-    image: "/cursoextra2.jpg"
-  }
-];
-
-const CourseCard = ({ title, image, index, onClick }) => {
-  const cardRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (cardRef.current) {
-      cardRef.current.style.opacity = '0';
-      cardRef.current.style.transition = `opacity 0.5s ${index * 0.1}s ease-out`;
-      observer.observe(cardRef.current);
-    }
-
-    return () => {
-      if (cardRef.current) observer.unobserve(cardRef.current);
-    };
-  }, [index]);
-
-  return (
-    <Box 
-      ref={cardRef}
-      onClick={onClick}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: 2,
-        cursor: 'pointer',
-        '&:hover': {
-          transform: 'scale(1.05)',
-          transition: 'transform 0.3s ease'
-        }
-      }}
-    >
-      <Box sx={{
-        width: { xs: 220, sm: 240, md: 300 },
-        height: { xs: 220, sm: 240, md: 300 },
-        borderRadius: '50%',
-        backgroundImage: `url(${image})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        border: '4px solid white',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-        transition: 'transform 0.3s ease'
-      }} />
-      <Typography variant="h6" sx={{ 
-        color: '#18148C',
-        fontWeight: 600,
-        fontSize: { xs: '1rem', md: '1.1rem' },
-        textAlign: 'center',
-        mt: 1
-      }}>
-        {title}
-      </Typography>
-    </Box>
-  );
-};
+import { Box, Typography, Button, Stack, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress } from '@mui/material';
 
 const CursosCapacitacionesSection = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [visibleCourses, setVisibleCourses] = useState(courses);
+  const [visibleCourses, setVisibleCourses] = useState([]);
+
+  useEffect(() => {
+    loadCourses();
+    updateVisibleCourses();
+    window.addEventListener('resize', updateVisibleCourses);
+    
+    return () => {
+      window.removeEventListener('resize', updateVisibleCourses);
+    };
+  }, []);
+
+  const loadCourses = async () => {
+    try {
+      const res = await fetch('/api/recursos');
+      if (res.ok) {
+        const data = await res.json();
+        // Filtrar solo capacitaciones
+        const capacitaciones = data.data.filter(resource => resource.type === 'CAPACITACION');
+        setCourses(capacitaciones);
+      } else {
+        console.error('Error loading courses');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateVisibleCourses = () => {
+    const width = window.innerWidth;
+    let visibleCount = 3; // Default para desktop
+    
+    if (width < 600) { // Mobile
+      visibleCount = 1;
+    } else if (width < 900) { // Tablet
+      visibleCount = 2;
+    }
+    
+    setVisibleCourses(courses.slice(0, visibleCount));
+  };
+
+  useEffect(() => {
+    updateVisibleCourses();
+  }, [courses]);
 
   const handleOpen = (course) => {
     setSelectedCourse(course);
@@ -102,33 +68,88 @@ const CursosCapacitacionesSection = () => {
     window.location.href = '/contacto';
   };
 
-  // Determinar cuántas cards mostrar según el tamaño de pantalla
-  const getVisibleCourses = () => {
-    const width = window.innerWidth;
-    if (width < 600) { // Mobile
-      return [courses[0]]; // Solo la primera card
-    } else if (width < 900) { // Tablet
-      return courses.slice(0, 2); // Primeras 2 cards
-    } else { // Desktop
-      return courses; // Todas las cards
-    }
+  const CourseCard = ({ course, index }) => {
+    const cardRef = useRef(null);
+
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = '1';
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      if (cardRef.current) {
+        cardRef.current.style.opacity = '0';
+        cardRef.current.style.transition = `opacity 0.5s ${index * 0.1}s ease-out`;
+        observer.observe(cardRef.current);
+      }
+
+      return () => {
+        if (cardRef.current) observer.unobserve(cardRef.current);
+      };
+    }, [index]);
+
+    return (
+      <Box 
+        ref={cardRef}
+        onClick={() => handleOpen(course)}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: 2,
+          cursor: 'pointer',
+          '&:hover': {
+            transform: 'scale(1.05)',
+            transition: 'transform 0.3s ease'
+          }
+        }}
+      >
+        <Box sx={{
+          width: { xs: 220, sm: 240, md: 300 },
+          height: { xs: 220, sm: 240, md: 300 },
+          borderRadius: '50%',
+          backgroundImage: `url(${course.imageUrl})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          border: '4px solid white',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          transition: 'transform 0.3s ease'
+        }} />
+        <Typography variant="h6" sx={{ 
+          color: '#18148C',
+          fontWeight: 600,
+          fontSize: { xs: '1rem', md: '1.1rem' },
+          textAlign: 'center',
+          mt: 1
+        }}>
+          {course.name}
+        </Typography>
+      </Box>
+    );
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      setVisibleCourses(getVisibleCourses());
-    };
-
-    // Establecer el estado inicial
-    setVisibleCourses(getVisibleCourses());
-    
-    // Escuchar cambios de tamaño
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  if (loading) {
+    return (
+      <Box sx={{ 
+        py: { xs: 4, md: 8 },
+        px: { xs: 2, sm: 4, md: 8, lg: 12 },
+        maxWidth: 1600,
+        mx: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: 400
+      }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ 
@@ -150,42 +171,85 @@ const CursosCapacitacionesSection = () => {
         CURSOS Y CAPACITACIONES
       </Typography>
 
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-      }}>
+      {courses.length === 0 ? (
+        <Typography variant="h6" textAlign="center" color="text.secondary" sx={{ py: 8 }}>
+          No hay cursos disponibles
+        </Typography>
+      ) : (
         <Box sx={{
-          width: '100%',
-          overflowX: 'auto',
-          pb: 3,
-          scrollbarWidth: 'none',
-          '&::-webkit-scrollbar': { display: 'none' },
-          mb: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}>
-          <Stack 
-            direction="row"
-            spacing={{ xs: 4, sm: 6, md: 6 }}
-            sx={{
-              width: 'max-content',
-              mx: 'auto',
-              px: { xs: 2, sm: 0 }
-            }}
-          >
-            {visibleCourses.map((course, index) => (
-              <CourseCard 
-                key={index}
-                title={course.title} 
-                image={course.image}
-                index={index}
-                onClick={() => handleOpen(course)}
-              />
-            ))}
-          </Stack>
-        </Box>
+          <Box sx={{
+            width: '100%',
+            overflowX: 'auto',
+            pb: 3,
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
+            mb: 4,
+          }}>
+            <Stack 
+              direction="row"
+              spacing={{ xs: 4, sm: 6, md: 6 }}
+              sx={{
+                width: 'max-content',
+                mx: 'auto',
+                px: { xs: 2, sm: 0 }
+              }}
+            >
+              {visibleCourses.map((course, index) => (
+                <CourseCard 
+                  key={course.id}
+                  course={course}
+                  index={index}
+                />
+              ))}
+            </Stack>
+          </Box>
 
-       
-      </Box>
+          {/* Línea decorativa inferior y botón "Leer más" */}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            alignItems: 'center', 
+            width: '100%',
+            mt: { xs: 4, md: 6 },
+            px: { xs: 2, sm: 0 }
+          }}>
+            <Box sx={{
+              flex: 1,
+              borderBottom: '2px solid #0B5B8C',
+              mr: { xs: 0, sm: 3 },
+              mb: { xs: 3, sm: 0 },
+              width: { xs: '80%', sm: 'auto' }
+            }} />
+            <Button
+              variant="contained"
+              href="/recursos"
+              sx={{
+                bgcolor: '#1A1773',
+                color: '#ffffff',
+                borderRadius: '24px',
+                fontWeight: 600,
+                py: 1.2,
+                px: 4,
+                fontSize: { xs: 16, sm: 20 },
+                boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
+                textTransform: 'italic',
+                transition: 'background-color 0.3s ease',
+                '&:hover': {
+                  bgcolor: '#ffffff',
+                  color: '#F2AC57', 
+                  boxShadow: '0px 4px 12px rgba(#82C6E8, 0.2)',
+                }
+              }}
+            >
+              VER MÁS
+            </Button>
+          </Box>
+        </Box>
+      )}
 
       {/* Modal para agendar sesión */}
       <Dialog
@@ -204,11 +268,14 @@ const CursosCapacitacionesSection = () => {
             textAlign: 'center'
           }}
         >
-          {selectedCourse?.title && (
-            <>¿Te interesa capacitarte sobre <span style={{ color: '#F2AC57' }}>{selectedCourse.title}</span>?</>
+          {selectedCourse?.name && (
+            <>¿Te interesa capacitarte sobre <span style={{ color: '#F2AC57' }}>{selectedCourse.name}</span>?</>
           )}
         </DialogTitle>
         <DialogContent sx={{ textAlign: 'center', pb: 2 }}>
+          <Typography sx={{ mb: 2, color: '#00325a' }}>
+            {selectedCourse?.summary}
+          </Typography>
           <Typography sx={{ mb: 2, color: '#00325a' }}>
             Agenda una sesión con nuestro equipo para gestionar tu capacitación personalizada.
           </Typography>
@@ -257,4 +324,5 @@ const CursosCapacitacionesSection = () => {
     </Box>
   );
 };
+
 export default CursosCapacitacionesSection;

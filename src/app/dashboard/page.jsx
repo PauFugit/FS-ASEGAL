@@ -5,361 +5,251 @@ import {
   Typography, 
   Grid, 
   Card, 
-  CardContent, 
-  Avatar, 
-  TextField, 
-  Button, 
-  Divider,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Alert,
-  Snackbar
+  CardActionArea,
+  Container,
+  useTheme,
+  useMediaQuery,
+  keyframes
 } from '@mui/material';
-import {
-  Person as PersonIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
-  Lock as PasswordIcon,
-  Save as SaveIcon,
-  Edit as EditIcon,
-  CheckCircle as SuccessIcon,
-  Lock as LockIcon
+import { 
+  Article as BlogIcon,
+  Description as TemplatesIcon,
+  School as CoursesIcon,
+  People as UsersIcon
 } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabaseClient';
+import { styled } from '@mui/system';
 
-export default function ConfiguracionPage() {
-  // Datos del usuario (simulados)
-  const [userData, setUserData] = useState({
-    nombre: 'Juan Pérez',
-    email: 'admin@asegalbyf.com',
-    telefono: '+56 9 1234 5678',
-    direccion: 'Av. Principal 1234, Santiago, Chile',
-    password: '',
-    newPassword: '',
-    confirmPassword: '',
-    rol: 'admin',
-    avatar: 'JP'
-  });
+// Animación de flotación para las tarjetas
+const floatAnimation = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+`;
 
-  const [editMode, setEditMode] = useState(false);
-  const [passwordEditMode, setPasswordEditMode] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+// Animación de entrada para el título
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData(prev => ({ ...prev, [name]: value }));
-  };
+// Animación de entrada escalonada para las tarjetas
+const slideIn = keyframes`
+  from { opacity: 0; transform: translateY(30px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+`;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí iría la lógica para guardar los cambios
-    setEditMode(false);
-    setPasswordEditMode(false);
-    setSnackbarMessage('Cambios guardados exitosamente');
-    setSnackbarOpen(true);
-  };
+// Componente de tarjeta circular animada con styled
+const AnimatedCard = styled(Card)(({ theme, delay }) => ({
+  borderRadius: '50%',
+  width: theme.breakpoints.values.xs ? 120 : 150,
+  height: theme.breakpoints.values.xs ? 120 : 150,
+  boxShadow: theme.shadows[3],
+  animation: `${slideIn} 0.6s ease-out ${delay}ms both, ${floatAnimation} 3s ease-in-out ${delay + 600}ms infinite`,
+  transition: 'all 0.3s ease-in-out',
+  '&:hover': {
+    boxShadow: theme.shadows[6],
+    transform: 'scale(1.05) rotate(2deg)',
+    animation: `${floatAnimation} 1.5s ease-in-out infinite`,
+  },
+  [theme.breakpoints.up('md')]: {
+    width: 170,
+    height: 170,
+  }
+}));
 
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    // Validar que las contraseñas coincidan
-    if (userData.newPassword !== userData.confirmPassword) {
-      setSnackbarMessage('Las contraseñas no coinciden');
-      setSnackbarOpen(true);
-      return;
+const AnimatedTitle = styled(Typography)({
+  animation: `${fadeIn} 0.8s ease-out`,
+});
+
+const DashboardCard = ({ title, path, icon: Icon, color, delay }) => {
+  const router = useRouter();
+  const theme = useTheme();
+  
+  return (
+    <AnimatedCard delay={delay} sx={{ backgroundColor: color }}>
+      <CardActionArea 
+        onClick={() => router.push(path)}
+        sx={{ 
+          width: '100%', 
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '50%',
+          padding: 2,
+          color: 'white',
+          '&:hover': {
+            backgroundColor: theme.palette[color.split('.')[0]]?.dark || color,
+          }
+        }}
+      >
+        <Icon sx={{ 
+          fontSize: { xs: 40, sm: 50, md: 60 }, 
+          mb: 1 
+        }} />
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            fontSize: { xs: '0.75rem', sm: '0.85rem', md: '0.9rem' },
+            fontWeight: 'bold',
+            textAlign: 'center',
+            lineHeight: 1.2
+          }}
+        >
+          {title}
+        </Typography>
+      </CardActionArea>
+    </AnimatedCard>
+  );
+};
+
+export default function DashboardPage() {
+  const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState('');
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const router = useRouter();
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data: { user: userData } } = await supabase.auth.getUser();
+        if (userData) {
+          setUser(userData);
+          
+          // Obtener nombre completo del usuario
+          const name = userData.user_metadata?.name || '';
+          const lastname = userData.user_metadata?.lastname || '';
+          const fullName = `${name} ${lastname}`.trim();
+          
+          if (fullName) {
+            setUserName(fullName);
+          } else {
+            setUserName(userData.email?.split('@')[0] || 'Usuario');
+          }
+        }
+      } catch (error) {
+        console.error('Error obteniendo usuario:', error);
+      }
+    };
+
+    getUser();
+  }, []);
+
+  const dashboardItems = [
+    {
+      title: 'BLOG',
+      path: '/dashboard/blog',
+      icon: BlogIcon,
+      color: theme.palette.primary.main,
+      delay: 100
+    },
+    {
+      title: 'PLANTILLAS',
+      path: '/dashboard/plantillas',
+      icon: TemplatesIcon,
+      color: theme.palette.secondary.main,
+      delay: 200
+    },
+    {
+      title: 'CURSOS',
+      path: '/dashboard/cursos',
+      icon: CoursesIcon,
+      color: theme.palette.info.main,
+      delay: 300
+    },
+    {
+      title: 'USUARIOS',
+      path: '/dashboard/usuarios',
+      icon: UsersIcon,
+      color: theme.palette.warning.main,
+      delay: 400
     }
-    // Aquí iría la lógica para cambiar la contraseña
-    setPasswordEditMode(false);
-    setSnackbarMessage('Contraseña actualizada exitosamente');
-    setSnackbarOpen(true);
-    setUserData(prev => ({ ...prev, password: '', newPassword: '', confirmPassword: '' }));
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
+  ];
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom fontWeight="bold">
-        Configuración de Cuenta
-      </Typography>
-      <Typography variant="body1" color="text.secondary" mb={4}>
-        Administra tu información personal y configuración de seguridad
-      </Typography>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      {/* Encabezado de bienvenida */}
+      <Box textAlign="center" mb={6}>
+        <AnimatedTitle 
+          variant="h3" 
+          component="h1" 
+          gutterBottom
+          sx={{
+            fontWeight: 'bold',
+            color: theme.palette.primary.main,
+            fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
+          }}
+        >
+          ¡Bienvenido{userName ? `, ${userName}` : ''}!
+        </AnimatedTitle>
+        <Typography 
+          variant="h6" 
+          color="text.secondary"
+          sx={{ 
+            fontSize: { xs: '1rem', sm: '1.2rem' },
+            animation: `${fadeIn} 1s ease-out 0.2s both`
+          }}
+        >
+          Gestiona tu contenido desde el panel de administración
+        </Typography>
+      </Box>
 
-      <Grid container spacing={3}>
-        {/* Columna izquierda - Información personal */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ p: 3, borderRadius: 2 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-              <Typography variant="h6" fontWeight="bold">
-                Información Personal
-              </Typography>
-              {!editMode && (
-                <Button 
-                  startIcon={<EditIcon />}
-                  onClick={() => setEditMode(true)}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Editar
-                </Button>
-              )}
-            </Box>
-
-            <Box display="flex" flexDirection="column" alignItems="center" mb={4}>
-              <Avatar 
-                sx={{ 
-                  width: 120, 
-                  height: 120, 
-                  fontSize: 48,
-                  bgcolor: 'primary.main',
-                  mb: 2
-                }}
-              >
-                {userData.avatar}
-              </Avatar>
-              {editMode && (
-                <Button variant="outlined" size="small" sx={{ mb: 3 }}>
-                  Cambiar foto
-                </Button>
-              )}
-            </Box>
-
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Nombre completo"
-                    name="nombre"
-                    value={userData.nombre}
-                    onChange={handleChange}
-                    disabled={!editMode}
-                    InputProps={{
-                      startAdornment: (
-                        <PersonIcon sx={{ color: 'action.active', mr: 1 }} />
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Correo electrónico"
-                    name="email"
-                    type="email"
-                    value={userData.email}
-                    onChange={handleChange}
-                    disabled={!editMode}
-                    InputProps={{
-                      startAdornment: (
-                        <EmailIcon sx={{ color: 'action.active', mr: 1 }} />
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Teléfono"
-                    name="telefono"
-                    value={userData.telefono}
-                    onChange={handleChange}
-                    disabled={!editMode}
-                    InputProps={{
-                      startAdornment: (
-                        <PhoneIcon sx={{ color: 'action.active', mr: 1 }} />
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Dirección"
-                    name="direccion"
-                    value={userData.direccion}
-                    onChange={handleChange}
-                    disabled={!editMode}
-                    InputProps={{
-                      startAdornment: (
-                        <LocationIcon sx={{ color: 'action.active', mr: 1 }} />
-                      ),
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormControl fullWidth disabled>
-                    <InputLabel>Rol</InputLabel>
-                    <Select
-                      value={userData.rol}
-                      label="Rol"
-                    >
-                      <MenuItem value="admin">Administrador</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                {editMode && (
-                  <Grid item xs={12} display="flex" justifyContent="flex-end" gap={2}>
-                    <Button 
-                      variant="outlined" 
-                      onClick={() => setEditMode(false)}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button 
-                      type="submit"
-                      variant="contained" 
-                      startIcon={<SaveIcon />}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Guardar cambios
-                    </Button>
-                  </Grid>
-                )}
-              </Grid>
-            </form>
-          </Card>
-        </Grid>
-
-        {/* Columna derecha - Seguridad */}
-        <Grid item xs={12} md={6}>
-          <Card sx={{ p: 3, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="bold" mb={3}>
-              Seguridad
-            </Typography>
-
-            {!passwordEditMode ? (
-              <Box>
-                <Typography variant="body1" mb={3}>
-                  Para cambiar tu contraseña, haz clic en el botón "Cambiar contraseña".
-                </Typography>
-                <Button 
-                  variant="contained"
-                  startIcon={<LockIcon />}
-                  onClick={() => setPasswordEditMode(true)}
-                  sx={{ textTransform: 'none' }}
-                >
-                  Cambiar contraseña
-                </Button>
-              </Box>
-            ) : (
-              <form onSubmit={handlePasswordSubmit}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Contraseña actual"
-                      name="password"
-                      type="password"
-                      value={userData.password}
-                      onChange={handleChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <LockIcon sx={{ color: 'action.active', mr: 1 }} />
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Nueva contraseña"
-                      name="newPassword"
-                      type="password"
-                      value={userData.newPassword}
-                      onChange={handleChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <LockIcon sx={{ color: 'action.active', mr: 1 }} />
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      label="Confirmar nueva contraseña"
-                      name="confirmPassword"
-                      type="password"
-                      value={userData.confirmPassword}
-                      onChange={handleChange}
-                      required
-                      InputProps={{
-                        startAdornment: (
-                          <LockIcon sx={{ color: 'action.active', mr: 1 }} />
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Alert severity="info" sx={{ mb: 2 }}>
-                      La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, números y caracteres especiales.
-                    </Alert>
-                  </Grid>
-                  <Grid item xs={12} display="flex" justifyContent="flex-end" gap={2}>
-                    <Button 
-                      variant="outlined" 
-                      onClick={() => setPasswordEditMode(false)}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button 
-                      type="submit"
-                      variant="contained" 
-                      startIcon={<SaveIcon />}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Actualizar contraseña
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
-            )}
-          </Card>
-
-          {/* Sección de preferencias */}
-          <Card sx={{ p: 3, borderRadius: 2, mt: 3 }}>
-            <Typography variant="h6" fontWeight="bold" mb={3}>
-              Preferencias
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Configura tus preferencias de notificaciones y apariencia.
-            </Typography>
-            <Button 
-              variant="outlined" 
-              sx={{ mt: 2, textTransform: 'none' }}
-            >
-              Configurar preferencias
-            </Button>
-          </Card>
-        </Grid>
+      {/* Grid de tarjetas circulares */}
+      <Grid 
+        container 
+        spacing={4} 
+        justifyContent="center"
+        sx={{ 
+          mt: 2,
+          px: { xs: 2, sm: 0 }
+        }}
+      >
+        {dashboardItems.map((item, index) => (
+          <Grid 
+            item 
+            key={item.title} 
+            xs={6} 
+            sm={4} 
+            md={3}
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'center',
+              mb: { xs: 2, sm: 0 }
+            }}
+          >
+            <DashboardCard
+              title={item.title}
+              path={item.path}
+              icon={item.icon}
+              color={item.color}
+              delay={item.delay}
+            />
+          </Grid>
+        ))}
       </Grid>
 
-      {/* Notificación de éxito */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      {/* Mensaje adicional */}
+      <Box 
+        textAlign="center" 
+        mt={8}
+        sx={{ 
+          backgroundColor: 'grey.50', 
+          p: 3, 
+          borderRadius: 2,
+          mx: { xs: 2, sm: 0 },
+          animation: `${fadeIn} 1s ease-out 0.8s both`
+        }}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          icon={<SuccessIcon fontSize="inherit" />}
-          sx={{ width: '100%' }}
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </Box>
+        <Typography variant="body1" color="text.secondary">
+          Selecciona una categoría para comenzar a gestionar tu contenido. 
+          Cada sección te permite crear, editar y eliminar elementos específicos.
+        </Typography>
+      </Box>
+    </Container>
   );
 }

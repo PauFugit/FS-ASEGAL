@@ -2,9 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Users {
@@ -48,6 +50,7 @@ model Resources {
   description String?
   linkUrl     String?
   references  String?
+  pdfUrl      String?  
   imageUrl    String
   createdAt   DateTime       @default(now())
 }
@@ -61,6 +64,8 @@ model Blog {
   bodyText    String?
   references  String?
   imageUrl    String
+  pdfUrl      String? 
+  status    String   @default("publicado")
   createdAt   DateTime @default(now())
 }
 
@@ -87,6 +92,7 @@ model CotizationForm {
 
 enum Role {
   ADMIN
+  TEAM
   CLIENT
 }
 

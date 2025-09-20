@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const images = [
   '/xqasegal2.jpg', // superior izquierda
-  '/xqasegal4.jpg', // centro izquierda
+  '/xqasegal4.webp', // centro izquierda
   '/xqasegal3.jpg', // inferior izquierda
   '/xqasegal5.jpg'  // derecha
 ];

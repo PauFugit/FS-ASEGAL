@@ -291,7 +291,7 @@ function ContactoSection() {
             }}
           >
             <img
-              src="/cntactosection.jpg"
+              src="/cntactosection.webp"
               alt="Contacto"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
             />

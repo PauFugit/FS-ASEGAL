@@ -25,12 +25,11 @@ import { usePathname } from 'next/navigation'; // Usar usePathname en lugar de u
 import Link from 'next/link';
 
 const menuItems = [
-  { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+  { text: 'Panel', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Usuarios', icon: <PeopleIcon />, path: '/dashboard/usuarios' },
   { text: 'Plantillas', icon: <ArticleIcon />, path: '/dashboard/plantillas' },
   { text: 'Cursos', icon: <SchoolIcon />, path: '/dashboard/cursos' },
   { text: 'Blog', icon: <EmailIcon />, path: '/dashboard/blog' },
-  { text: 'Servicios', icon: <ServicesIcon />, path: '/dashboard/servicios' },
 ];
 
 export default function SidebarDashboard({ isSidebarOpen, isMobileSidebarOpen, setIsMobileSidebarOpen }) {
@@ -39,7 +38,7 @@ export default function SidebarDashboard({ isSidebarOpen, isMobileSidebarOpen, s
 
   const drawerContent = (
     <>
-      <Toolbar sx={{ backgroundColor: 'primary.main' }}>
+      <Toolbar sx={{  minHeight: 64, justifyContent: 'center' }}>
         <Box sx={{ 
           width: '100%', 
           display: 'flex', 
@@ -52,9 +51,8 @@ export default function SidebarDashboard({ isSidebarOpen, isMobileSidebarOpen, s
             src="/logo.png"
             sx={{ 
               height: 80,
-              filter: 'brightness(0) invert(1)'
             }}
-            alt="Logo Admin"
+            alt="Logo Asegal"
           />
         </Box>
       </Toolbar>

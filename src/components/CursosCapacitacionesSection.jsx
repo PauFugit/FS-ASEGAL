@@ -13,7 +13,7 @@ const courses = [
   },
   {
     title: "Etiquetado Nutricional",
-    image: "/cursoextra2.jpg"
+    image: "/cursoextra2.webp"
   }
 ];
 

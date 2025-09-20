@@ -22,7 +22,7 @@ export default function ContactForm() {
     setSubmitSuccess(false);
 
     try {
-      // ✅ Mapea los campos a los nombres que espera Prisma
+      
       const payload = {
         name: data.nombre,
         lastname: data.apellido,

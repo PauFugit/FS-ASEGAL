@@ -14,17 +14,53 @@ import {
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Notifications as NotificationsIcon,
   Logout as LogoutIcon,
   AccountCircle as AccountCircleIcon,
-  Settings as SettingsIcon
 } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+import { useRouter } from 'next/navigation';
 
 export default function TopBarDashboard({ isSidebarOpen, setIsSidebarOpen, setIsMobileSidebarOpen }) {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [anchorEl, setAnchorEl] = useState(null);
+  const [user, setUser] = useState(null);
+  const [userInitial, setUserInitial] = useState('U');
   const open = Boolean(anchorEl);
+  const router = useRouter();
+
+  // Obtener usuario al cargar
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const { data: { user: userData } } = await supabase.auth.getUser();
+        if (userData) {
+          setUser(userData);
+          // Obtener inicial del nombre o email
+          const initial = userData.user_metadata?.name?.[0] || 
+                         userData.email?.[0]?.toUpperCase() || 'U';
+          setUserInitial(initial);
+        }
+      } catch (error) {
+        console.error('Error obteniendo usuario:', error);
+      }
+    };
+
+    getUser();
+
+    // Escuchar cambios en la autenticación
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+        } else if (session?.user) {
+          setUser(session.user);
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,6 +68,47 @@ export default function TopBarDashboard({ isSidebarOpen, setIsSidebarOpen, setIs
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    handleClose();
+    router.push('/dashboard');
+  };
+
+  const handleLogout = async () => {
+    try {
+      console.log('Iniciando logout...');
+      
+      // Cerrar sesión en Supabase
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Error al cerrar sesión:', error);
+        return;
+      }
+      
+      console.log('Sesión cerrada en Supabase');
+      handleClose();
+      
+      // Forzar una recarga completa para limpiar el estado
+      window.location.href = '/login';
+      
+    } catch (error) {
+      console.error('Error cerrando sesión:', error);
+    }
+  };
+
+  const getUserName = () => {
+    if (!user) return 'Usuario';
+    
+    return user.user_metadata?.name || 
+           user.user_metadata?.full_name || 
+           user.email?.split('@')[0] || 
+           'Usuario';
+  };
+
+  const getUserEmail = () => {
+    return user?.email || '';
   };
 
   return (
@@ -45,6 +122,7 @@ export default function TopBarDashboard({ isSidebarOpen, setIsSidebarOpen, setIs
         boxShadow: 'none',
         borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
         transition: 'width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, margin 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar>
@@ -57,36 +135,57 @@ export default function TopBarDashboard({ isSidebarOpen, setIsSidebarOpen, setIs
         >
           <MenuIcon />
         </IconButton>
+        
         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
           Panel de Administración
         </Typography>
+        
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <IconButton color="inherit">
-            <NotificationsIcon />
-          </IconButton>
+          {/* Información del usuario */}
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', alignItems: 'flex-end', mr: 1 }}>
+            <Typography variant="body2" fontWeight="medium">
+              {getUserName()}
+            </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {getUserEmail()}
+            </Typography>
+          </Box>
+
+          {/* Avatar y menú */}
           <IconButton
             onClick={handleClick}
             size="small"
-            sx={{ ml: 2 }}
+            sx={{ ml: 1 }}
             aria-controls={open ? 'account-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>A</Avatar>
+            <Avatar 
+              sx={{ 
+                width: 36, 
+                height: 36, 
+                bgcolor: 'primary.main',
+                fontSize: '14px',
+                fontWeight: 'bold'
+              }}
+            >
+              {userInitial}
+            </Avatar>
           </IconButton>
         </Box>
+
+        {/* Menú desplegable */}
         <Menu
           anchorEl={anchorEl}
           id="account-menu"
           open={open}
           onClose={handleClose}
-          onClick={handleClose}
           PaperProps={{
-            elevation: 0,
+            elevation: 3,
             sx: {
               overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
+              minWidth: 200,
               '& .MuiAvatar-root': {
                 width: 32,
                 height: 32,
@@ -110,15 +209,30 @@ export default function TopBarDashboard({ isSidebarOpen, setIsSidebarOpen, setIs
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={handleClose}>
-            <AccountCircleIcon sx={{ mr: 1 }} /> Perfil
+          {/* Información del usuario en el menú */}
+          <MenuItem disabled>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="subtitle2" fontWeight="medium">
+                {getUserName()}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {getUserEmail()}
+              </Typography>
+            </Box>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
-            <SettingsIcon sx={{ mr: 1 }} /> Configuración
-          </MenuItem>
+          
           <Divider />
-          <MenuItem onClick={handleClose}>
-            <LogoutIcon sx={{ mr: 1 }} /> Cerrar sesión
+          
+          <MenuItem onClick={handleProfile}>
+            <AccountCircleIcon sx={{ mr: 1, fontSize: 20 }} /> 
+            Mi Perfil
+          </MenuItem>
+          
+          <Divider />
+          
+          <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+            <LogoutIcon sx={{ mr: 1, fontSize: 20 }} /> 
+            Cerrar sesión
           </MenuItem>
         </Menu>
       </Toolbar>

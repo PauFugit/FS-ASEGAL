@@ -8,7 +8,7 @@ const services = [
   {
     title: 'Tramitación Resolución Sanitaria',
     image: {
-      src: '/servicios1.jpg',
+      src: '/servicios1.webp',
       width: 300,
       height: 600
     },
@@ -108,7 +108,6 @@ function CardServicesSection() {
                   borderRadius: 0,
                   border: 'none',
                   marginBottom: '8px',
-                  filter: activeIndex === idx ? 'brightness(0.92)' : 'none',
                   transition: 'filter 0.2s'
                 }}
               />

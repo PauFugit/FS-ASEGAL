@@ -347,7 +347,7 @@ const ServiciosSection = () => {
         {
             title: "BUENAS PRÁCTICAS DE MANIPULACIÓN (BPM)",
             description: "Uno de las exigencias para obtener la RS de tu negocio gastronómico, es contar con un Manual de BPM para garantizar la inocuidad de tus productos.",
-            image: "/cardservicios3.jpg",
+            image: "/cardservicios3.webp",
             steps: [
             <>
                     <span style={{ fontWeight: 'bold' }}>

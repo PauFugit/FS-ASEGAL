@@ -21,7 +21,6 @@ const DashboardHome = () => {
     { title: 'Plantillas', value: '56', icon: <ArticleIcon />, color: 'secondary.main', progress: 45 },
     { title: 'Cursos', value: '23', icon: <SchoolIcon />, color: 'success.main', progress: 60 },
     { title: 'Entradas Blog', value: '89', icon: <EmailIcon />, color: 'warning.main', progress: 30 },
-    { title: 'Servicios', value: '12', icon: <ServicesIcon />, color: 'error.main', progress: 90 },
   ];
 
   return (

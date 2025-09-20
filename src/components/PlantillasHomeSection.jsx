@@ -10,15 +10,15 @@ const templates = [
   },
   {
     title: "Control temperaturas alimentos",
-    image: "/cntactosection.jpg"
+    image: "/cntactosection.webp"
   },
   {
     title: "Control sanitización alimentos",
-    image: "/plantillaextra1.jpg"
+    image: "/plantillaextra1.webp"
   },
   {
     title: "Control de desechos",
-    image: "/plantillaextra2.jpg"
+    image: "/plantillaextra2.webp"
   }
 ];
 
