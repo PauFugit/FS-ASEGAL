@@ -166,9 +166,7 @@ export default function ContactForm() {
           </button>
         </div>
       </form>
-
       {submitError && <p className="mt-4 text-lg text-red-600">{submitError}</p>}
-
       {submitSuccess && (
         <p className="mt-4 text-lg text-custom-green font-bold">
           Formulario enviado con éxito. Gracias por contactarnos.
