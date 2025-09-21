@@ -14,24 +14,16 @@ const PlantillasPageSection = () => {
   }, []);
 
   const loadTemplates = async () => {
-    try {
-      const res = await fetch('/api/recursos');
-      if (res.ok) {
-        const data = await res.json();
-        // Filtrar solo plantillas con PDF
-        const plantillas = data.data.filter(resource => 
-          resource.type === 'PLANTILLA' && resource.pdfUrl
-        );
-        setTemplates(plantillas);
-      } else {
-        console.error('Error loading templates');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
+  try {
+    const res = await fetch('/api/public/recursos');
+    if (res.ok) {
+      const data = await res.json();
+      setResources(data.data);
     }
-  };
+  } catch (error) {
+    console.error('Error:', error);
+  }
+};
 
   const handleOpen = (pdfUrl) => {
     setSelectedPdf(pdfUrl);
