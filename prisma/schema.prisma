@@ -12,6 +12,7 @@ datasource db {
 model Users {
   id                Int       @id @default(autoincrement())
   email             String    @unique(map: "email")
+  supabaseId  String? @unique
   username          String    @unique(map: "username")
   name              String
   lastname          String

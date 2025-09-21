@@ -116,7 +116,7 @@ export default function Login() {
           </Typography>
 
           <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 3 }}>
-            Ingresa tus credenciales para acceder al panel
+            Ingresa las credenciales dadas para acceder al panel
           </Typography>
 
           {error && (
@@ -198,7 +198,7 @@ export default function Login() {
           {/* Información adicional para testing/demo */}
           <Box sx={{ mt: 2, p: 2, backgroundColor: 'grey.50', borderRadius: 1 }}>
             <Typography variant="caption" color="text.secondary">
-              <strong>Demo:</strong> Usa el email y contraseña de tu usuario administrador
+              Usa el email y contraseña de tu usuario administrador
             </Typography>
           </Box>
         </Paper>

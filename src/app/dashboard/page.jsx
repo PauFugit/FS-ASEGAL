@@ -161,13 +161,6 @@ export default function DashboardPage() {
       icon: CoursesIcon,
       color: theme.palette.info.main,
       delay: 300
-    },
-    {
-      title: 'USUARIOS',
-      path: '/dashboard/usuarios',
-      icon: UsersIcon,
-      color: theme.palette.warning.main,
-      delay: 400
     }
   ];
 

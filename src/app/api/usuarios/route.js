@@ -1,8 +1,7 @@
-// app/api/usuarios/route.js
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import bcrypt from 'bcrypt'
-import { createSupabaseServerClient } from '@/lib/supabaseServerClient';
+import { createSupabaseAdminClient } from '@/lib/supabaseServerClient'; // ← Cambiado
 
 // Función para verificar si el usuario es ADMIN (modificada para permitir crear primer usuario)
 async function requireAdmin() {
@@ -127,13 +126,44 @@ export async function POST(request) {
       );
     }
 
-    // Hash de la contraseña
+    // 1. PRIMERO crear el usuario en Supabase Auth
+    const supabase = await createSupabaseServerClient();
+    const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true, // Confirmar el email automáticamente
+      user_metadata: {
+        name: data.name,
+        lastname: data.lastname
+      }
+    });
+
+    if (authError) {
+      console.error('Error creando usuario en Supabase Auth:', authError);
+      return NextResponse.json(
+        { error: 'Error al crear usuario: ' + authError.message },
+        { status: 400 }
+      );
+    }
+
+    // 2. Hash de la contraseña para guardar en tu base de datos
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    // Si es el primer usuario, forzar rol ADMIN
+    // 3. LUEGO crear el usuario en tu base de datos Prisma
     const userData = userCount === 0 
-      ? { ...data, password: hashedPassword, role: 'ADMIN', active: true }
-      : { ...data, password: hashedPassword, active: true };
+      ? { 
+          ...data, 
+          password: hashedPassword, 
+          role: 'ADMIN', 
+          active: true,
+          supabaseId: authData.user.id // Guardar el ID de Supabase
+        }
+      : { 
+          ...data, 
+          password: hashedPassword, 
+          active: true,
+          supabaseId: authData.user.id // Guardar el ID de Supabase
+        };
 
     const user = await prisma.Users.create({
       data: userData
@@ -182,7 +212,7 @@ export async function PUT(request) {
     }
 
     const updatedUser = await prisma.Users.update({
-      where: { id: parseInt(id) },
+      where: { id: id }, // Usar el UUID directamente
       data: updateData
     });
 

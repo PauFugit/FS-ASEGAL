@@ -1,14 +1,14 @@
 'use client';
 
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
+import {
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   TablePagination,
   TextField,
@@ -28,7 +28,8 @@ import {
   CircularProgress,
   Alert,
   Snackbar,
-  IconButton as MuiIconButton
+  IconButton as MuiIconButton,
+  FormHelperText
 } from '@mui/material';
 import {
   Search as SearchIcon,
@@ -36,9 +37,12 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   Person as PersonIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  CloudUpload as UploadIcon,
+  CameraAlt as CameraIcon
 } from '@mui/icons-material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { uploadToSupabase, validateFile } from '@/lib/uploadUtils';
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -50,6 +54,9 @@ export default function UsersPage() {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [editingUser, setEditingUser] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
+  const editFileInputRef = useRef(null);
 
   // Estado para el formulario de nuevo usuario
   const [newUser, setNewUser] = useState({
@@ -60,7 +67,8 @@ export default function UsersPage() {
     role: 'CLIENT',
     username: '',
     phone: '',
-    company: ''
+    company: '',
+    image: ''
   });
 
   // Estado para el formulario de edición
@@ -74,7 +82,8 @@ export default function UsersPage() {
     username: '',
     phone: '',
     company: '',
-    active: true
+    active: true,
+    image: ''
   });
 
   // Cargar usuarios al montar
@@ -105,6 +114,45 @@ export default function UsersPage() {
 
   const showSnackbar = (message, severity = 'success') => {
     setSnackbar({ open: true, message, severity });
+  };
+
+  const handleFileUpload = async (file, isEdit = false) => {
+    const validation = validateFile(file, 5, ['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    if (!validation.valid) {
+      showSnackbar(validation.error, 'error');
+      return null;
+    }
+
+    setUploading(true);
+    try {
+      const url = await uploadToSupabase(file, 'user-avatars');
+      if (!url) {
+        throw new Error('No se recibió URL del servidor');
+      }
+
+      showSnackbar('Imagen subida exitosamente');
+      return url;
+    } catch (error) {
+      console.error('Upload error:', error);
+      showSnackbar(`Error subiendo imagen: ${error.message}`, 'error');
+      return null;
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleImageUpload = async (event, isEdit = false) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imageUrl = await handleFileUpload(file, isEdit);
+    if (imageUrl) {
+      if (isEdit) {
+        setEditUser(prev => ({ ...prev, image: imageUrl }));
+      } else {
+        setNewUser(prev => ({ ...prev, image: imageUrl }));
+      }
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -148,7 +196,8 @@ export default function UsersPage() {
       role: 'CLIENT',
       username: '',
       phone: '',
-      company: ''
+      company: '',
+      image: ''
     });
   };
 
@@ -159,12 +208,13 @@ export default function UsersPage() {
       name: user.name.split(' ')[0] || '',
       lastname: user.name.split(' ').slice(1).join(' ') || '',
       email: user.email,
-      password: '', // Dejar vacío para no cambiar la contraseña
+      password: '',
       role: user.role,
       username: user.username,
       phone: user.phone || '',
       company: user.company || '',
-      active: user.status === 'active'
+      active: user.status === 'active',
+      image: user.image || ''
     });
     setOpenEditDialog(true);
   };
@@ -182,7 +232,8 @@ export default function UsersPage() {
       username: '',
       phone: '',
       company: '',
-      active: true
+      active: true,
+      image: ''
     });
   };
 
@@ -213,7 +264,7 @@ export default function UsersPage() {
 
   const handleUpdateUser = async () => {
     try {
-      // Preparar datos para enviar (si password está vacío, no incluirlo)
+      // Preparar datos para enviar
       const updateData = { ...editUser };
       if (!updateData.password) {
         delete updateData.password;
@@ -229,7 +280,7 @@ export default function UsersPage() {
 
       if (res.ok) {
         const updatedUser = await res.json();
-        setUsers(prev => prev.map(user => 
+        setUsers(prev => prev.map(user =>
           user.id === updatedUser.id ? updatedUser : user
         ));
         handleCloseEditDialog();
@@ -244,18 +295,19 @@ export default function UsersPage() {
     }
   };
 
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async (user) => {
     if (!confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
       return;
     }
 
     try {
-      const res = await fetch(`/api/usuarios/${userId}`, {
+      // Usar el email en lugar del ID
+      const res = await fetch(`/api/usuarios/${user.email}`, {
         method: 'DELETE',
       });
 
       if (res.ok) {
-        setUsers(prev => prev.filter(user => user.id !== userId));
+        setUsers(prev => prev.filter(u => u.id !== user.id));
         showSnackbar('Usuario eliminado exitosamente');
       } else {
         const error = await res.json();
@@ -271,6 +323,32 @@ export default function UsersPage() {
     setSnackbar(prev => ({ ...prev, open: false }));
   };
 
+  const getAvatarContent = (user, size = 40) => {
+    if (user.image) {
+      return (
+        <Avatar
+          src={user.image}
+          sx={{ width: size, height: size }}
+        />
+      );
+    }
+
+    const initials = user.avatar || 'U';
+    return (
+      <Avatar
+        sx={{
+          width: size,
+          height: size,
+          bgcolor: 'primary.main',
+          color: 'white',
+          fontSize: size * 0.4
+        }}
+      >
+        {initials}
+      </Avatar>
+    );
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -284,8 +362,8 @@ export default function UsersPage() {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">Gestión de Usuarios</Typography>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<AddIcon />}
           onClick={handleOpenDialog}
           sx={{ textTransform: 'none', borderRadius: 2 }}
@@ -316,6 +394,7 @@ export default function UsersPage() {
         <Table>
           <TableHead sx={{ backgroundColor: 'grey.100' }}>
             <TableRow>
+              <TableCell>Avatar</TableCell>
               <TableCell>Usuario</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Username</TableCell>
@@ -330,48 +409,48 @@ export default function UsersPage() {
               .map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar sx={{ bgcolor: 'primary.main', color: 'white' }}>
-                        {user.avatar}
-                      </Avatar>
-                      <Box>
-                        <Typography variant="body1">{user.name}</Typography>
+                    {getAvatarContent(user)}
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="body1">{user.name}</Typography>
+                      {user.company && (
                         <Typography variant="body2" color="textSecondary">
                           {user.company}
                         </Typography>
-                      </Box>
+                      )}
                     </Box>
                   </TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.username}</TableCell>
                   <TableCell>
-                    <Chip 
-                      label={user.role} 
+                    <Chip
+                      label={user.role}
                       size="small"
                       color={user.role === 'ADMIN' ? 'primary' : 'default'}
                       sx={{ textTransform: 'capitalize' }}
                     />
                   </TableCell>
                   <TableCell>
-                    <Chip 
-                      label={user.status} 
+                    <Chip
+                      label={user.status}
                       size="small"
                       color={user.status === 'active' ? 'success' : 'error'}
                       sx={{ textTransform: 'capitalize' }}
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="primary"
                       onClick={() => handleOpenEditDialog(user)}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="error"
-                      onClick={() => handleDeleteUser(user.id)}
+                      onClick={() => handleDeleteUser(user)}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -403,6 +482,35 @@ export default function UsersPage() {
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            {/* Upload de imagen */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+              {getAvatarContent(
+                { image: newUser.image, avatar: (newUser.name[0] || 'U') + (newUser.lastname[0] || '') },
+                80
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, false)}
+                style={{ display: 'none' }}
+              />
+              <Button
+                variant="outlined"
+                startIcon={<UploadIcon />}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                sx={{ mt: 1 }}
+              >
+                {uploading ? 'Subiendo...' : 'Seleccionar imagen'}
+              </Button>
+              {newUser.image && (
+                <FormHelperText sx={{ color: 'success.main' }}>
+                  ✓ Imagen seleccionada
+                </FormHelperText>
+              )}
+            </Box>
+
             <TextField
               label="Nombre *"
               name="name"
@@ -477,9 +585,9 @@ export default function UsersPage() {
           <Button onClick={handleCloseDialog} color="secondary">
             Cancelar
           </Button>
-          <Button 
-            onClick={handleCreateUser} 
-            variant="contained" 
+          <Button
+            onClick={handleCreateUser}
+            variant="contained"
             color="primary"
             disabled={!newUser.name || !newUser.email || !newUser.password || !newUser.username}
           >
@@ -500,6 +608,35 @@ export default function UsersPage() {
         </DialogTitle>
         <DialogContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+            {/* Upload de imagen para edición */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}>
+              {getAvatarContent(
+                { image: editUser.image, avatar: (editUser.name[0] || 'U') + (editUser.lastname[0] || '') },
+                80
+              )}
+              <input
+                ref={editFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageUpload(e, true)}
+                style={{ display: 'none' }}
+              />
+              <Button
+                variant="outlined"
+                startIcon={<UploadIcon />}
+                onClick={() => editFileInputRef.current?.click()}
+                disabled={uploading}
+                sx={{ mt: 1 }}
+              >
+                {uploading ? 'Subiendo...' : 'Cambiar imagen'}
+              </Button>
+              {editUser.image && (
+                <FormHelperText sx={{ color: 'success.main' }}>
+                  ✓ Imagen seleccionada
+                </FormHelperText>
+              )}
+            </Box>
+
             <TextField
               label="Nombre *"
               name="name"
@@ -585,9 +722,9 @@ export default function UsersPage() {
           <Button onClick={handleCloseEditDialog} color="secondary">
             Cancelar
           </Button>
-          <Button 
-            onClick={handleUpdateUser} 
-            variant="contained" 
+          <Button
+            onClick={handleUpdateUser}
+            variant="contained"
             color="primary"
             disabled={!editUser.name || !editUser.email || !editUser.username}
           >

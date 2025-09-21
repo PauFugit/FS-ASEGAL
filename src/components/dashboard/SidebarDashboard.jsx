@@ -26,7 +26,6 @@ import Link from 'next/link';
 
 const menuItems = [
   { text: 'Panel', icon: <DashboardIcon />, path: '/dashboard' },
-  { text: 'Usuarios', icon: <PeopleIcon />, path: '/dashboard/usuarios' },
   { text: 'Plantillas', icon: <ArticleIcon />, path: '/dashboard/plantillas' },
   { text: 'Cursos', icon: <SchoolIcon />, path: '/dashboard/cursos' },
   { text: 'Blog', icon: <EmailIcon />, path: '/dashboard/blog' },
