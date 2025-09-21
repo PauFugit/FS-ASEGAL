@@ -1,32 +1,22 @@
-// app/api/public/blog/route.js
+// app/api/public/blog/route.js - CORREGIDO
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma'; // Importar desde el archivo correcto
 
-// GET - Obtener todos los posts del blog (PÚBLICO)
 export async function GET() {
   try {
     const posts = await prisma.blog.findMany({
       where: {
-        status: 'publicado' // Filtrar solo posts publicados
+        status: 'publicado'
       },
-      orderBy: { createdAt: 'desc' },
-      select: {
-        id: true,
-        title: true,
-        author: true,
-        summary: true,
-        link: true,
-        bodyText: true,
-        references: true,
-        imageUrl: true,
-        pdfUrl: true,
-        createdAt: true
-      }
+      orderBy: { createdAt: 'desc' }
     });
 
-    return NextResponse.json({ data: posts }, { status: 200 });
+    return NextResponse.json(posts); // Devuelve el array directamente
   } catch (error) {
     console.error('Error fetching public blog posts:', error);
-    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Error del servidor' }, 
+      { status: 500 }
+    );
   }
 }

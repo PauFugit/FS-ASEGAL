@@ -24,7 +24,7 @@ const Navbar = () => {
     const pathname = usePathname();
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [hoveredIndex, setHoveredIndex] = React.useState(null);
-    
+
     // Usamos useMediaQuery con noSsr para evitar discrepancias
     const isMobile = useMediaQuery(theme.breakpoints.down('md'), { noSsr: true });
 
@@ -80,15 +80,14 @@ const Navbar = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    <Link href="/" passHref legacyBehavior prefetch>
+                    <Link href="/" passHref prefetch>
                         <Box
                             component="a"
                             sx={{
-                                cursor: 'pointer',
-                                width: 300,
-                                height: '100%',
                                 display: 'flex',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                textDecoration: 'none',
+                                color: 'inherit'
                             }}
                         >
                             <Image
@@ -127,7 +126,7 @@ const Navbar = () => {
                                             color: '#003366',
                                             px: 2.5,
                                             boxShadow: 'none',
-                                            fontSize: { xs: 14, md:12, xl: 18 },
+                                            fontSize: { xs: 14, md: 12, xl: 18 },
                                             transition: 'border 0.2s, background 0.2s, color 0.2s',
                                             '&:hover': {
                                                 border: '2px solid #F2AC57',
@@ -158,7 +157,7 @@ const Navbar = () => {
                                     color: 'white',
                                     borderRadius: '24px',
                                     textTransform: 'none',
-                                    fontSize: { xs: 14, md:12, xl: 18 },
+                                    fontSize: { xs: 14, md: 12, xl: 18 },
                                     fontWeight: 500,
                                     px: 3,
                                     boxShadow: '0px 2px 4px 0px #0000001A',
@@ -241,7 +240,7 @@ const Navbar = () => {
                                                 borderRadius: '24px',
                                                 textTransform: 'none',
                                                 fontWeight: 500,
-                                                fontSize: { xs: 14, md:12, xl: 18 },
+                                                fontSize: { xs: 14, md: 12, xl: 18 },
                                                 px: 3,
                                                 boxShadow: '0px 2px 4px 0px #0000001A',
                                                 '&:hover': {

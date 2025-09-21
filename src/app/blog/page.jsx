@@ -23,6 +23,7 @@ function Page() {
   const [startIdx, setStartIdx] = useState(0);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Cards por página según tamaño de pantalla
   const CARDS_PER_PAGE = 4;
@@ -32,12 +33,14 @@ function Page() {
     const loadPosts = async () => {
       try {
         const res = await fetch('/api/public/blog');
-        if (res.ok) {
-          const data = await res.json();
-          setPosts(data);
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
+        const data = await res.json();
+        setPosts(data);
       } catch (error) {
         console.error('Error loading posts:', error);
+        setError('Error al cargar los posts');
       } finally {
         setLoading(false);
       }
@@ -45,6 +48,30 @@ function Page() {
 
     loadPosts();
   }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={{ textAlign: 'center', py: 8 }}>
+        <Typography color="error">{error}</Typography>
+        <Button 
+          variant="contained" 
+          onClick={() => window.location.reload()}
+          sx={{ mt: 2 }}
+        >
+          Reintentar
+        </Button>
+      </Box>
+    );
+  }
+
 
   // Lógica para flechas
   const canGoBack = startIdx > 0;

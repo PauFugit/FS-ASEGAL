@@ -1,12 +1,14 @@
-
+// lib/prisma.js - CORREGIDO
 import { PrismaClient } from '@prisma/client'
 
-const globalForPrisma = global
+const globalForPrisma = globalThis; // Usar globalThis en lugar de global
 
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient()
+const prisma = globalForPrisma.prisma || new PrismaClient({
+  log: ['query', 'error', 'warn'],
+});
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
+  globalForPrisma.prisma = prisma;
 }
+
+export { prisma };

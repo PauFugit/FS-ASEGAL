@@ -14,16 +14,20 @@ const PlantillasPageSection = () => {
   }, []);
 
   const loadTemplates = async () => {
-  try {
-    const res = await fetch('/api/public/recursos');
-    if (res.ok) {
-      const data = await res.json();
-      setResources(data.data);
+    try {
+      const res = await fetch('/api/public/recursos');
+      if (res.ok) {
+        const data = await res.json();
+        // Filtrar solo plantillas
+        const plantillas = data.data.filter(resource => resource.type === 'PLANTILLA');
+        setTemplates(plantillas);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  };
 
   const handleOpen = (pdfUrl) => {
     setSelectedPdf(pdfUrl);
@@ -94,7 +98,7 @@ const PlantillasPageSection = () => {
               alignItems: 'center',
               gap: 0.5
             }}>
-
+              {/* Puedes agregar un icono de PDF aquí si quieres */}
             </Box>
           </Box>
           
@@ -115,8 +119,6 @@ const PlantillasPageSection = () => {
               {template.name}
             </Typography>
             
-            
-            
             <Box sx={{ 
               display: 'flex', 
               justifyContent: 'center', 
@@ -124,7 +126,7 @@ const PlantillasPageSection = () => {
               opacity: isHovered ? 1 : 0.7,
               transition: 'opacity 0.3s ease'
             }}>
-        
+              {/* Espacio para botones adicionales si los necesitas */}
             </Box>
           </CardContent>
         </Card>

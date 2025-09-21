@@ -1,4 +1,4 @@
-// app/api/blog/[id]/route.js - VERSIÓN CORREGIDA
+// app/api/blog/[id]/route.js - 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabaseServerClient';

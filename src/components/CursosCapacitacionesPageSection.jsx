@@ -11,17 +11,33 @@ const CursosCapacitacionesSection = () => {
 
   useEffect(() => {
     loadCourses();
+  }, []);
+
+  useEffect(() => {
+    const updateVisibleCourses = () => {
+      const width = window.innerWidth;
+      let visibleCount = 3; // Default para desktop
+      
+      if (width < 600) { // Mobile
+        visibleCount = 1;
+      } else if (width < 900) { // Tablet
+        visibleCount = 2;
+      }
+      
+      setVisibleCourses(courses.slice(0, visibleCount));
+    };
+
     updateVisibleCourses();
     window.addEventListener('resize', updateVisibleCourses);
     
     return () => {
       window.removeEventListener('resize', updateVisibleCourses);
     };
-  }, []);
+  }, [courses]);
 
   const loadCourses = async () => {
     try {
-      const res = await fetch('/api/recursos');
+      const res = await fetch('/api/public/recursos');
       if (res.ok) {
         const data = await res.json();
         // Filtrar solo capacitaciones
@@ -36,23 +52,6 @@ const CursosCapacitacionesSection = () => {
       setLoading(false);
     }
   };
-
-  const updateVisibleCourses = () => {
-    const width = window.innerWidth;
-    let visibleCount = 3; // Default para desktop
-    
-    if (width < 600) { // Mobile
-      visibleCount = 1;
-    } else if (width < 900) { // Tablet
-      visibleCount = 2;
-    }
-    
-    setVisibleCourses(courses.slice(0, visibleCount));
-  };
-
-  useEffect(() => {
-    updateVisibleCourses();
-  }, [courses]);
 
   const handleOpen = (course) => {
     setSelectedCourse(course);
@@ -208,7 +207,6 @@ const CursosCapacitacionesSection = () => {
             </Stack>
           </Box>
 
-          {/* Línea decorativa inferior y botón "Leer más" */}
           <Box sx={{ 
             display: 'flex', 
             flexDirection: { xs: 'column', sm: 'row' }, 
@@ -251,7 +249,6 @@ const CursosCapacitacionesSection = () => {
         </Box>
       )}
 
-      {/* Modal para agendar sesión */}
       <Dialog
         open={open}
         onClose={handleClose}
