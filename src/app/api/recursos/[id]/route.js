@@ -25,14 +25,13 @@ export async function GET(request, { params }) {
       );
     }
     
-    // PARA TU FRONTEND: Devuelve { data: resource }
-    return NextResponse.json({ data: resource }, { status: 200 });
+    // ✅ Devuelve el recurso directamente (sin { data: ... })
+    return NextResponse.json(resource);
   } catch (error) {
     console.error('Error fetching resource:', error);
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 });
   }
 }
-
 // PUT - Actualizar recurso
 export async function PUT(request, { params }) {
   try {

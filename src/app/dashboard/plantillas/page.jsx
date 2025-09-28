@@ -1,14 +1,14 @@
 'use client';
 
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
+import {
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   TablePagination,
   TextField,
@@ -75,8 +75,8 @@ export default function TemplatesPage() {
     try {
       const res = await fetch('/api/recursos');
       if (res.ok) {
-      const resources = await res.json(); // ya es un array
-      const plantillas = resources.filter(resource => resource.type === 'PLANTILLA');
+        const resources = await res.json();
+        const plantillas = resources.filter(resource => resource.type === 'PLANTILLA');
         setResources(plantillas);
       } else {
         showSnackbar('Error al cargar plantillas', 'error');
@@ -95,10 +95,10 @@ export default function TemplatesPage() {
 
   const handleFileUpload = async (file, type) => {
     const maxSize = type === 'image' ? 5 : 10;
-    const allowedTypes = type === 'image' 
-      ? ['image/jpeg', 'image/png', 'image/webp'] 
+    const allowedTypes = type === 'image'
+      ? ['image/jpeg', 'image/png', 'image/webp']
       : ['application/pdf'];
-    
+
     const validation = validateFile(file, maxSize, allowedTypes);
     if (!validation.valid) {
       showSnackbar(validation.error, 'error');
@@ -109,11 +109,11 @@ export default function TemplatesPage() {
     try {
       const bucketName = type === 'image' ? 'blog-images' : 'blog-pdfs';
       const url = await uploadToSupabase(file, bucketName);
-      
+
       if (!url) {
         throw new Error('No se recibió URL del servidor');
       }
-      
+
       showSnackbar(`${type === 'image' ? 'Imagen' : 'PDF'} subido exitosamente`);
       return url;
     } catch (error) {
@@ -187,7 +187,7 @@ export default function TemplatesPage() {
 
       if (res.ok) {
         if (editingResource) {
-          setResources(prev => prev.map(resource => 
+          setResources(prev => prev.map(resource =>
             resource.id === editingResource.id ? resultResource : resource
           ));
           showSnackbar('Plantilla actualizada exitosamente');
@@ -195,7 +195,7 @@ export default function TemplatesPage() {
           setResources(prev => [resultResource, ...prev]);
           showSnackbar('Plantilla creada exitosamente');
         }
-        
+
         setOpenDialog(false);
         resetForm();
       } else {
@@ -290,8 +290,8 @@ export default function TemplatesPage() {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">Gestión de Plantillas</Typography>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenDialog(true)}
           sx={{ textTransform: 'none', borderRadius: 2 }}
@@ -341,14 +341,14 @@ export default function TemplatesPage() {
                   </TableCell>
                   <TableCell>
                     {resource.pdfUrl ? (
-                      <Chip 
+                      <Chip
                         icon={<PdfIcon />}
                         label="PDF Adjunto"
                         color="success"
                         size="small"
                       />
                     ) : (
-                      <Chip 
+                      <Chip
                         label="Sin PDF"
                         color="default"
                         size="small"
@@ -359,15 +359,15 @@ export default function TemplatesPage() {
                     {new Date(resource.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="primary"
                       onClick={() => handleEditResource(resource)}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="error"
                       onClick={() => handleDeleteResource(resource.id)}
                     >
@@ -407,14 +407,14 @@ export default function TemplatesPage() {
             <TextField
               label="Nombre *"
               value={resourceData.name}
-              onChange={(e) => setResourceData({...resourceData, name: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, name: e.target.value })}
               fullWidth
               required
             />
             <TextField
               label="Resumen (Opcional)"
               value={resourceData.summary}
-              onChange={(e) => setResourceData({...resourceData, summary: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, summary: e.target.value })}
               multiline
               rows={2}
               fullWidth
@@ -422,7 +422,7 @@ export default function TemplatesPage() {
             <TextField
               label="Descripción (Opcional)"
               value={resourceData.description}
-              onChange={(e) => setResourceData({...resourceData, description: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, description: e.target.value })}
               multiline
               rows={3}
               fullWidth
@@ -447,8 +447,8 @@ export default function TemplatesPage() {
                 disabled={uploading.image}
                 fullWidth
               >
-                {uploading.image ? 'Subiendo...' : 
-                 resourceData.imageUrl ? 'Imagen seleccionada' : 'Seleccionar imagen'}
+                {uploading.image ? 'Subiendo...' :
+                  resourceData.imageUrl ? 'Imagen seleccionada' : 'Seleccionar imagen'}
               </Button>
               {resourceData.imageUrl && (
                 <FormHelperText sx={{ color: 'success.main' }}>
@@ -476,8 +476,8 @@ export default function TemplatesPage() {
                 disabled={uploading.pdf}
                 fullWidth
               >
-                {uploading.pdf ? 'Subiendo...' : 
-                 resourceData.pdfUrl ? 'PDF seleccionado' : 'Seleccionar PDF'}
+                {uploading.pdf ? 'Subiendo...' :
+                  resourceData.pdfUrl ? 'PDF seleccionado' : 'Seleccionar PDF'}
               </Button>
               {resourceData.pdfUrl && (
                 <FormHelperText sx={{ color: 'success.main' }}>
@@ -489,8 +489,8 @@ export default function TemplatesPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button 
-            onClick={handleCreateResource} 
+          <Button
+            onClick={handleCreateResource}
             variant="contained"
             disabled={!resourceData.name || !resourceData.imageUrl || !resourceData.pdfUrl || uploading.image || uploading.pdf}
           >
@@ -503,11 +503,11 @@ export default function TemplatesPage() {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
-        onClose={() => setSnackbar({...snackbar, open: false})}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Alert
-          onClose={() => setSnackbar({...snackbar, open: false})}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           sx={{ width: '100%' }}
         >

@@ -1,14 +1,14 @@
 'use client';
 
-import { 
-  Box, 
-  Typography, 
-  Paper, 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
+import {
+  Box,
+  Typography,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   TablePagination,
   TextField,
@@ -72,7 +72,7 @@ export default function CoursesPage() {
     try {
       const res = await fetch('/api/recursos');
       if (res.ok) {
-      const resources = await res.json(); // ya es un array
+        const resources = await res.json();
         const capacitaciones = resources.filter(resource => resource.type === 'CAPACITACION');
         setResources(capacitaciones);
       } else {
@@ -103,7 +103,7 @@ export default function CoursesPage() {
       if (!url) {
         throw new Error('No se recibió URL del servidor');
       }
-      
+
       showSnackbar('Imagen subida exitosamente');
       return url;
     } catch (error) {
@@ -162,7 +162,7 @@ export default function CoursesPage() {
 
       if (res.ok) {
         if (editingResource) {
-          setResources(prev => prev.map(resource => 
+          setResources(prev => prev.map(resource =>
             resource.id === editingResource.id ? resultResource : resource
           ));
           showSnackbar('Curso actualizado exitosamente');
@@ -170,7 +170,7 @@ export default function CoursesPage() {
           setResources(prev => [resultResource, ...prev]);
           showSnackbar('Curso creado exitosamente');
         }
-        
+
         setOpenDialog(false);
         resetForm();
       } else {
@@ -263,8 +263,8 @@ export default function CoursesPage() {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" fontWeight="bold">Gestión de Cursos</Typography>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setOpenDialog(true)}
           sx={{ textTransform: 'none', borderRadius: 2 }}
@@ -319,8 +319,8 @@ export default function CoursesPage() {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Chip 
-                      label={resource.type} 
+                    <Chip
+                      label={resource.type}
                       size="small"
                       color="primary"
                       sx={{ textTransform: 'capitalize' }}
@@ -330,15 +330,15 @@ export default function CoursesPage() {
                     {new Date(resource.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="primary"
                       onClick={() => handleEditResource(resource)}
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
-                    <IconButton 
-                      size="small" 
+                    <IconButton
+                      size="small"
                       color="error"
                       onClick={() => handleDeleteResource(resource.id)}
                     >
@@ -378,14 +378,14 @@ export default function CoursesPage() {
             <TextField
               label="Nombre *"
               value={resourceData.name}
-              onChange={(e) => setResourceData({...resourceData, name: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, name: e.target.value })}
               fullWidth
               required
             />
             <TextField
               label="Resumen"
               value={resourceData.summary}
-              onChange={(e) => setResourceData({...resourceData, summary: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, summary: e.target.value })}
               multiline
               rows={3}
               fullWidth
@@ -394,7 +394,7 @@ export default function CoursesPage() {
             <TextField
               label="Descripción"
               value={resourceData.description}
-              onChange={(e) => setResourceData({...resourceData, description: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, description: e.target.value })}
               multiline
               rows={4}
               fullWidth
@@ -402,14 +402,14 @@ export default function CoursesPage() {
             <TextField
               label="Enlace del curso"
               value={resourceData.linkUrl}
-              onChange={(e) => setResourceData({...resourceData, linkUrl: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, linkUrl: e.target.value })}
               fullWidth
               placeholder="https://ejemplo.com/curso"
             />
             <TextField
               label="Referencias"
               value={resourceData.references}
-              onChange={(e) => setResourceData({...resourceData, references: e.target.value})}
+              onChange={(e) => setResourceData({ ...resourceData, references: e.target.value })}
               multiline
               rows={2}
               fullWidth
@@ -434,8 +434,8 @@ export default function CoursesPage() {
                 disabled={uploading}
                 fullWidth
               >
-                {uploading ? 'Subiendo...' : 
-                 resourceData.imageUrl ? 'Imagen seleccionada' : 'Seleccionar imagen'}
+                {uploading ? 'Subiendo...' :
+                  resourceData.imageUrl ? 'Imagen seleccionada' : 'Seleccionar imagen'}
               </Button>
               {resourceData.imageUrl && (
                 <FormHelperText sx={{ color: 'success.main' }}>
@@ -447,10 +447,10 @@ export default function CoursesPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button 
-            onClick={handleCreateResource} 
+          <Button
+            onClick={handleCreateResource}
             variant="contained"
-            disabled={!resourceData.name ||  !resourceData.imageUrl || uploading}
+            disabled={!resourceData.name || !resourceData.imageUrl || uploading}
           >
             {editingResource ? 'Actualizar Curso' : 'Crear Curso'}
           </Button>
@@ -461,11 +461,11 @@ export default function CoursesPage() {
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
-        onClose={() => setSnackbar({...snackbar, open: false})}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <Alert
-          onClose={() => setSnackbar({...snackbar, open: false})}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           sx={{ width: '100%' }}
         >
