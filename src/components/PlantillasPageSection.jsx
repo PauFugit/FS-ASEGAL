@@ -15,11 +15,11 @@ const PlantillasPageSection = () => {
 
   const loadTemplates = async () => {
     try {
-      const res = await fetch('/api/public/recursos');
+      const res = await fetch('/api/public/plantillas');
       if (res.ok) {
         const data = await res.json();
         // Filtrar solo plantillas
-        const plantillas = data.data.filter(resource => resource.type === 'PLANTILLA');
+        const plantillas = data; 
         setTemplates(plantillas);
       }
     } catch (error) {

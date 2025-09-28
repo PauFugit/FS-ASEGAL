@@ -75,9 +75,8 @@ export default function TemplatesPage() {
     try {
       const res = await fetch('/api/recursos');
       if (res.ok) {
-        const data = await res.json();
-        // Filtrar solo plantillas
-        const plantillas = data.data.filter(resource => resource.type === 'PLANTILLA');
+      const resources = await res.json(); // ya es un array
+      const plantillas = resources.filter(resource => resource.type === 'PLANTILLA');
         setResources(plantillas);
       } else {
         showSnackbar('Error al cargar plantillas', 'error');

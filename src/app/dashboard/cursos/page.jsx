@@ -72,9 +72,8 @@ export default function CoursesPage() {
     try {
       const res = await fetch('/api/recursos');
       if (res.ok) {
-        const data = await res.json();
-        // Filtrar solo capacitaciones
-        const capacitaciones = data.data.filter(resource => resource.type === 'CAPACITACION');
+      const resources = await res.json(); // ya es un array
+        const capacitaciones = resources.filter(resource => resource.type === 'CAPACITACION');
         setResources(capacitaciones);
       } else {
         showSnackbar('Error al cargar cursos', 'error');

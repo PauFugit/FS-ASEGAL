@@ -37,11 +37,11 @@ const CursosCapacitacionesSection = () => {
 
   const loadCourses = async () => {
     try {
-      const res = await fetch('/api/public/recursos');
+    const res = await fetch('/api/public/cursos');
       if (res.ok) {
         const data = await res.json();
         // Filtrar solo capacitaciones
-        const capacitaciones = data.data.filter(resource => resource.type === 'CAPACITACION');
+        const capacitaciones = data; 
         setCourses(capacitaciones);
       } else {
         console.error('Error loading courses');

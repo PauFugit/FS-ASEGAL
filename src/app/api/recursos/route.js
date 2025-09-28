@@ -7,18 +7,15 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const supabase = await createSupabaseServerClient();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    
-    if (authError || !session) {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
-
     const resources = await prisma.resources.findMany({
       orderBy: { createdAt: 'desc' }
     });
-
-    // PARA TU FRONTEND: Devuelve { data: resources }
-    return NextResponse.json({ data: resources }, { status: 200 });
+    // ✅ Devuelve el array directamente (como hace el blog)
+    return NextResponse.json(resources);
   } catch (error) {
     console.error('Error fetching resources:', error);
     return NextResponse.json({ error: 'Error del servidor' }, { status: 500 });
