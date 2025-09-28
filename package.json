@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "vercel-build": "node -e \"console.log('=== ULTIMATE DEBUG ==='); console.log('NODE_ENV:', process.env.NODE_ENV); console.log('DB_URL exists:', !!process.env.DATABASE_URL); console.log('DB_URL starts with:', process.env.DATABASE_URL?.substring(0, 50)); console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);\" && prisma generate && prisma db push && next build"
-  },
+    "vercel-build": "node -e \"console.log('=== ULTIMATE DEBUG ==='); console.log('NODE_ENV:', process.env.NODE_ENV); console.log('POSTGRES_URL exists:', !!process.env.POSTGRES_URL); console.log('POSTGRES_URL starts with:', process.env.POSTGRES_URL?.substring(0, 50)); console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);\" && prisma generate && prisma db push && next build"
+   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

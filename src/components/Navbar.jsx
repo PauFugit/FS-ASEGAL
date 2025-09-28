@@ -80,9 +80,8 @@ const Navbar = () => {
                         overflow: 'hidden'
                     }}
                 >
-                    <Link href="/" passHref prefetch>
+                    <Link href="/" prefetch>
                         <Box
-                            component="a"
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -113,9 +112,8 @@ const Navbar = () => {
                         {menuLinks.map((link) => {
                             const isActive = pathname === link.href || pathname.startsWith(link.href + '/');
                             return (
-                                <Link href={link.href} passHref legacyBehavior prefetch key={link.href}>
+                                <Link href={link.href} prefetch key={link.href}>
                                     <Button
-                                        component="a"
                                         color="inherit"
                                         sx={{
                                             textTransform: 'none',
