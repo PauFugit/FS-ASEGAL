@@ -53,9 +53,6 @@ async function setupStorage() {
   }
 }
 
-// Ejecutar si se llama directamente
-if (typeof window !== 'undefined') {
-  setupStorage();
-}
+
 
 export { setupStorage };
