@@ -7,7 +7,6 @@ import { supabase } from '@/lib/supabaseClient';
 import SidebarDashboard from '@/components/dashboard/SidebarDashboard';
 import TopBarDashboard from '@/components/dashboard/TopBarDashboard';
 import Providers from '@/providers/Providers';
-import StorageSetup from '@/components/StorageSetup';
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -41,7 +40,6 @@ export default function DashboardLayout({ children }) {
     <html lang="en">
       <body style={{ margin: 0 }}>
         <Providers>
-          <StorageSetup /> 
           <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <TopBarDashboard 
