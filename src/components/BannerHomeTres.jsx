@@ -71,7 +71,7 @@ function BannerHomeTres() {
           }}
         >
           ATENCIÓN PRESENCIAL<br />
-          I Y II REGIÓN
+          I Y IV REGIÓN
         </Typography>
       </Box>
     </Box>

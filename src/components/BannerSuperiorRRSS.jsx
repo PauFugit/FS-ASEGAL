@@ -44,7 +44,7 @@ function BannerSuperiorRRSS() {
             textTransform: 'uppercase',
           }}
         >
-          ATENCIÓN <b>PRESENCIAL I Y II REGIÓN</b>
+          ATENCIÓN <b>PRESENCIAL I Y IV REGIÓN</b>
         </Typography>
         <Typography
           variant="caption"

@@ -322,7 +322,7 @@ function ContactoSection() {
             variant="body1"
             sx={{ fontWeight: 500, fontSize: { xs: '1rem', sm: '1.1rem' } }}
           >
-            +56 9 9492 8092
+            +56 9 994928092
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#fff', gap: 1 }}>

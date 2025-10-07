@@ -58,36 +58,48 @@ function AboutUsSection() {
           sx={{
             color: '#18148C',
             maxWidth: 1000,
+            minWidth: { md: 0 },
+            flexBasis: { md: '60%' },
+            flexGrow: 1,
+            flexShrink: 1,
             fontSize: { xs: 16, sm: 18, md: 20, xl: 25 },
             py: { xs: 2, md: 4 },
-            px: { xs: 0, md: 4, lg: 20 },
-            textAlign: { xs: 'center', md: 'left' }
+            px: { xs: 0, md: 4, lg: 8 },
+            textAlign: { xs: 'center', md: 'left' },
+            mb: { xs: 2, md: 0 }
           }}
         >
           Profesionales expertas en seguridad alimentaria y cumplimiento regulatorio, comprometidas en potenciar tus proyectos gastronómicos para alcanzar nuevos mercados con productos confiables y seguros para tus clientes.
         </Typography>
         
-        {/* Imagen superior derecha - Solo visible en desktop */}
-        <Box sx={{ 
-          flex: 1, 
-          display: { xs: 'none', md: 'flex' }, 
-          flexDirection: 'column', 
-          alignItems: 'flex-end', 
-          position: 'relative', 
-          minWidth: 250 
-        }}>
+        {/* Imagen superior derecha */}
+        <Box
+          sx={{
+            flexBasis: { md: '40%' },
+            flexShrink: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: { xs: 'center', md: 'flex-end' },
+            position: 'relative',
+            minWidth: { xs: '100%', md: 250 },
+            maxWidth: { xs: '100%', md: 420, lg: 520 },
+            ml: { xs: 0, md: 4 },
+            mb: { xs: 2, md: 0 }
+          }}
+        >
           <Box
             component="img"
             src={images[3]}
             alt="aboutus"
             sx={{
-              width: { md: 400, lg: 500 },
-              height: { md: 200, lg: 250 },
+              width: { xs: '90%', sm: 320, md: 400, lg: 500 },
+              maxWidth: '100%',
+              height: { xs: 140, sm: 180, md: 200, lg: 250 },
               borderRadius: 4,
               objectFit: 'cover',
               boxShadow: 2,
               mb: 1,
-              ml: 4
+              mx: { xs: 'auto', md: 0 }
             }}
           />
         </Box>
@@ -137,8 +149,9 @@ function AboutUsSection() {
         {/* Columna de imágenes - Versión desktop (vertical) */}
         <Box sx={{ 
           position: 'relative', 
-          mr: 4, 
-          minWidth: 170,
+          mr: { xs: 0, md: 4 }, 
+          minWidth: { xs: '100%', md: 170 },
+          width: { xs: '100%', md: 'auto' },
           display: { xs: 'none', md: 'block' }
         }}>
           <Box sx={{ 
@@ -152,8 +165,8 @@ function AboutUsSection() {
               <Box
                 key={index}
                 sx={{
-                  width: 300,
-                  height: 150,
+                  width: { md: 220, lg: 300 },
+                  height: { md: 110, lg: 150 },
                   borderRadius: 3,
                   overflow: 'hidden',
                   position: 'relative',
@@ -195,8 +208,9 @@ function AboutUsSection() {
           </Typography>
           <Box sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-            gap: { xs: 1, md: 2 }
+            gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr' },
+            gap: { xs: 1, sm: 2, md: 3 },
+            width: '100%'
           }}>
             {features.map((feature, idx) => (
               <Box key={feature} sx={{ 
@@ -205,17 +219,19 @@ function AboutUsSection() {
                 mb: { xs: 1, md: 2 },
                 p: 1,
                 backgroundColor: { xs: '#f5f9ff', md: 'transparent' },
-                borderRadius: 2
+                borderRadius: 2,
+                minWidth: 0
               }}>
                 <CheckCircleIcon sx={{ 
                   color: '#43b97f', 
-                  fontSize: { xs: 40, md: 60 }, 
+                  fontSize: { xs: 32, sm: 40, md: 60 }, 
                   mr: 2 
                 }} />
                 <Typography variant="h6" sx={{ 
                   color: '#18148C', 
                   fontWeight: 400, 
-                  fontSize: { xs: 16, sm: 18, md: 24, xl: 30 } 
+                  fontSize: { xs: 15, sm: 18, md: 24, xl: 30 },
+                  wordBreak: 'break-word'
                 }}>
                   {feature}
                 </Typography>
