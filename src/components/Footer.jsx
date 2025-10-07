@@ -178,7 +178,7 @@ function Footer() {
         >
           <PhoneIcon sx={{ color: '#003366', fontSize: 20 }} />
           <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>
-            +56 9 4232 7704
+            +56 9 9492 8092
           </Typography>
           <EmailIcon sx={{ color: '#003366', fontSize: 20, ml: 2 }} />
           <Typography variant="body2" sx={{ color: '#003366', fontWeight: 500 }}>

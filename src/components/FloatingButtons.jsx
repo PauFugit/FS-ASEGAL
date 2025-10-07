@@ -5,7 +5,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const FloatingButtons = () => {
   // Configuración WhatsApp
-  const phoneNumber = '569994928092';
+  const phoneNumber = '56994928092';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent('Hola, tengo una consulta')}`;
 
   // Configuración Scroll to Top
