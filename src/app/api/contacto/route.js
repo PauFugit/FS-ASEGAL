@@ -66,11 +66,7 @@ export async function POST(request) {
     // Enviar correo con SendGrid
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
-      from: {
-        email: 'contacto@asegalbyfasesorias.cl',
-        name: 'Formulario de Contacto - Asegal ByF Asesorías',
-      },
-      replyTo: data.email,
+      from:  'contacto@asegalbyfasesorias.cl',
       subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname}`,
       text: `
 Hola equipo Asegal,

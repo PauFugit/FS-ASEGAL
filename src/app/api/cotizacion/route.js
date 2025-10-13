@@ -67,10 +67,7 @@ export async function POST(request) {
     // ✅ Enviar correo con SendGrid
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
-      from: {
-        email: 'contacto@asegalbyfasesorias.cl',
-        name: 'Formulario de Cotización - Asegal by F Asesorías',
-      },
+      from: 'contacto@asegalbyfasesorias.cl',
       replyTo: data.email,
       subject: `Nueva solicitud de cotización: ${data.service}`,
       text: `
