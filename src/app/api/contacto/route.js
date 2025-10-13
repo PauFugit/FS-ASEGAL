@@ -63,10 +63,11 @@ export async function POST(request) {
       },
     });
 
-    // Enviar correo con SendGrid
+    // Enviar correo con SendGrid (mejor entregabilidad)
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
-      from:  'contacto@asegalbyfasesorias.cl',
+      from: 'contacto@asegalbyfasesorias.cl',
+      replyTo: data.email,
       subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname}`,
       text: `
 Hola equipo Asegal,
@@ -81,7 +82,9 @@ Mensaje: ${data.message}
 Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.
 
 Saludos,
-Sistema de contacto de asegalbyfasesorias.cl
+Asegal by F Asesorías
+Av. Providencia 1234, Santiago, Chile
+contacto@asegalbyfasesorias.cl
       `.trim(),
       html: `
 <p>Hola <strong>equipo Asegal</strong>,</p>
@@ -94,9 +97,17 @@ Sistema de contacto de asegalbyfasesorias.cl
   <p>${data.message}</p>
 </ul>
 <p><em>Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.</em></p>
-<p>Saludos,<br/>
-<small><strong>Sistema de contacto</strong><br/>Asegal by F Asesorías</small></p>
+<hr/>
+<p style="font-size:12px;color:#888;">
+Saludos,<br/>
+Asegal by F Asesorías<br/>
+Av. Providencia 1234, Santiago, Chile<br/>
+contacto@asegalbyfasesorias.cl
+</p>
       `.trim(),
+      headers: {
+        'List-Unsubscribe': '<mailto:contacto@asegalbyfasesorias.cl>'
+      }
     };
 
     await sgMail.send(msg);
