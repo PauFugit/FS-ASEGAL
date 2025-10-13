@@ -1,47 +1,34 @@
-import { NextResponse } from 'next/server'
-import prisma from '@/lib/prisma'
+import sgMail from '@sendgrid/mail';
 
-export async function GET(request, { params }) {
-    const id = parseInt(params.id)
-    try {
-        const resource = await prisma.resource.findUnique({
-            where: { id: id },
-            include: { files: true },
-        });
-        if (!resource) {
-            return new NextResponse(`Recurso con la ID ${id} no ha sido encontrado`, { status: 404 })
-        }
-        return NextResponse.json(resource)
-    } catch (error) {
-        return new NextResponse(error.message, { status: 500 });
-    }
-}
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export async function DELETE(request, { params }) {
-    const id = parseInt(params.id)
-    try {
-        const result = await prisma.resource.delete({
-            where: { id: id },
-        })
-        return NextResponse.json({ message: 'Recurso eliminado con éxito', result }, { status: 200 });
-    } catch (error) {
-        return new NextResponse(error.message, { status: 500 });
+export async function sendContactEmail({ name, lastname, email, phone, message }) {
+  const msg = {
+    to: 'contacto@asegalbyfasesorias.cl',
+    from: process.env.EMAIL_FROM,
+    replyTo: email,
+    subject: `Nuevo mensaje de contacto: ${name} ${lastname}`,
+    text: `
+Nombre: ${name} ${lastname}
+Email: ${email}
+Teléfono: ${phone || 'No proporcionado'}
+Mensaje: ${message}
+    `.trim(),
+    html: `
+<p><strong>Nombre:</strong> ${name} ${lastname}</p>
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Teléfono:</strong> ${phone || 'No proporcionado'}</p>
+<p><strong>Mensaje:</strong><br/>${message}</p>
+<hr/>
+<p style="font-size:12px;color:#888;">
+Asegal by F Asesorías<br/>
+contacto@asegalbyfasesorias.cl
+</p>
+    `.trim(),
+    headers: {
+      'List-Unsubscribe': '<mailto:contacto@asegalbyfasesorias.cl>'
     }
-}
+  };
 
-export async function PUT(request, { params }) {
-    const id = parseInt(params.id)
-    const data = await request.json()
-    try {
-        const result = await prisma.resource.update({
-            where: { id: id },
-            data: data
-        });
-        if (!result) {
-            return new NextResponse(`Recurso con la ID ${id} no ha sido encontrado`, { status: 404 });
-        }
-        return NextResponse.json(result, { status: 200 });
-    } catch (error) {
-        return new NextResponse(error.message, { status: 500 })
-    }
+  await sgMail.send(msg);
 }
