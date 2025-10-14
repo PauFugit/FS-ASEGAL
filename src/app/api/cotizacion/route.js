@@ -18,7 +18,7 @@ const corsHeaders = {
 export async function GET() {
   try {
     const cotizations = await prisma.cotizationForm.findMany();
-    return NextResponse.json({  cotizations }, { status: 200, headers: corsHeaders });
+    return NextResponse.json({ cotizations }, { status: 200, headers: corsHeaders });
   } catch (error) {
     return NextResponse.json(
       { error: error.message },
@@ -32,95 +32,161 @@ export async function POST(request) {
   try {
     const data = await request.json();
 
-    // Validar campos requeridos
-    if (!data.name || !data.lastname || !data.email || !data.service) {
+    // Validación mejorada
+    if (!data.name || !data.email || !data.service) {
       return NextResponse.json(
-        { error: 'Faltan campos requeridos: nombre, apellido, email o servicio.' },
+        { error: 'Faltan campos requeridos: nombre, email o servicio.' },
         { status: 400, headers: corsHeaders }
       );
     }
 
-    // Validar unicidad de email
-    const existingCotization = await prisma.cotizationForm.findUnique({
-      where: { email: data.email },
-    });
-
-    if (existingCotization) {
+    // Validar formato de email
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(data.email)) {
       return NextResponse.json(
-        { error: 'El email ya ha sido registrado en una cotización' },
+        { error: 'El formato del email no es válido.' },
         { status: 400, headers: corsHeaders }
       );
     }
 
-    // ✅ Guardar en la base de datos
+    // Guardar en la base de datos (sin validar unicidad para cotizaciones)
     const newCotization = await prisma.cotizationForm.create({
       data: {
         name: data.name,
-        lastname: data.lastname,
+        lastname: data.lastname || '',
         email: data.email,
-        phone: data.phone,
+        phone: data.phone || '',
         service: data.service,
-        message: data.message,
+        message: data.message || '',
       },
     });
 
-    // ✅ Enviar correo con SendGrid (mejor entregabilidad)
+    // CONFIGURACIÓN MEJORADA DEL CORREO - ANTI SPAM
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
-      from: 'contacto@asegalbyfasesorias.cl',
-      replyTo: data.email,
+      from: {
+        email: 'contacto@asegalbyfasesorias.cl', // MISMO dominio verificado
+        name: 'ASEGALBYF Asesorías' // Nombre amigable
+      },
+      replyTo: {
+        email: data.email,
+        name: `${data.name} ${data.lastname || ''}`
+      },
       subject: `Nueva solicitud de cotización: ${data.service}`,
       text: `
-Hola equipo Asegal,
+Nueva solicitud de cotización:
 
-Tienes una nueva solicitud de cotización:
-
-Nombre: ${data.name} ${data.lastname}
+Nombre: ${data.name} ${data.lastname || ''}
 Email: ${data.email}
 Teléfono: ${data.phone || 'No proporcionado'}
 Servicio: ${data.service}
-Mensaje: ${data.message}
 
-Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.
+Mensaje:
+${data.message || 'No se proporcionó mensaje adicional'}
 
-Saludos,
-Asegal by F Asesorías
-Av. Providencia 1234, Santiago, Chile
-contacto@asegalbyfasesorias.cl
+---
+Enviado desde el sitio web ASEGALBYF Asesorías
       `.trim(),
       html: `
-<p>Hola <strong>equipo Asegal</strong>,</p>
-<p>Tienes una nueva <strong>solicitud de cotización</strong>:</p>
-<ul>
-  <li><strong>Nombre:</strong> ${data.name} ${data.lastname}</li>
-  <li><strong>Email:</strong> ${data.email}</li>
-  <li><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</li>
-  <li><strong>Servicio:</strong> ${data.service}</li>
-  <li><strong>Mensaje:</strong></li>
-  <p>${data.message}</p>
-</ul>
-<p><em>Este mensaje fue enviado el ${new Date().toLocaleString('es-CL')}.</em></p>
-<hr/>
-<p style="font-size:12px;color:#888;">
-Saludos,<br/>
-Asegal by F Asesorías<br/>
-Av. Providencia 1234, Santiago, Chile<br/>
-contacto@asegalbyfasesorias.cl
-</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
+    .header { background: #18148C; color: white; padding: 20px; text-align: center; }
+    .content { background: #f9f9f9; padding: 20px; }
+    .service-badge { background: #F2AC57; color: white; padding: 8px 15px; border-radius: 20px; display: inline-block; font-weight: bold; }
+    .message { background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #9FBA47; }
+    .footer { background: #e6f6fd; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+    .info-item { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>📋 Nueva Solicitud de Cotización</h2>
+  </div>
+  <div class="content">
+    <div class="info-item">
+      <strong>Nombre:</strong> ${data.name} ${data.lastname || ''}
+    </div>
+    <div class="info-item">
+      <strong>Email:</strong> ${data.email}
+    </div>
+    <div class="info-item">
+      <strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}
+    </div>
+    <div class="info-item">
+      <strong>Servicio solicitado:</strong><br>
+      <span class="service-badge">${data.service}</span>
+    </div>
+    <div class="info-item">
+      <strong>Mensaje adicional:</strong>
+      <div class="message">
+        ${data.message ? data.message.replace(/\n/g, '<br>') : '<em>No se proporcionó mensaje adicional</em>'}
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>Esta solicitud fue enviada desde el formulario de cotización de <strong>ASEGALBYF Asesorías</strong><br>
+    ${new Date().toLocaleString('es-CL')}</p>
+  </div>
+</body>
+</html>
       `.trim(),
-      headers: {
-        'List-Unsubscribe': '<mailto:contacto@asegalbyfasesorias.cl>'
-      }
+      // Configuraciones para mejor entregabilidad
+      mailSettings: {
+        sandboxMode: {
+          enable: false
+        }
+      },
+      trackingSettings: {
+        clickTracking: {
+          enable: false
+        },
+        openTracking: {
+          enable: false
+        }
+      },
+      categories: ['cotization-form', 'website-lead', 'service-request']
     };
 
-    await sgMail.send(msg);
+    // Envío con manejo de errores mejorado
+    try {
+      await sgMail.send(msg);
+      console.log('✅ Correo de cotización enviado exitosamente a través de SendGrid');
+    } catch (sendError) {
+      console.error('❌ Error de SendGrid en cotización:', {
+        message: sendError.message,
+        response: sendError.response?.body,
+        code: sendError.code
+      });
+      throw sendError;
+    }
 
-    // Respuesta exitosa
-    return NextResponse.json(newCotization, { status: 201, headers: corsHeaders });
-  } catch (error) {
-    console.error('Error en POST /api/cotizacion:', error);
     return NextResponse.json(
-      { error: error.message || 'Error al procesar la cotización' },
+      { 
+        message: 'Cotización creada y correo enviado con éxito.', 
+        cotization: newCotization 
+      },
+      { status: 201, headers: corsHeaders }
+    );
+    
+  } catch (error) {
+    console.error('❌ Error en /api/cotizacion POST:', error);
+    
+    // Log detallado del error de SendGrid
+    if (error.response) {
+      console.error('SendGrid Error Details:', error.response.body);
+    }
+
+    let errorMessage = 'Error al procesar la cotización.';
+    if (error.code === 'P2002') {
+      errorMessage = 'Este correo ya está registrado en una cotización.';
+    }
+
+    return NextResponse.json(
+      { error: errorMessage },
       { status: 500, headers: corsHeaders }
     );
   }

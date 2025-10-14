@@ -2,33 +2,48 @@ import sgMail from '@sendgrid/mail';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export async function sendContactEmail({ name, lastname, email, phone, message }) {
-  const msg = {
+export async function sendContactEmail({ name, email, message }) {
+  const content = {
     to: 'contacto@asegalbyfasesorias.cl',
-    from: process.env.EMAIL_FROM,
-    replyTo: email,
-    subject: `Nuevo mensaje de contacto: ${name} ${lastname}`,
-    text: `
-Nombre: ${name} ${lastname}
-Email: ${email}
-Teléfono: ${phone || 'No proporcionado'}
-Mensaje: ${message}
-    `.trim(),
+    from: {
+      email: 'no-reply@asegalbyfasesorias.cl', 
+      name: 'ASEGAL B&F Asesorías' // Nombre mostrado del remitente
+    },
+    replyTo: email, // Permite responder directamente al remitente
+    subject: `Nuevo mensaje de contacto: ${name}`,
+    text: `Nombre: ${name}\nEmail: ${email}\nMensaje: ${message}`,
     html: `
-<p><strong>Nombre:</strong> ${name} ${lastname}</p>
-<p><strong>Email:</strong> ${email}</p>
-<p><strong>Teléfono:</strong> ${phone || 'No proporcionado'}</p>
-<p><strong>Mensaje:</strong><br/>${message}</p>
-<hr/>
-<p style="font-size:12px;color:#888;">
-Asegal by F Asesorías<br/>
-contacto@asegalbyfasesorias.cl
-</p>
-    `.trim(),
-    headers: {
-      'List-Unsubscribe': '<mailto:contacto@asegalbyfasesorias.cl>'
+      <div style="font-family: Arial, sans-serif; max-width: 600px;">
+        <h2 style="color: #333;">Nuevo mensaje de contacto</h2>
+        <p><strong>Nombre:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Mensaje:</strong></p>
+        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px;">
+          ${message.replace(/\n/g, '<br>')}
+        </div>
+        <hr style="margin: 20px 0;">
+        <p style="color: #666; font-size: 12px;">
+          Este mensaje fue enviado desde el formulario de contacto de ASEGALBYF Asesorías.
+        </p>
+      </div>
+    `,
+    // Agrega categorías para mejor tracking en SendGrid
+    categories: ['contact-form'],
+    // Configuración de mail settings
+    mailSettings: {
+      sandboxMode: {
+        enable: false // Asegúrate que esté en false en producción
+      }
     }
   };
 
-  await sgMail.send(msg);
+  try {
+    await sgMail.send(content);
+    console.log('Correo enviado exitosamente');
+    return { success: true };
+  } catch (error) {
+    console.error('Error al enviar correo:', error.response?.body || error);
+    return { success: false, error };
+  }
+
 }
