@@ -132,7 +132,7 @@ Enviado desde el sitio web ASEGALBYF Asesorías
       enable: false
     }
   },
-  categories: ['contact-form', 'website-lead']
+  categories: ['contact-form', 'verified-domain']
 };
 
 // Envío con manejo de errores mejorado
