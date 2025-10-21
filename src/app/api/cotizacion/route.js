@@ -14,17 +14,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-// GET: Obtener todas las cotizaciones
-export async function GET() {
-  try {
-    const cotizations = await prisma.cotizationForm.findMany();
-    return NextResponse.json({ cotizations }, { status: 200, headers: corsHeaders });
-  } catch (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500, headers: corsHeaders }
-    );
-  }
+// Función para detectar si es email de dominio público/freemail
+function isFreemail(email) {
+  if (!email) return false;
+  
+  const freemailDomains = [
+    'gmail.com', 'gmail.cl', 'hotmail.com', 'outlook.com', 'yahoo.com',
+    'live.com', 'msn.com', 'aol.com', 'icloud.com', 'protonmail.com',
+    'yandex.com', 'mail.com', 'zoho.com', 'gmx.com'
+  ];
+  
+  const domain = email.toLowerCase().split('@')[1];
+  return freemailDomains.includes(domain);
 }
 
 // POST: Crear nueva cotización y enviar correo
@@ -61,23 +62,29 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN MEJORADA CON DOMINIO PRINCIPAL
+    // CONFIGURACIÓN MEJORADA - SOLUCIÓN ANTI SPAM
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
       from: {
-        email: 'contacto@asegalbyfasesorias.cl', // DOMINIO PRINCIPAL
+        email: 'contacto@asegalbyfasesorias.cl',
         name: 'ASEGALBYF Asesorías - Cotizaciones'
       },
-      replyTo: {
-        email: data.email,
-        name: `${data.name} ${data.lastname || ''}`
-      },
+      // SOLUCIÓN CLAVE: Solo usar Reply-To si NO es freemail
+      replyTo: isFreemail(data.email) 
+        ? {
+            email: 'contacto@asegalbyfasesorias.cl',
+            name: 'ASEGALBYF Asesorías'
+          }
+        : {
+            email: data.email,
+            name: `${data.name} ${data.lastname || ''}`
+          },
       subject: `Solicitud de Cotización: ${data.service}`,
       text: `
 Nueva solicitud de cotización:
 
 Nombre: ${data.name} ${data.lastname || ''}
-Email: ${data.email}
+Email: ${data.email} ${isFreemail(data.email) ? '(Email del cliente: responder a este correo)' : ''}
 Teléfono: ${data.phone || 'No proporcionado'}
 Servicio: ${data.service}
 
@@ -85,6 +92,7 @@ Mensaje:
 ${data.message || 'No se proporcionó mensaje adicional'}
 
 ---
+Para responder al cliente, utilice: ${data.email}
 Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.
       `.trim(),
       html: `
@@ -100,14 +108,20 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     .message { background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #9FBA47; }
     .footer { background: #e6f6fd; padding: 15px; text-align: center; font-size: 12px; color: #666; }
     .info-item { margin-bottom: 10px; }
-    .authentication { 
-      background: #e8f5e8; 
+    .client-email { 
+      background: #fff3cd; 
       padding: 10px; 
       border-radius: 5px; 
-      border-left: 4px solid #4caf50;
-      font-size: 11px;
-      color: #2e7d32;
-      margin-top: 15px;
+      border: 1px solid #ffeaa7;
+      margin: 10px 0;
+    }
+    .freemail-warning {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -120,7 +134,14 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
       <strong>Nombre:</strong> ${data.name} ${data.lastname || ''}
     </div>
     <div class="info-item">
-      <strong>Email:</strong> ${data.email}
+      <strong>Email del cliente:</strong>
+      <div class="client-email">
+        <strong>${data.email}</strong>
+        ${isFreemail(data.email) 
+          ? '<div class="freemail-warning">⚠️ Para responder, use directamente este email (no usar "Responder")</div>' 
+          : '<div>Puede responder directamente a este correo</div>'
+        }
+      </div>
     </div>
     <div class="info-item">
       <strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}
@@ -135,20 +156,14 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
         ${data.message ? data.message.replace(/\n/g, '<br>') : '<em>No se proporcionó mensaje adicional</em>'}
       </div>
     </div>
-    
-    <div class="authentication">
-      <strong>✓ Mensaje autenticado:</strong><br>
-      Correo generado desde el sitio web oficial de ASEGALBYF Asesorías.
-    </div>
   </div>
   <div class="footer">
-    <p>ASEGALBYF Asesorías<br>
+    <p>ASEGALBYF Asesorías - Sitio Web<br>
     ${new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' })}</p>
   </div>
 </body>
 </html>
       `.trim(),
-      // Configuraciones para mejor entregabilidad
       mailSettings: {
         sandboxMode: {
           enable: false
@@ -168,14 +183,10 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     // Envío con manejo de errores
     try {
       await sgMail.send(msg);
-      console.log('✅ Correo de cotización enviado desde contacto@asegalbyfasesorias.cl');
+      console.log('✅ Correo enviado - Tipo ReplyTo:', isFreemail(data.email) ? 'INTERNO (freemail detectado)' : 'CLIENTE_DIRECTO');
       
     } catch (sendError) {
-      console.error('❌ Error de SendGrid:', {
-        message: sendError.message,
-        response: sendError.response?.body,
-        code: sendError.code
-      });
+      console.error('❌ Error de SendGrid:', sendError.message);
       throw sendError;
     }
 
@@ -197,6 +208,20 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
 
     return NextResponse.json(
       { error: errorMessage },
+      { status: 500, headers: corsHeaders }
+    );
+  }
+}
+
+
+// GET: Obtener todas las cotizaciones
+export async function GET() {
+  try {
+    const cotizations = await prisma.cotizationForm.findMany();
+    return NextResponse.json({ cotizations }, { status: 200, headers: corsHeaders });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error.message },
       { status: 500, headers: corsHeaders }
     );
   }
