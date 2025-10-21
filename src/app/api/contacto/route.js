@@ -14,6 +14,15 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+// Función para detectar emails gratuitos
+function isFreemail(email) {
+  const freemailDomains = [
+    'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com',
+    'icloud.com', 'aol.com', 'protonmail.com', 'live.com'
+  ];
+  return freemailDomains.some(domain => email.toLowerCase().endsWith(`@${domain}`));
+}
+
 // GET: Obtener todos los contactos
 export async function GET() {
   try {
@@ -49,7 +58,7 @@ export async function POST(request) {
       );
     }
 
-    // Guardar en la base de datos (sin validar unicidad para contactos)
+    // Guardar en la base de datos
     const newContact = await prisma.contactForm.create({
       data: {
         name: data.name,
@@ -60,22 +69,25 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN MEJORADA DEL CORREO
-const msg = {
-  to: 'contacto@asegalbyfasesorias.cl',
-  from: {
-    email: 'contacto@asegalbyfasesorias.cl', // MISMO dominio verificado
-    name: 'ASEGALBYF Asesorías' // Nombre amigable
-  },
-  replyTo: {
-    email: data.email,
-    name: `${data.name} ${data.lastname}`
-  },
-  subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname}`,
-  text: `
+    // CONFIGURACIÓN MEJORADA DEL CORREO - ANTI SPAM
+    const msg = {
+      to: 'contacto@asegalbyfasesorias.cl',
+      from: {
+        email: 'contacto@asegalbyfasesorias.cl',
+        name: 'ASEGALBYF Asesorías'
+      },
+      // SOLO agrega replyTo si NO es email gratuito
+      ...(!isFreemail(data.email) && {
+        replyTo: {
+          email: data.email,
+          name: `${data.name} ${data.lastname || ''}`
+        }
+      }),
+      subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`,
+      text: `
 Nuevo mensaje de contacto:
 
-Nombre: ${data.name} ${data.lastname}
+Nombre: ${data.name} ${data.lastname || ''}
 Email: ${data.email}
 Teléfono: ${data.phone || 'No proporcionado'}
 
@@ -83,79 +95,92 @@ Mensaje:
 ${data.message}
 
 ---
-Enviado desde el sitio web ASEGALBYF Asesorías
-  `.trim(),
-  html: `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
-    .header { background: #18148C; color: white; padding: 20px; text-align: center; }
-    .content { background: #f9f9f9; padding: 20px; }
-    .message { background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #F2AC57; }
-    .footer { background: #e6f6fd; padding: 15px; text-align: center; font-size: 12px; color: #666; }
-  </style>
-</head>
-<body>
-  <div class="header">
-    <h2>📋 Nuevo Mensaje de Contacto</h2>
+ASEGALBYF Asesorías
+Av. Providencia 1234, Santiago, Chile
+Teléfono: +56 9 9492 8092
+Email: contacto@asegalbyfasesorias.cl
+Sitio web: https://asegalbyfasesorias.cl
+
+Enviado desde el formulario de contacto del sitio web
+${new Date().toLocaleString('es-CL')}
+      `.trim(),
+      html: `
+<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0;">
+  <div style="background: #18148C; color: white; padding: 20px; text-align: center;">
+    <h2 style="margin: 0;">Nuevo Mensaje de Contacto</h2>
   </div>
-  <div class="content">
-    <p><strong>Nombre:</strong> ${data.name} ${data.lastname}</p>
-    <p><strong>Email:</strong> ${data.email}</p>
-    <p><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</p>
-    <p><strong>Mensaje:</strong></p>
-    <div class="message">
-      ${data.message.replace(/\n/g, '<br>')}
+  
+  <div style="padding: 20px; background: #f9f9f9;">
+    <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+      <p><strong>Nombre:</strong> ${data.name} ${data.lastname || ''}</p>
+      <p><strong>Email:</strong> ${data.email}</p>
+      <p><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</p>
+    </div>
+    
+    <div style="background: white; padding: 15px; border-radius: 5px;">
+      <p><strong>Mensaje:</strong></p>
+      <div style="background: #f5f5f5; padding: 10px; border-left: 3px solid #F2AC57;">
+        ${data.message.replace(/\n/g, '<br>')}
+      </div>
     </div>
   </div>
-  <div class="footer">
-    <p>Este mensaje fue enviado desde el formulario de contacto de <strong>ASEGALBYF Asesorías</strong><br>
-    ${new Date().toLocaleString('es-CL')}</p>
+  
+  <div style="background: #e6f6fd; padding: 20px; text-align: center; border-top: 3px solid #9FBA47;">
+    <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+      <strong>ASEGALBYF Asesorías</strong><br>
+      Atención presencial II y IV Región. Atención online.<br>
+      Teléfono: +56 9 9492 8092<br>
+      Email: contacto@asegalbyfasesorias.cl<br>
+      Sitio web: https://asegalbyfasesorias.cl
+    </div>
+    <p style="margin: 0; color: #666; font-size: 12px;">
+      Mensaje enviado desde el formulario de contacto del sitio web<br>
+      ${new Date().toLocaleString('es-CL')}
+    </p>
   </div>
-</body>
-</html>
-  `.trim(),
-  // Configuraciones para mejor entregabilidad
-  mailSettings: {
-    sandboxMode: {
-      enable: false
-    }
-  },
-  trackingSettings: {
-    clickTracking: {
-      enable: false
-    },
-    openTracking: {
-      enable: false
-    }
-  },
-  categories: ['contact-form', 'verified-domain']
-};
+</div>
+      `.trim(),
+      // CONFIGURACIONES ANTI-SPAM
+      customArgs: {
+        'transactional': 'true',
+        'category': 'customer-service',
+        'source': 'website-contact-form'
+      },
+      headers: {
+        'X-Entity-Ref': 'customer-inquiry',
+        'Precedence': 'bulk'
+      },
+      mailSettings: {
+        sandboxMode: { enable: false }
+      },
+      trackingSettings: {
+        clickTracking: { enable: false },
+        openTracking: { enable: false }
+      },
+      categories: ['contact-form', 'customer-service', 'website-lead']
+    };
 
-// Envío con manejo de errores mejorado
-try {
-  await sgMail.send(msg);
-  console.log('✅ Correo enviado exitosamente a través de SendGrid');
-} catch (sendError) {
-  console.error('❌ Error de SendGrid:', {
-    message: sendError.message,
-    response: sendError.response?.body,
-    code: sendError.code
-  });
-  throw sendError;
-}
+    // Envío con manejo de errores mejorado
+    try {
+      await sgMail.send(msg);
+      console.log('✅ Correo de contacto enviado exitosamente');
+    } catch (sendError) {
+      console.error('❌ Error de SendGrid en contacto:', {
+        message: sendError.message,
+        response: sendError.response?.body,
+        code: sendError.code
+      });
+      throw sendError;
+    }
 
     return NextResponse.json(
       { message: 'Contacto creado y correo enviado con éxito.', contact: newContact },
       { status: 201, headers: corsHeaders }
     );
+    
   } catch (error) {
     console.error('❌ Error en /api/contacto POST:', error);
     
-    // Log detallado del error de SendGrid
     if (error.response) {
       console.error('SendGrid Error Details:', error.response.body);
     }

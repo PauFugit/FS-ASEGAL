@@ -49,7 +49,7 @@ export async function POST(request) {
       );
     }
 
-    // Guardar en la base de datos (sin validar unicidad para cotizaciones)
+    // Guardar en la base de datos
     const newCotization = await prisma.cotizationForm.create({
       data: {
         name: data.name,
@@ -61,18 +61,18 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN MEJORADA DEL CORREO - ANTI SPAM
+    // CONFIGURACIÓN MEJORADA CON DOMINIO PRINCIPAL
     const msg = {
       to: 'contacto@asegalbyfasesorias.cl',
       from: {
-        email: 'contacto@asegalbyfasesorias.cl', // MISMO dominio verificado
-        name: 'ASEGALBYF Asesorías' // Nombre amigable
+        email: 'contacto@asegalbyfasesorias.cl', // DOMINIO PRINCIPAL
+        name: 'ASEGALBYF Asesorías - Cotizaciones'
       },
       replyTo: {
         email: data.email,
         name: `${data.name} ${data.lastname || ''}`
       },
-      subject: `Nueva solicitud de cotización: ${data.service}`,
+      subject: `Solicitud de Cotización: ${data.service}`,
       text: `
 Nueva solicitud de cotización:
 
@@ -85,7 +85,7 @@ Mensaje:
 ${data.message || 'No se proporcionó mensaje adicional'}
 
 ---
-Enviado desde el sitio web ASEGALBYF Asesorías
+Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.
       `.trim(),
       html: `
 <!DOCTYPE html>
@@ -100,11 +100,20 @@ Enviado desde el sitio web ASEGALBYF Asesorías
     .message { background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #9FBA47; }
     .footer { background: #e6f6fd; padding: 15px; text-align: center; font-size: 12px; color: #666; }
     .info-item { margin-bottom: 10px; }
+    .authentication { 
+      background: #e8f5e8; 
+      padding: 10px; 
+      border-radius: 5px; 
+      border-left: 4px solid #4caf50;
+      font-size: 11px;
+      color: #2e7d32;
+      margin-top: 15px;
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <h2>📋 Nueva Solicitud de Cotización</h2>
+    <h2>Nueva Solicitud de Cotización</h2>
   </div>
   <div class="content">
     <div class="info-item">
@@ -126,10 +135,15 @@ Enviado desde el sitio web ASEGALBYF Asesorías
         ${data.message ? data.message.replace(/\n/g, '<br>') : '<em>No se proporcionó mensaje adicional</em>'}
       </div>
     </div>
+    
+    <div class="authentication">
+      <strong>✓ Mensaje autenticado:</strong><br>
+      Correo generado desde el sitio web oficial de ASEGALBYF Asesorías.
+    </div>
   </div>
   <div class="footer">
-    <p>Esta solicitud fue enviada desde el formulario de cotización de <strong>ASEGALBYF Asesorías</strong><br>
-    ${new Date().toLocaleString('es-CL')}</p>
+    <p>ASEGALBYF Asesorías<br>
+    ${new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' })}</p>
   </div>
 </body>
 </html>
@@ -148,15 +162,16 @@ Enviado desde el sitio web ASEGALBYF Asesorías
           enable: false
         }
       },
-      categories: ['cotization-form', 'website-lead', 'service-request']
+      categories: ['website-cotization', 'business-inquiry']
     };
 
-    // Envío con manejo de errores mejorado
+    // Envío con manejo de errores
     try {
       await sgMail.send(msg);
-      console.log('✅ Correo de cotización enviado exitosamente a través de SendGrid');
+      console.log('✅ Correo de cotización enviado desde contacto@asegalbyfasesorias.cl');
+      
     } catch (sendError) {
-      console.error('❌ Error de SendGrid en cotización:', {
+      console.error('❌ Error de SendGrid:', {
         message: sendError.message,
         response: sendError.response?.body,
         code: sendError.code
@@ -175,11 +190,6 @@ Enviado desde el sitio web ASEGALBYF Asesorías
   } catch (error) {
     console.error('❌ Error en /api/cotizacion POST:', error);
     
-    // Log detallado del error de SendGrid
-    if (error.response) {
-      console.error('SendGrid Error Details:', error.response.body);
-    }
-
     let errorMessage = 'Error al procesar la cotización.';
     if (error.code === 'P2002') {
       errorMessage = 'Este correo ya está registrado en una cotización.';
