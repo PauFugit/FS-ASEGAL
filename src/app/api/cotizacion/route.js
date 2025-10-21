@@ -158,7 +158,7 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     </div>
   </div>
   <div class="footer">
-    <p>ASEGALBYF Asesorías - Sitio Web<br>
+    <p>ASEGALBYF Asesorías - https://www.asegalbyfasesorias.cl<br>
     ${new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' })}</p>
   </div>
 </body>
