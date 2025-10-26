@@ -2,10 +2,10 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-// Configura SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// Configura Redend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Headers para CORS
 const corsHeaders = {

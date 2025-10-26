@@ -1,11 +1,8 @@
-// app/api/contacto/route.js
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-// Configura SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Headers para CORS
 const corsHeaders = {
@@ -69,20 +66,11 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN MEJORADA DEL CORREO - ANTI SPAM
-    const msg = {
-      to: 'contacto@asegalbyfasesorias.cl',
-      from: {
-        email: 'contacto@asegalbyfasesorias.cl',
-        name: 'ASEGALBYF Asesorías'
-      },
-      // SOLO agrega replyTo si NO es email gratuito
-      ...(!isFreemail(data.email) && {
-        replyTo: {
-          email: data.email,
-          name: `${data.name} ${data.lastname || ''}`
-        }
-      }),
+    // CONFIGURACIÓN RESEND
+    const emailData = {
+      from: 'ASEGALBYF Asesorías <contacto@asegalbyfasesorias.cl>',
+      to: ['contacto@asegalbyfasesorias.cl'],
+      reply_to: !isFreemail(data.email) ? data.email : 'contacto@asegalbyfasesorias.cl',
       subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`,
       text: `
 Nuevo mensaje de contacto:
@@ -140,36 +128,22 @@ ${new Date().toLocaleString('es-CL')}
   </div>
 </div>
       `.trim(),
-      // CONFIGURACIONES ANTI-SPAM
-      customArgs: {
-        'transactional': 'true',
-        'category': 'customer-service',
-        'source': 'website-contact-form'
-      },
-      headers: {
-        'X-Entity-Ref': 'customer-inquiry',
-        'Precedence': 'bulk'
-      },
-      mailSettings: {
-        sandboxMode: { enable: false }
-      },
-      trackingSettings: {
-        clickTracking: { enable: false },
-        openTracking: { enable: false }
-      },
-      categories: ['contact-form', 'customer-service', 'website-lead']
     };
 
-    // Envío con manejo de errores mejorado
+    // Envío con Resend
     try {
-      await sgMail.send(msg);
-      console.log('✅ Correo de contacto enviado exitosamente');
+      const { data: emailResponse, error } = await resend.emails.send(emailData);
+      
+      if (error) {
+        console.error('❌ Error de Resend:', error);
+        throw error;
+      }
+      
+      console.log('✅ Correo de contacto enviado con Resend');
+      console.log('📧 ID del email:', emailResponse?.id);
+      
     } catch (sendError) {
-      console.error('❌ Error de SendGrid en contacto:', {
-        message: sendError.message,
-        response: sendError.response?.body,
-        code: sendError.code
-      });
+      console.error('❌ Error al enviar correo de contacto:', sendError.message);
       throw sendError;
     }
 
@@ -180,10 +154,6 @@ ${new Date().toLocaleString('es-CL')}
     
   } catch (error) {
     console.error('❌ Error en /api/contacto POST:', error);
-    
-    if (error.response) {
-      console.error('SendGrid Error Details:', error.response.body);
-    }
 
     let errorMessage = 'Error al procesar el contacto.';
     if (error.code === 'P2002') {

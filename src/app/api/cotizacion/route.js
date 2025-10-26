@@ -1,11 +1,8 @@
-// app/api/cotizacion/route.js
-
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 
-// Configura SendGrid
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Headers para CORS
 const corsHeaders = {
@@ -62,23 +59,13 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN MEJORADA - SOLUCIÓN ANTI SPAM
-    const msg = {
-      to: 'contacto@asegalbyfasesorias.cl',
-      from: {
-        email: 'contacto@asegalbyfasesorias.cl',
-        name: 'ASEGALBYF Asesorías - Cotizaciones'
-      },
-      // SOLUCIÓN CLAVE: Solo usar Reply-To si NO es freemail
-      replyTo: isFreemail(data.email) 
-        ? {
-            email: 'contacto@asegalbyfasesorias.cl',
-            name: 'ASEGALBYF Asesorías'
-          }
-        : {
-            email: data.email,
-            name: `${data.name} ${data.lastname || ''}`
-          },
+    // CONFIGURACIÓN RESEND - SOLUCIÓN ANTI SPAM
+    const emailData = {
+      from: 'ASEGALBYF Asesorías - Cotizaciones <contacto@asegalbyfasesorias.cl>',
+      to: ['contacto@asegalbyfasesorias.cl'],
+      reply_to: isFreemail(data.email) 
+        ? 'contacto@asegalbyfasesorias.cl'
+        : data.email,
       subject: `Solicitud de Cotización: ${data.service}`,
       text: `
 Nueva solicitud de cotización:
@@ -164,29 +151,22 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
 </body>
 </html>
       `.trim(),
-      mailSettings: {
-        sandboxMode: {
-          enable: false
-        }
-      },
-      trackingSettings: {
-        clickTracking: {
-          enable: false
-        },
-        openTracking: {
-          enable: false
-        }
-      },
-      categories: ['website-cotization', 'business-inquiry']
     };
 
-    // Envío con manejo de errores
+    // Envío con Resend
     try {
-      await sgMail.send(msg);
-      console.log('✅ Correo enviado - Tipo ReplyTo:', isFreemail(data.email) ? 'INTERNO (freemail detectado)' : 'CLIENTE_DIRECTO');
+      const { data: emailResponse, error } = await resend.emails.send(emailData);
+      
+      if (error) {
+        console.error('❌ Error de Resend:', error);
+        throw error;
+      }
+      
+      console.log('✅ Correo enviado con Resend - Tipo ReplyTo:', isFreemail(data.email) ? 'INTERNO (freemail detectado)' : 'CLIENTE_DIRECTO');
+      console.log('📧 ID del email:', emailResponse?.id);
       
     } catch (sendError) {
-      console.error('❌ Error de SendGrid:', sendError.message);
+      console.error('❌ Error al enviar correo:', sendError.message);
       throw sendError;
     }
 
@@ -212,7 +192,6 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     );
   }
 }
-
 
 // GET: Obtener todas las cotizaciones
 export async function GET() {
