@@ -48,8 +48,9 @@ export default function SidebarDashboard({ isSidebarOpen, isMobileSidebarOpen, s
           <Box
             component="img"
             src="/logo.png"
-            sx={{ 
-              height: 80,
+            sx={{
+              height: { xs: 50, sm: 60, md: 80 },
+              maxWidth: '100%',
             }}
             alt="Logo Asegal"
           />

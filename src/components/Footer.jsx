@@ -25,8 +25,8 @@ function Footer() {
         }}
       >
         {/* Logo y descripción */}
-        <Box sx={{ flex: 1, minWidth: 220, display: 'flex', alignItems: 'flex-start', gap: 3 }}>
-          <Box component="img" src="/logo.png" alt="Asegal B&F" sx={{ height: 100 }} />
+        <Box sx={{ flex: 1, minWidth: { xs: 0, sm: 220 }, display: 'flex', alignItems: 'flex-start', gap: 3 }}>
+          <Box component="img" src="/logo.png" alt="Asegal B&F" sx={{ height: { xs: 60, sm: 80, md: 100 }, flexShrink: 0 }} />
           <Typography
             variant="body2"
             sx={{
@@ -163,7 +163,7 @@ function Footer() {
 
         {/* Contacto */}
         <Stack
-          direction="row"
+          direction={{ xs: 'column', sm: 'row' }}
           alignItems="center"
           spacing={2}
           sx={{
@@ -172,7 +172,8 @@ function Footer() {
             borderRadius: 20,
             px: 2.5,
             py: 1,
-            minWidth: 260,
+            minWidth: { xs: 0, sm: 260 },
+            width: { xs: '100%', sm: 'auto' },
             justifyContent: 'center',
           }}
         >

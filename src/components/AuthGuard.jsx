@@ -1,65 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient'; // ← Cliente del navegador
+import { useEffect } from 'react';
 import { CircularProgress, Box, Alert, AlertTitle } from '@mui/material';
 
 export default function AuthGuard({ children, requiredRole = null }) {
+  const { data: session, status } = useSession();
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error || !session) {
-          router.push('/login');
-          return;
-        }
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
 
-        // Si se requiere un rol específico, verificar con API
-        if (requiredRole) {
-          const res = await fetch('/api/auth/check-role', {
-            headers: {
-              'Authorization': `Bearer ${session.access_token}`
-            }
-          });
-          
-          if (res.ok) {
-            setAuthorized(true);
-          } else {
-            setAuthorized(false);
-          }
-        } else {
-          setAuthorized(true);
-        }
-
-      } catch (error) {
-        console.error('Error checking auth:', error);
-        router.push('/login');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuth();
-
-    // Escuchar cambios en la autenticación
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_OUT') {
-          router.push('/login');
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [router, requiredRole]);
-
-  if (loading) {
+  if (status === 'loading') {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <CircularProgress />
@@ -67,7 +23,7 @@ export default function AuthGuard({ children, requiredRole = null }) {
     );
   }
 
-  if (!authorized && requiredRole) {
+  if (requiredRole && session?.user?.role !== requiredRole) {
     return (
       <Box sx={{ p: 4, textAlign: 'center' }}>
         <Alert severity="error">

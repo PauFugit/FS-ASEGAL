@@ -1,10 +1,9 @@
-// lib/uploadUtils.js
-export const uploadToSupabase = async (file, bucketName = 'blog-images') => {
+export const uploadFile = async (file, bucketName = 'blog-images') => {
   try {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('bucket', bucketName);
-    
+
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
@@ -16,11 +15,11 @@ export const uploadToSupabase = async (file, bucketName = 'blog-images') => {
     }
 
     const data = await response.json();
-    
+
     if (!data.url) {
       throw new Error('No se recibió URL del servidor');
     }
-    
+
     return data.url;
   } catch (error) {
     console.error('Upload error:', error);
@@ -28,21 +27,23 @@ export const uploadToSupabase = async (file, bucketName = 'blog-images') => {
   }
 };
 
+// Alias para compatibilidad con imports existentes
+export const uploadToSupabase = uploadFile;
+
 export const validateFile = (file, maxSizeMB = 5, allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf']) => {
   if (!file) return { valid: false, error: 'No file selected' };
-  
+
   if (file.size > maxSizeMB * 1024 * 1024) {
     return { valid: false, error: `File size must be less than ${maxSizeMB}MB` };
   }
-  
+
   if (!allowedTypes.includes(file.type)) {
     return { valid: false, error: `Invalid file type. Allowed: ${allowedTypes.join(', ')}` };
   }
-  
+
   return { valid: true, error: null };
 };
 
-// Función específica para upload de avatares de usuario
 export const uploadUserAvatar = async (file) => {
-  return uploadToSupabase(file, 'user-avatars');
+  return uploadFile(file, 'user-avatars');
 };

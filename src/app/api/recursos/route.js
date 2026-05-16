@@ -1,20 +1,16 @@
-// app/api/recursos/route.js
-import { createSupabaseServerClient } from '@/lib/supabaseServerClient'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET - Obtener todos los recursos (para dashboard)
 export async function GET() {
   try {
-    const supabase = await createSupabaseServerClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
-    const resources = await prisma.resources.findMany({
-      orderBy: { createdAt: 'desc' }
-    });
-    // ✅ Devuelve el array directamente (como hace el blog)
+
+    const resources = await prisma.resources.findMany({ orderBy: { createdAt: 'desc' } });
     return NextResponse.json(resources);
   } catch (error) {
     console.error('Error fetching resources:', error);
@@ -22,36 +18,22 @@ export async function GET() {
   }
 }
 
-// POST - Crear nuevo recurso
 export async function POST(request) {
   try {
-    const supabase = await createSupabaseServerClient();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    
-    if (authError || !session) {
+    const session = await getServerSession(authOptions);
+    if (!session) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
     const data = await request.json();
-    
-    // Validaciones
+
     if (!data.name || !data.type || !data.imageUrl) {
-      return NextResponse.json(
-        { error: 'Nombre, tipo e imagen son requeridos' }, 
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Nombre, tipo e imagen son requeridos' }, { status: 400 });
     }
 
-    // Verificar si el nombre ya existe
-    const existingResource = await prisma.resources.findFirst({
-      where: { name: data.name }
-    });
-
+    const existingResource = await prisma.resources.findFirst({ where: { name: data.name } });
     if (existingResource) {
-      return NextResponse.json(
-        { error: 'Ya existe un recurso con este nombre' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Ya existe un recurso con este nombre' }, { status: 400 });
     }
 
     const newResource = await prisma.resources.create({
@@ -64,11 +46,10 @@ export async function POST(request) {
         references: data.references || null,
         imageUrl: data.imageUrl,
         pdfUrl: data.pdfUrl || null,
-        createdBy: data.createdBy || null
-      }
+        createdBy: data.createdBy || null,
+      },
     });
 
-    // PARA TU FRONTEND: Devuelve el recurso directamente, no { data: newResource }
     return NextResponse.json(newResource, { status: 201 });
   } catch (error) {
     console.error('Error creating resource:', error);

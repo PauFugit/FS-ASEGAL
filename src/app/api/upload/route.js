@@ -1,91 +1,76 @@
-// app/api/upload/route.js
-import { createClient } from '@/lib/supabaseServerClient'
-import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+import { NextResponse } from 'next/server';
+import cloudinary from '@/lib/cloudinary';
 
 export async function POST(request) {
   try {
-    // Crear cliente de Supabase
-    const supabase = await createClient()
-
-    // Verificar autenticación
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 })
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    // Obtener datos del formulario
-    const formData = await request.formData()
-    const file = formData.get('file')
-    const bucketName = formData.get('bucket') || 'blog-images'
+    const formData = await request.formData();
+    const file = formData.get('file');
+    const bucketName = formData.get('bucket') || 'blog-images';
 
     if (!file) {
-      return NextResponse.json({ error: 'No se proporcionó ningún archivo' }, { status: 400 })
+      return NextResponse.json({ error: 'No se proporcionó ningún archivo' }, { status: 400 });
     }
 
-    // Validar buckets permitidos 
     const allowedBuckets = ['blog-images', 'blog-pdfs', 'user-avatars'];
     if (!allowedBuckets.includes(bucketName)) {
       return NextResponse.json({ error: 'Bucket no permitido' }, { status: 400 });
     }
 
-    // Validar tipo de archivo
-    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-    const allowedPdfTypes = ['application/pdf']
-    const allowedTypes = bucketName === 'blog-pdfs' ? allowedPdfTypes : allowedImageTypes
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    const allowedPdfTypes = ['application/pdf'];
+    const allowedTypes = bucketName === 'blog-pdfs' ? allowedPdfTypes : allowedImageTypes;
 
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: `Tipo de archivo no permitido para el bucket ${bucketName}` }, 
-        { status: 400 }
-      )
+      return NextResponse.json({ error: `Tipo de archivo no permitido para ${bucketName}` }, { status: 400 });
     }
 
-    // Validar tamaño del archivo (5MB para imágenes, 10MB para PDFs)
-    const maxSize = bucketName === 'blog-pdfs' ? 10 * 1024 * 1024 : 5 * 1024 * 1024
+    const maxSize = bucketName === 'blog-pdfs' ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: `El archivo excede el tamaño máximo permitido para ${bucketName}` }, 
-        { status: 400 }
-      )
+      return NextResponse.json({ error: `El archivo excede el tamaño máximo` }, { status: 400 });
     }
 
-    // Generar nombre único para el archivo
-    const fileExt = file.name.split('.').pop()
-    const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`
-    const filePath = `${fileName}`
+    // Convertir a buffer para Cloudinary
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
-    // Convertir File a ArrayBuffer
-    const arrayBuffer = await file.arrayBuffer()
-    const uint8Array = new Uint8Array(arrayBuffer)
+    // Folder en Cloudinary según bucket
+    const folderMap = {
+      'blog-images': 'asegal/blog-images',
+      'blog-pdfs': 'asegal/blog-pdfs',
+      'user-avatars': 'asegal/user-avatars',
+    };
 
-    // Subir el archivo a Supabase Storage
-    const { data, error: uploadError } = await supabase.storage
-      .from(bucketName)
-      .upload(filePath, uint8Array, {
-        contentType: file.type,
-        cacheControl: '3600',
-        upsert: false
-      })
+    const resourceType = bucketName === 'blog-pdfs' ? 'raw' : 'image';
 
-    if (uploadError) {
-      console.error('Error subiendo archivo:', uploadError)
-      return NextResponse.json({ error: uploadError.message }, { status: 500 })
-    }
+    const uploadResult = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_stream(
+        {
+          folder: folderMap[bucketName],
+          resource_type: resourceType,
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      ).end(buffer);
+    });
 
-    // Obtener URL pública
-    const { data: { publicUrl } } = supabase.storage
-      .from(bucketName)
-      .getPublicUrl(filePath)
-
-    return NextResponse.json({ 
-      success: true, 
-      url: publicUrl,
+    return NextResponse.json({
+      success: true,
+      url: uploadResult.secure_url,
       fileName: file.name,
-      filePath: filePath
-    })
+      filePath: uploadResult.public_id,
+    });
 
   } catch (error) {
-    console.error('Error uploading file:', error)
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
+    console.error('Error uploading file:', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
 }

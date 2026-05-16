@@ -12,7 +12,7 @@ function BlogHomeSection() {
         const res = await fetch('/api/public/blog?limit=4');
         if (res.ok) {
           const data = await res.json();
-          setPosts(data.slice(0, 4)); // Mostrar solo 4 posts
+          setPosts(data.slice(0, 4));
         }
       } catch (error) {
         console.error('Error loading posts:', error);
@@ -20,7 +20,6 @@ function BlogHomeSection() {
         setLoading(false);
       }
     };
-
     loadPosts();
   }, []);
 
@@ -32,77 +31,57 @@ function BlogHomeSection() {
     );
   }
 
-  if (posts.length === 0) {
-    return null; // No mostrar la sección si no hay posts
-  }
+  if (posts.length === 0) return null;
 
   return (
-    <Box sx={{ width: '100%', bgcolor: '#fafbfc', py: 6, px: 2, position: 'relative' }}>
-      {/* Línea decorativa y título */}
+    <Box sx={{ width: '100%', bgcolor: '#fafbfc', py: { xs: 4, md: 6 }, px: { xs: 2, sm: 3, md: 4 }, position: 'relative' }}>
+      {/* Título */}
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-        <Typography variant="overline" sx={{ color: '#F2AC57', fontWeight: 700, fontSize: 20, mr: 2, position: 'relative', top: 6 }}>
+        <Typography variant="overline" sx={{
+          color: '#F2AC57', fontWeight: 700,
+          fontSize: { xs: 16, md: 20 }, mr: 2, position: 'relative', top: 6
+        }}>
           BLOG
         </Typography>
         <Box sx={{ flex: 1, borderBottom: '2px solid #18148C', ml: 1 }} />
       </Box>
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 500,
-          color: '#18148C',
-          letterSpacing: '0.12em',
-          mb: 8,
-          textTransform: 'uppercase',
-          fontSize: { xs: 24, md: 32, xl:48 },
-          textShadow: '1px 2px 4px #0B5B8C'
-        }}
-      >
+
+      <Typography variant="h4" sx={{
+        fontWeight: 500,
+        color: '#18148C',
+        letterSpacing: '0.08em',
+        mb: { xs: 4, md: 8 },
+        textTransform: 'uppercase',
+        fontSize: { xs: '1.2rem', sm: '1.5rem', md: '2rem', xl: 48 },
+        textShadow: '1px 2px 4px #0B5B8C'
+      }}>
         NOVEDADES Y CONSEJOS PARA TI
       </Typography>
 
-      {/* Cards */}
-      <Grid container spacing={4} justifyContent="center">
-        {posts.map((post, index) => (
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }} justifyContent="center">
+        {posts.map((post) => (
           <Grid item xs={12} sm={6} md={4} key={post.id} sx={{ display: 'flex', justifyContent: 'center' }}>
             <BlogCard
               image={post.imageUrl}
               title={post.title}
               description={post.summary}
-              sx={{
-                height: { xs: 270, md: 260 }, 
-                maxHeight: 270,
-                minHeight: 230
-              }}
             />
           </Grid>
         ))}
       </Grid>
 
-      {/* Línea decorativa inferior y botón "Leer más" */}
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 6 }}>
-        <Box sx={{
-          flex: 1,
-          borderBottom: '2px solid #18148C',
-          mr: 3
-        }} />
+      <Box sx={{ display: 'flex', alignItems: 'center', mt: { xs: 4, md: 6 } }}>
+        <Box sx={{ flex: 1, borderBottom: '2px solid #18148C', mr: { xs: 2, md: 3 } }} />
         <Button
           variant="contained"
           href="/blog"
           sx={{
-            bgcolor: '#18148C',
-            color: '#ffffff',
-            borderRadius: '24px',
-            fontWeight: 600,
-            py: 1.2,
-            px: 4,
-            fontSize: 20,
-            boxShadow: '0px 2px 8px rgba(67,185,127,0.10)',
-            textTransform: 'italic',
-            '&:hover': {
-              bgcolor: '#ffffff',
-              color: '#F2AC57',
-              borderBottom: '2px solid #F2AC57'
-            }
+            bgcolor: '#18148C', color: '#ffffff',
+            borderRadius: '24px', fontWeight: 600,
+            py: 1.2, px: { xs: 3, md: 4 },
+            fontSize: { xs: 14, sm: 16, md: 20 },
+            textTransform: 'none',
+            '&:hover': { bgcolor: '#ffffff', color: '#F2AC57' }
           }}
         >
           Leer más

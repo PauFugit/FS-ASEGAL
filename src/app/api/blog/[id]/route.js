@@ -1,33 +1,23 @@
-// app/api/blog/[id]/route.js - 
 import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/lib/supabaseServerClient';
 
-// PUT - Actualizar post
 export async function PUT(request, { params }) {
   try {
-    const supabase = await createClient();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    
-    if (authError || !session) {
-      return NextResponse.json(
-        { error: 'No autorizado' }, 
-        { status: 401 }
-      );
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
     const data = await request.json();
-    
-    // Validaciones
     if (!data.title || !data.summary) {
-      return NextResponse.json(
-        { error: 'Título y resumen son requeridos' }, 
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Título y resumen son requeridos' }, { status: 400 });
     }
 
+    const { id } = await params;
     const updatedPost = await prisma.blog.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         title: data.title,
         author: data.author,
@@ -37,46 +27,30 @@ export async function PUT(request, { params }) {
         references: data.references,
         imageUrl: data.imageUrl,
         pdfUrl: data.pdfUrl,
-        status: data.status
-      }
+        status: data.status,
+      },
     });
 
     return NextResponse.json(updatedPost);
   } catch (error) {
     console.error('Error updating blog post:', error);
-    return NextResponse.json(
-      { error: 'Error del servidor' }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 });
   }
 }
 
-// DELETE - Eliminar post
 export async function DELETE(request, { params }) {
   try {
-    const supabase = await createClient();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    
-    if (authError || !session) {
-      return NextResponse.json(
-        { error: 'No autorizado' }, 
-        { status: 401 }
-      );
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    await prisma.blog.delete({
-      where: { id: parseInt(params.id) }
-    });
+    const { id } = await params;
+    await prisma.blog.delete({ where: { id: parseInt(id) } });
 
-    return NextResponse.json(
-      { message: 'Post eliminado correctamente' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Post eliminado correctamente' }, { status: 200 });
   } catch (error) {
     console.error('Error deleting blog post:', error);
-    return NextResponse.json(
-      { error: 'Error del servidor' }, 
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Error del servidor' }, { status: 500 });
   }
 }

@@ -330,8 +330,8 @@ const handleDeletePost = async (id) => {
         />
       </Paper>
 
-      <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
-        <Table>
+      <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto' }}>
+        <Table sx={{ minWidth: 500 }}>
           <TableHead sx={{ backgroundColor: 'grey.100' }}>
             <TableRow>
               <TableCell>Título</TableCell>

@@ -27,36 +27,37 @@ function BannerSuperiorRRSS() {
         </Link>
       </Stack>
 
-      {/* Textos a la derecha, ocultos en xs */}
+      {/* Textos a la derecha */}
       <Stack
         direction="row"
-        spacing={4}
+        spacing={{ xs: 1, sm: 4 }}
         alignItems="center"
-        sx={{ display: { xs: 'none', sm: 'flex' } }}
       >
         <Typography
           variant="caption"
           sx={{
             color: '#fff',
-            fontSize: { xs: 10, md: 12, lg: 13 },
+            fontSize: { xs: 9, md: 12, lg: 13 },
             letterSpacing: 0.2,
             fontWeight: 400,
             textTransform: 'uppercase',
           }}
         >
-          ATENCIÓN <b>PRESENCIAL I Y IV REGIÓN</b>
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>ATENCIÓN </Box>
+          <b>I Y IV REGIÓN</b>
         </Typography>
         <Typography
           variant="caption"
           sx={{
             color: '#fff',
-            fontSize: { xs: 10, md: 12, lg: 13 },
+            fontSize: { xs: 9, md: 12, lg: 13 },
             letterSpacing: 0.2,
             fontWeight: 400,
             textTransform: 'uppercase',
           }}
         >
-          ATENCIÓN ONLINE EN TODO CHILE
+          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>ATENCIÓN </Box>
+          ONLINE <b>CHILE</b>
         </Typography>
       </Stack>
     </Box>

@@ -63,8 +63,7 @@ function ContactoSection() {
   return (
     <Box
       sx={{
-        width: '100vw',
-        minHeight: '100vh',
+        width: '100%',
         position: 'relative',
         overflow: 'hidden',
         bgcolor: '#e6f6fd',
@@ -310,10 +309,7 @@ function ContactoSection() {
           justifyContent: { xs: 'center', md: 'flex-end' },
           alignItems: 'center',
           gap: 2,
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: { xs: 0, md: 40 },
+          position: 'relative',
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center', color: '#fff', gap: 1, mb: { xs: 1, sm: 0 } }}>

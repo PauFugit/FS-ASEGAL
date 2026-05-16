@@ -9,7 +9,7 @@ const nextConfig = {
       'asegalbyfasesorias.cl', 
       'www.asegalbyfasesorias.cl', 
       'fs-asegal.vercel.app',
-      'vtlwovpzhwawdmncuxpi.supabase.co' // ← DOMINIO DE SUPABASE AÑADIDO AQUÍ
+      'res.cloudinary.com'
     ],
     unoptimized: false,
   },

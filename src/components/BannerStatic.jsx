@@ -18,7 +18,7 @@ function BannerStatic({ image, text, color }) {
       sx={{
         position: 'relative',
         width: '100%',
-        height: 400,
+        height: { xs: 200, sm: 280, md: 400 },
         overflow: 'hidden',
       }}
     >
@@ -49,7 +49,7 @@ function BannerStatic({ image, text, color }) {
           sx={{
             fontWeight: 'bold',
             letterSpacing: '0.25rem',
-            fontSize: '1.5rem',
+            fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' },
           }}
         >
           {text}

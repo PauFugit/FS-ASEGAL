@@ -62,7 +62,7 @@ const Navbar = () => {
                 sx={{
                     justifyContent: 'space-between',
                     minHeight: { xs: 56, md: 72, xl: 80 },
-                    height: { xs: 100, md: 100, xl: 120 },
+                    height: { xs: 64, sm: 80, md: 100, xl: 120 },
                     flexDirection: 'row',
                     alignItems: 'center',
                     px: { xs: 1, md: 3 },
@@ -75,7 +75,7 @@ const Navbar = () => {
                         display: 'flex',
                         alignItems: 'center',
                         height: '100%',
-                        width: 300,
+                        width: { xs: 140, sm: 200, md: 300 },
                         flexShrink: 0,
                         overflow: 'hidden'
                     }}
@@ -99,7 +99,7 @@ const Navbar = () => {
                                     objectFit: 'contain',
                                     height: '100%',
                                     width: '100%',
-                                    maxHeight: '100px'
+                                    maxHeight: '80px'
                                 }}
                             />
                         </Box>
@@ -190,7 +190,7 @@ const Navbar = () => {
                             open={drawerOpen}
                             onClose={handleDrawerToggle}
                             PaperProps={{
-                                sx: { width: 240 }
+                                sx: { width: { xs: '75vw', sm: 240 } }
                             }}
                         >
                             <List>
