@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import * as SibApiV3Sdk from '@getbrevo/brevo';
+import { BrevoClient } from '@getbrevo/brevo';
 
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
 
 // Headers para CORS
 const corsHeaders = {
@@ -61,12 +60,12 @@ export async function POST(request) {
     });
 
     // CONFIGURACIÓN BREVO
-    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-    sendSmtpEmail.sender = { name: 'ASEGALBYF Asesorías - Cotizaciones', email: process.env.EMAIL_FROM };
-    sendSmtpEmail.to = [{ email: process.env.EMAIL_FROM }];
-    sendSmtpEmail.replyTo = { email: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email };
-    sendSmtpEmail.subject = `Solicitud de Cotización: ${data.service}`;
-    sendSmtpEmail.textContent = `
+    const emailPayload = {
+      sender: { name: 'ASEGALBYF Asesorías - Cotizaciones', email: process.env.EMAIL_FROM },
+      to: [{ email: process.env.EMAIL_FROM }],
+      replyTo: { email: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email },
+      subject: `Solicitud de Cotización: ${data.service}`,
+      textContent: `
 Nueva solicitud de cotización:
 
 Nombre: ${data.name} ${data.lastname || ''}
@@ -81,7 +80,7 @@ ${data.message || 'No se proporcionó mensaje adicional'}
 Para responder al cliente, utilice: ${data.email}
 Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.
     `.trim();
-    sendSmtpEmail.htmlContent = `
+      htmlContent: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -136,12 +135,13 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
   </div>
 </body>
 </html>
-    `.trim();
+    `.trim(),
+    };
 
     // Envío con Brevo
     try {
-      const emailResponse = await apiInstance.sendTransacEmail(sendSmtpEmail);
-      console.log('✅ Correo de cotización enviado con Brevo - ReplyTo:', isFreemail(data.email) ? 'INTERNO' : 'CLIENTE_DIRECTO');
+      const emailResponse = await brevo.transactionalEmails.sendTransacEmail(emailPayload);
+      console.log('✅ Correo de cotización enviado - ReplyTo:', isFreemail(data.email) ? 'INTERNO' : 'CLIENTE_DIRECTO');
       console.log('📧 ID del email:', emailResponse?.body?.messageId);
     } catch (sendError) {
       console.error('❌ Error al enviar correo:', sendError.message);

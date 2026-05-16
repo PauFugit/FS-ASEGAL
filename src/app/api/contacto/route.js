@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import * as SibApiV3Sdk from '@getbrevo/brevo';
+import { BrevoClient } from '@getbrevo/brevo';
 
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
 
 // Headers para CORS
 const corsHeaders = {
@@ -68,12 +67,12 @@ export async function POST(request) {
     });
 
     // CONFIGURACIÓN BREVO
-    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-    sendSmtpEmail.sender = { name: 'ASEGALBYF Asesorías', email: process.env.EMAIL_FROM };
-    sendSmtpEmail.to = [{ email: process.env.EMAIL_FROM }];
-    sendSmtpEmail.replyTo = { email: !isFreemail(data.email) ? data.email : process.env.EMAIL_FROM };
-    sendSmtpEmail.subject = `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`;
-    sendSmtpEmail.textContent = `
+    const emailPayload = {
+      sender: { name: 'ASEGALBYF Asesorías', email: process.env.EMAIL_FROM },
+      to: [{ email: process.env.EMAIL_FROM }],
+      replyTo: { email: !isFreemail(data.email) ? data.email : process.env.EMAIL_FROM },
+      subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`,
+      textContent: `
 Nuevo mensaje de contacto:
 
 Nombre: ${data.name} ${data.lastname || ''}
@@ -92,7 +91,7 @@ Sitio web: https://asegalbyfasesorias.cl
 Enviado desde el formulario de contacto del sitio web
 ${new Date().toLocaleString('es-CL')}
     `.trim();
-    sendSmtpEmail.htmlContent = `
+      htmlContent: `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0;">
   <div style="background: #18148C; color: white; padding: 20px; text-align: center;">
     <h2 style="margin: 0;">Nuevo Mensaje de Contacto</h2>
@@ -127,12 +126,13 @@ ${new Date().toLocaleString('es-CL')}
     </p>
   </div>
 </div>
-    `.trim();
+    `.trim(),
+    };
 
     // Envío con Brevo
     try {
-      const emailResponse = await apiInstance.sendTransacEmail(sendSmtpEmail);
-      console.log('✅ Correo de contacto enviado con Brevo');
+      const emailResponse = await brevo.transactionalEmails.sendTransacEmail(emailPayload);
+      console.log('✅ Correo de contacto enviado');
       console.log('📧 ID del email:', emailResponse?.body?.messageId);
     } catch (sendError) {
       console.error('❌ Error al enviar correo de contacto:', sendError.message);
