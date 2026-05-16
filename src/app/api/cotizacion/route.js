@@ -4,33 +4,26 @@ import { BrevoClient } from '@getbrevo/brevo';
 
 const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
 
-// Headers para CORS
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
-// Función para detectar si es email de dominio público/freemail
 function isFreemail(email) {
   if (!email) return false;
-  
   const freemailDomains = [
     'gmail.com', 'gmail.cl', 'hotmail.com', 'outlook.com', 'yahoo.com',
     'live.com', 'msn.com', 'aol.com', 'icloud.com', 'protonmail.com',
     'yandex.com', 'mail.com', 'zoho.com', 'gmx.com'
   ];
-  
-  const domain = email.toLowerCase().split('@')[1];
-  return freemailDomains.includes(domain);
+  return freemailDomains.includes(email.toLowerCase().split('@')[1]);
 }
 
-// POST: Crear nueva cotización y enviar correo
 export async function POST(request) {
   try {
     const data = await request.json();
 
-    // Validación mejorada
     if (!data.name || !data.email || !data.service) {
       return NextResponse.json(
         { error: 'Faltan campos requeridos: nombre, email o servicio.' },
@@ -38,16 +31,13 @@ export async function POST(request) {
       );
     }
 
-    // Validar formato de email
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(data.email)) {
+    if (!/\S+@\S+\.\S+/.test(data.email)) {
       return NextResponse.json(
         { error: 'El formato del email no es válido.' },
         { status: 400, headers: corsHeaders }
       );
     }
 
-    // Guardar en la base de datos
     const newCotization = await prisma.cotizationForm.create({
       data: {
         name: data.name,
@@ -59,27 +49,26 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN BREVO
     const emailPayload = {
       sender: { name: 'ASEGALBYF Asesorías - Cotizaciones', email: process.env.EMAIL_FROM },
       to: [{ email: process.env.EMAIL_FROM }],
       replyTo: { email: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email },
       subject: `Solicitud de Cotización: ${data.service}`,
-      textContent: `
-Nueva solicitud de cotización:
-
-Nombre: ${data.name} ${data.lastname || ''}
-Email: ${data.email} ${isFreemail(data.email) ? '(Email del cliente: responder a este correo)' : ''}
-Teléfono: ${data.phone || 'No proporcionado'}
-Servicio: ${data.service}
-
-Mensaje:
-${data.message || 'No se proporcionó mensaje adicional'}
-
----
-Para responder al cliente, utilice: ${data.email}
-Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.
-    `.trim();
+      textContent: [
+        'Nueva solicitud de cotización:',
+        '',
+        `Nombre: ${data.name} ${data.lastname || ''}`,
+        `Email: ${data.email}${isFreemail(data.email) ? ' (responder directamente a este correo)' : ''}`,
+        `Teléfono: ${data.phone || 'No proporcionado'}`,
+        `Servicio: ${data.service}`,
+        '',
+        'Mensaje:',
+        data.message || 'No se proporcionó mensaje adicional',
+        '',
+        '---',
+        `Para responder al cliente, utilice: ${data.email}`,
+        'Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.',
+      ].join('\n'),
       htmlContent: `
 <!DOCTYPE html>
 <html>
@@ -134,60 +123,40 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     ${new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' })}</p>
   </div>
 </body>
-</html>
-    `.trim(),
+</html>`.trim(),
     };
 
-    // Envío con Brevo
     try {
-      const emailResponse = await brevo.transactionalEmails.sendTransacEmail(emailPayload);
+      await brevo.transactionalEmails.sendTransacEmail(emailPayload);
       console.log('✅ Correo de cotización enviado - ReplyTo:', isFreemail(data.email) ? 'INTERNO' : 'CLIENTE_DIRECTO');
-      console.log('📧 ID del email:', emailResponse?.body?.messageId);
     } catch (sendError) {
       console.error('❌ Error al enviar correo:', sendError.message);
       throw sendError;
     }
 
     return NextResponse.json(
-      { 
-        message: 'Cotización creada y correo enviado con éxito.', 
-        cotization: newCotization 
-      },
+      { message: 'Cotización creada y correo enviado con éxito.', cotization: newCotization },
       { status: 201, headers: corsHeaders }
     );
-    
+
   } catch (error) {
     console.error('❌ Error en /api/cotizacion POST:', error);
-    
-    let errorMessage = 'Error al procesar la cotización.';
-    if (error.code === 'P2002') {
-      errorMessage = 'Este correo ya está registrado en una cotización.';
-    }
-
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: 500, headers: corsHeaders }
-    );
+    const errorMessage = error.code === 'P2002'
+      ? 'Este correo ya está registrado en una cotización.'
+      : 'Error al procesar la cotización.';
+    return NextResponse.json({ error: errorMessage }, { status: 500, headers: corsHeaders });
   }
 }
 
-// GET: Obtener todas las cotizaciones
 export async function GET() {
   try {
     const cotizations = await prisma.cotizationForm.findMany();
     return NextResponse.json({ cotizations }, { status: 200, headers: corsHeaders });
   } catch (error) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500, headers: corsHeaders }
-    );
+    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
   }
 }
 
-// OPTIONS: Manejo de CORS
 export async function OPTIONS() {
-  return NextResponse.json(null, {
-    status: 200,
-    headers: corsHeaders,
-  });
+  return NextResponse.json(null, { status: 200, headers: corsHeaders });
 }
