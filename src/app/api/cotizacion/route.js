@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
+import * as SibApiV3Sdk from '@getbrevo/brevo';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
 // Headers para CORS
 const corsHeaders = {
@@ -59,15 +60,13 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN RESEND - SOLUCIÓN ANTI SPAM
-    const emailData = {
-      from: 'ASEGALBYF Asesorías - Cotizaciones <contacto@asegalbyfasesorias.cl>',
-      to: ['contacto@asegalbyfasesorias.cl'],
-      reply_to: isFreemail(data.email) 
-        ? 'contacto@asegalbyfasesorias.cl'
-        : data.email,
-      subject: `Solicitud de Cotización: ${data.service}`,
-      text: `
+    // CONFIGURACIÓN BREVO
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: 'ASEGALBYF Asesorías - Cotizaciones', email: process.env.EMAIL_FROM };
+    sendSmtpEmail.to = [{ email: process.env.EMAIL_FROM }];
+    sendSmtpEmail.replyTo = { email: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email };
+    sendSmtpEmail.subject = `Solicitud de Cotización: ${data.service}`;
+    sendSmtpEmail.textContent = `
 Nueva solicitud de cotización:
 
 Nombre: ${data.name} ${data.lastname || ''}
@@ -81,8 +80,8 @@ ${data.message || 'No se proporcionó mensaje adicional'}
 ---
 Para responder al cliente, utilice: ${data.email}
 Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.
-      `.trim(),
-      html: `
+    `.trim();
+    sendSmtpEmail.htmlContent = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,21 +94,8 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
     .message { background: white; padding: 15px; border-radius: 5px; border-left: 4px solid #9FBA47; }
     .footer { background: #e6f6fd; padding: 15px; text-align: center; font-size: 12px; color: #666; }
     .info-item { margin-bottom: 10px; }
-    .client-email { 
-      background: #fff3cd; 
-      padding: 10px; 
-      border-radius: 5px; 
-      border: 1px solid #ffeaa7;
-      margin: 10px 0;
-    }
-    .freemail-warning {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-top: 5px;
-    }
+    .client-email { background: #fff3cd; padding: 10px; border-radius: 5px; border: 1px solid #ffeaa7; margin: 10px 0; }
+    .freemail-warning { background: #f8d7da; color: #721c24; padding: 8px; border-radius: 4px; font-size: 12px; margin-top: 5px; }
   </style>
 </head>
 <body>
@@ -124,8 +110,8 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
       <strong>Email del cliente:</strong>
       <div class="client-email">
         <strong>${data.email}</strong>
-        ${isFreemail(data.email) 
-          ? '<div class="freemail-warning">⚠️ Para responder, use directamente este email (no usar "Responder")</div>' 
+        ${isFreemail(data.email)
+          ? '<div class="freemail-warning">⚠️ Para responder, use directamente este email (no usar "Responder")</div>'
           : '<div>Puede responder directamente a este correo</div>'
         }
       </div>
@@ -150,21 +136,13 @@ Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Aseso
   </div>
 </body>
 </html>
-      `.trim(),
-    };
+    `.trim();
 
-    // Envío con Resend
+    // Envío con Brevo
     try {
-      const { data: emailResponse, error } = await resend.emails.send(emailData);
-      
-      if (error) {
-        console.error('❌ Error de Resend:', error);
-        throw error;
-      }
-      
-      console.log('✅ Correo enviado con Resend - Tipo ReplyTo:', isFreemail(data.email) ? 'INTERNO (freemail detectado)' : 'CLIENTE_DIRECTO');
-      console.log('📧 ID del email:', emailResponse?.id);
-      
+      const emailResponse = await apiInstance.sendTransacEmail(sendSmtpEmail);
+      console.log('✅ Correo de cotización enviado con Brevo - ReplyTo:', isFreemail(data.email) ? 'INTERNO' : 'CLIENTE_DIRECTO');
+      console.log('📧 ID del email:', emailResponse?.body?.messageId);
     } catch (sendError) {
       console.error('❌ Error al enviar correo:', sendError.message);
       throw sendError;
