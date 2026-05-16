@@ -2,11 +2,6 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
-
-// Configura Redend
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // Headers para CORS
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
