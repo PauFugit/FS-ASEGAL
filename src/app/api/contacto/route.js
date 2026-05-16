@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { Resend } from 'resend';
+import * as SibApiV3Sdk from '@getbrevo/brevo';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
 // Headers para CORS
 const corsHeaders = {
@@ -66,13 +67,13 @@ export async function POST(request) {
       },
     });
 
-    // CONFIGURACIÓN RESEND
-    const emailData = {
-      from: 'ASEGALBYF Asesorías <contacto@asegalbyfasesorias.cl>',
-      to: ['contacto@asegalbyfasesorias.cl'],
-      reply_to: !isFreemail(data.email) ? data.email : 'contacto@asegalbyfasesorias.cl',
-      subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`,
-      text: `
+    // CONFIGURACIÓN BREVO
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: 'ASEGALBYF Asesorías', email: process.env.EMAIL_FROM };
+    sendSmtpEmail.to = [{ email: process.env.EMAIL_FROM }];
+    sendSmtpEmail.replyTo = { email: !isFreemail(data.email) ? data.email : process.env.EMAIL_FROM };
+    sendSmtpEmail.subject = `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`;
+    sendSmtpEmail.textContent = `
 Nuevo mensaje de contacto:
 
 Nombre: ${data.name} ${data.lastname || ''}
@@ -84,27 +85,26 @@ ${data.message}
 
 ---
 ASEGALBYF Asesorías
-Av. Providencia 1234, Santiago, Chile
 Teléfono: +56 9 9492 8092
 Email: contacto@asegalbyfasesorias.cl
 Sitio web: https://asegalbyfasesorias.cl
 
 Enviado desde el formulario de contacto del sitio web
 ${new Date().toLocaleString('es-CL')}
-      `.trim(),
-      html: `
+    `.trim();
+    sendSmtpEmail.htmlContent = `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0;">
   <div style="background: #18148C; color: white; padding: 20px; text-align: center;">
     <h2 style="margin: 0;">Nuevo Mensaje de Contacto</h2>
   </div>
-  
+
   <div style="padding: 20px; background: #f9f9f9;">
     <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
       <p><strong>Nombre:</strong> ${data.name} ${data.lastname || ''}</p>
       <p><strong>Email:</strong> ${data.email}</p>
       <p><strong>Teléfono:</strong> ${data.phone || 'No proporcionado'}</p>
     </div>
-    
+
     <div style="background: white; padding: 15px; border-radius: 5px;">
       <p><strong>Mensaje:</strong></p>
       <div style="background: #f5f5f5; padding: 10px; border-left: 3px solid #F2AC57;">
@@ -112,11 +112,11 @@ ${new Date().toLocaleString('es-CL')}
       </div>
     </div>
   </div>
-  
+
   <div style="background: #e6f6fd; padding: 20px; text-align: center; border-top: 3px solid #9FBA47;">
     <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
       <strong>ASEGALBYF Asesorías</strong><br>
-      Atención presencial II y IV Región. Atención online.<br>
+      Atención presencial I y IV Región. Atención online.<br>
       Teléfono: +56 9 9492 8092<br>
       Email: contacto@asegalbyfasesorias.cl<br>
       Sitio web: https://asegalbyfasesorias.cl
@@ -127,21 +127,13 @@ ${new Date().toLocaleString('es-CL')}
     </p>
   </div>
 </div>
-      `.trim(),
-    };
+    `.trim();
 
-    // Envío con Resend
+    // Envío con Brevo
     try {
-      const { data: emailResponse, error } = await resend.emails.send(emailData);
-      
-      if (error) {
-        console.error('❌ Error de Resend:', error);
-        throw error;
-      }
-      
-      console.log('✅ Correo de contacto enviado con Resend');
-      console.log('📧 ID del email:', emailResponse?.id);
-      
+      const emailResponse = await apiInstance.sendTransacEmail(sendSmtpEmail);
+      console.log('✅ Correo de contacto enviado con Brevo');
+      console.log('📧 ID del email:', emailResponse?.body?.messageId);
     } catch (sendError) {
       console.error('❌ Error al enviar correo de contacto:', sendError.message);
       throw sendError;

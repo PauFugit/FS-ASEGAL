@@ -16,16 +16,12 @@ const Navbar = dynamic(() => import('@/components/Navbar'), {
 
 export default function ClientLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>
-          <BannerSuperiorRRSS/>
-          <Navbar/>
-          {children}
-          <Footer/>
-          <FloatingButtons/>
-        </Providers>
-      </body>
-    </html>
+    <Providers>
+      <BannerSuperiorRRSS/>
+      <Navbar/>
+      {children}
+      <Footer/>
+      <FloatingButtons/>
+    </Providers>
   );
 }

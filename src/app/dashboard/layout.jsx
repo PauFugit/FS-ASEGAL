@@ -5,6 +5,7 @@ import { useState } from 'react';
 import SidebarDashboard from '@/components/dashboard/SidebarDashboard';
 import TopBarDashboard from '@/components/dashboard/TopBarDashboard';
 import Providers from '@/providers/Providers';
+import AuthGuard from '@/components/AuthGuard';
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -37,7 +38,7 @@ export default function DashboardLayout({ children }) {
                 minHeight: '100vh',
               }}
             >
-              {children}
+              <AuthGuard>{children}</AuthGuard>
             </Box>
           </Box>
         </Providers>

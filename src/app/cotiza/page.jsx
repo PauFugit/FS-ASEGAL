@@ -1,20 +1,16 @@
-'use client'
-import BannerStatic from '@/components/BannerStatic'
-import CotizaSection from '@/components/CotizaSection'
-import React from 'react'
+import CotizaClient from './CotizaClient';
 
+export const metadata = {
+  title: 'Cotiza',
+  description: 'Solicita una cotización personalizada para tus asesorías en seguridad alimentaria. Resolución Sanitaria, Etiquetado Nutricional, Auditorías y más.',
+  openGraph: {
+    title: 'Cotiza | Asegal B&F',
+    description: 'Solicita una cotización personalizada para tus asesorías en seguridad alimentaria.',
+    url: 'https://asegalbyfasesorias.cl/cotiza',
+  },
+  alternates: { canonical: 'https://asegalbyfasesorias.cl/cotiza' },
+};
 
-function page() {
-  return (
-    <>
-    <BannerStatic
-        image="bannerservicios.jpg"
-        text="COTIZA NUESTROS SERVICIOS"
-      />
-    <CotizaSection/>
-
-    </>
-  )
+export default function Page() {
+  return <CotizaClient />;
 }
-
-export default page
