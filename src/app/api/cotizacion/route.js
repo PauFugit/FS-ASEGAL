@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { BrevoClient } from '@getbrevo/brevo';
-
-const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
+import { transporter } from '@/lib/mailer';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -50,11 +48,11 @@ export async function POST(request) {
     });
 
     const emailPayload = {
-      sender: { name: 'ASEGALBYF Asesorías - Cotizaciones', email: process.env.EMAIL_FROM },
-      to: [{ email: process.env.EMAIL_FROM }],
-      replyTo: { email: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email },
+      from: `"ASEGALBYF Asesorías - Cotizaciones" <${process.env.EMAIL_FROM}>`,
+      to: process.env.EMAIL_FROM,
+      replyTo: isFreemail(data.email) ? process.env.EMAIL_FROM : data.email,
       subject: `Solicitud de Cotización: ${data.service}`,
-      textContent: [
+      text: [
         'Nueva solicitud de cotización:',
         '',
         `Nombre: ${data.name} ${data.lastname || ''}`,
@@ -69,7 +67,7 @@ export async function POST(request) {
         `Para responder al cliente, utilice: ${data.email}`,
         'Este mensaje fue generado automáticamente desde el sitio web de ASEGALBYF Asesorías.',
       ].join('\n'),
-      htmlContent: `
+      html: `
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,7 +125,7 @@ export async function POST(request) {
     };
 
     try {
-      await brevo.transactionalEmails.sendTransacEmail(emailPayload);
+      await transporter.sendMail(emailPayload);
       console.log('✅ Correo de cotización enviado - ReplyTo:', isFreemail(data.email) ? 'INTERNO' : 'CLIENTE_DIRECTO');
     } catch (sendError) {
       console.error('❌ Error al enviar correo:', sendError.message);

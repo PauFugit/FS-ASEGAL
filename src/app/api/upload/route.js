@@ -49,12 +49,20 @@ export async function POST(request) {
 
     const resourceType = bucketName === 'blog-pdfs' ? 'raw' : 'image';
 
+    // Cloudinary sirve los recursos 'raw' sin extensión como application/octet-stream
+    // forzando la descarga con un nombre sin extensión. Para que los PDF se puedan
+    // previsualizar y descarguen con el nombre correcto, el public_id debe terminar en .pdf.
+    const uploadOptions = {
+      folder: folderMap[bucketName],
+      resource_type: resourceType,
+    };
+    if (bucketName === 'blog-pdfs') {
+      uploadOptions.public_id = `${Date.now()}-${file.name.replace(/\.pdf$/i, '').replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+    }
+
     const uploadResult = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream(
-        {
-          folder: folderMap[bucketName],
-          resource_type: resourceType,
-        },
+        uploadOptions,
         (error, result) => {
           if (error) reject(error);
           else resolve(result);

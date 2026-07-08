@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { BrevoClient } from '@getbrevo/brevo';
-
-const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
+import { transporter } from '@/lib/mailer';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -56,11 +54,11 @@ export async function POST(request) {
     });
 
     const emailPayload = {
-      sender: { name: 'ASEGALBYF Asesorías', email: process.env.EMAIL_FROM },
-      to: [{ email: process.env.EMAIL_FROM }],
-      replyTo: { email: !isFreemail(data.email) ? data.email : process.env.EMAIL_FROM },
+      from: `"ASEGALBYF Asesorías" <${process.env.EMAIL_FROM}>`,
+      to: process.env.EMAIL_FROM,
+      replyTo: !isFreemail(data.email) ? data.email : process.env.EMAIL_FROM,
       subject: `Nuevo mensaje de contacto: ${data.name} ${data.lastname || ''}`,
-      textContent: [
+      text: [
         'Nuevo mensaje de contacto:',
         '',
         `Nombre: ${data.name} ${data.lastname || ''}`,
@@ -79,7 +77,7 @@ export async function POST(request) {
         `Enviado desde el formulario de contacto del sitio web`,
         new Date().toLocaleString('es-CL'),
       ].join('\n'),
-      htmlContent: `
+      html: `
 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0;">
   <div style="background: #18148C; color: white; padding: 20px; text-align: center;">
     <h2 style="margin: 0;">Nuevo Mensaje de Contacto</h2>
@@ -114,7 +112,7 @@ export async function POST(request) {
     };
 
     try {
-      await brevo.transactionalEmails.sendTransacEmail(emailPayload);
+      await transporter.sendMail(emailPayload);
       console.log('✅ Correo de contacto enviado');
     } catch (sendError) {
       console.error('❌ Error al enviar correo de contacto:', sendError.message);
