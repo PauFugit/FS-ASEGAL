@@ -21,7 +21,6 @@ const BannerHomePpal = () => {
         alignItems: 'center',
         padding: { xs: '2rem 1rem', md: '3rem' },
         borderRadius: '8px',
-        marginBottom: '2rem',
         position: 'relative',
         overflow: 'hidden',
         minHeight: { xs: 'auto', md: '500px' },
