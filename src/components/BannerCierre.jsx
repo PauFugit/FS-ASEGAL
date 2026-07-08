@@ -47,6 +47,7 @@ export default function HeroBanner() {
       {/* Texto principal con animaciones */}
       <Typography
         variant="h1"
+        component="h2"
         sx={{
           position: 'relative',
           color: '#ffffff',

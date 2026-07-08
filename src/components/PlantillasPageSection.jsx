@@ -156,7 +156,7 @@ const PlantillasPageSection = () => {
       px: { xs: 3, sm: 6, md: 8, lg: 12 },
       mx: 'auto'
     }}>
-      <Typography variant="h4" sx={{ 
+      <Typography variant="h4" component="h1" sx={{
         mb: 5,
         fontWeight: 600,
         color: '#1A1773',

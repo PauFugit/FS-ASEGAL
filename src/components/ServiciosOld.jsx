@@ -251,9 +251,9 @@ const ServiceCard = ({ title, description, image, steps, reverse = false }) => {
                                         <li key={index}>
                                             <Typography variant="body2" sx={{
                                                 color: '#18148C',
-                                                fontSize: { 
-                                                    xs: '0.8rem', 
-                                                    md: '0.1rem', 
+                                                fontSize: {
+                                                    xs: '0.8rem',
+                                                    md: '0.9rem',
                                                     xl: '1rem',
                                                     '@media (min-width: 900px) and (max-width: 1535px)': {
                                                         fontSize: '0.75rem'

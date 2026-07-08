@@ -114,11 +114,12 @@ function Page() {
       />
 
       <Box sx={{ mt: 8, mb: 8, px: { xs: 2, sm: 3, md: 4, lg: 6 } }}>
-        <Typography 
-          variant="h4" 
+        <Typography
+          variant="h4"
+          component="h1"
           sx={{
-            color: '#18148C', 
-            fontWeight: 700, 
+            color: '#18148C',
+            fontWeight: 700,
             mb: 6,
             textAlign: 'center',
             fontSize: { xs: '1.8rem', md: '2.2rem', lg: '2.5rem' }
