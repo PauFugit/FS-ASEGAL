@@ -1,6 +1,8 @@
+import { prisma } from '@/lib/prisma';
+
 const BASE_URL = 'https://asegalbyfasesorias.cl';
 
-export default function sitemap() {
+export default async function sitemap() {
   const staticPages = [
     { url: `${BASE_URL}/`, changeFrequency: 'weekly', priority: 1.0 },
     { url: `${BASE_URL}/nosotras`, changeFrequency: 'monthly', priority: 0.8 },
@@ -12,5 +14,21 @@ export default function sitemap() {
     { url: `${BASE_URL}/misionyvision`, changeFrequency: 'monthly', priority: 0.5 },
   ];
 
-  return staticPages;
+  try {
+    const posts = await prisma.blog.findMany({
+      where: { status: 'publicado', slug: { not: null } },
+      select: { slug: true, updatedAt: true },
+    });
+
+    const blogPages = posts.map((post) => ({
+      url: `${BASE_URL}/blog/${post.slug}`,
+      lastModified: post.updatedAt,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }));
+
+    return [...staticPages, ...blogPages];
+  } catch {
+    return staticPages;
+  }
 }

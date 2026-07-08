@@ -1,25 +1,19 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import BannerStatic from '@/components/BannerStatic'
 import BannerNewsletter from '@/components/BannerNewsletter'
 import BannerCierreTres from '@/components/BannerCierreTres'
 import BlogCard from '@/components/BlogCard'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
 import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import CircularProgress from '@mui/material/CircularProgress'
 import Button from '@mui/material/Button'
-import DownloadIcon from '@mui/icons-material/Download'
 
 function Page() {
-  const [open, setOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState(null);
   const [startIdx, setStartIdx] = useState(0);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,16 +70,6 @@ function Page() {
   // Lógica para flechas
   const canGoBack = startIdx > 0;
   const canGoForward = startIdx + CARDS_PER_PAGE < posts.length;
-
-  const handleOpen = (post) => {
-    setSelectedCard(post);
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedCard(null);
-  };
 
   const handlePrev = () => {
     if (canGoBack) setStartIdx(startIdx - CARDS_PER_PAGE);
@@ -180,16 +164,18 @@ function Page() {
               {visibleCards.map((post) => (
                 <Box
                   key={post.id}
+                  component={Link}
+                  href={`/blog/${post.slug}`}
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     transition: 'transform 0.2s, box-shadow 0.2s',
                     cursor: 'pointer',
+                    textDecoration: 'none',
                     '&:hover': {
                       transform: 'translateY(-8px)',
                     },
                   }}
-                  onClick={() => handleOpen(post)}
                 >
                   <BlogCard
                     image={post.imageUrl}
@@ -267,148 +253,6 @@ function Page() {
           </Box>
         )}
       </Box>
-
-      {/* Modal/Dialog para mostrar contenido completo */}
-      <Dialog 
-        open={open} 
-        onClose={handleClose} 
-        maxWidth="lg"
-        fullWidth
-        scroll="paper"
-        sx={{
-          '& .MuiDialog-paper': {
-            maxHeight: '90vh',
-          }
-        }}
-      >
-        <DialogTitle sx={{ 
-          m: 0, 
-          p: 3, 
-          backgroundColor: '#18148C', 
-          color: 'white',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <Typography variant="h6" component="div">
-            {selectedCard?.title}
-          </Typography>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{ color: 'white' }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        
-        <DialogContent dividers sx={{ p: 0, display: 'flex', flexDirection: 'column' }}>
-          {selectedCard?.pdfUrl ? (
-            <>
-              <Box sx={{ 
-                p: 3, 
-                backgroundColor: '#f5f5f5', 
-                borderBottom: '1px solid #e0e0e0',
-                display: 'flex',
-                justifyContent: 'center',
-                gap: 2
-              }}>
-                <Button
-                  variant="contained"
-                  startIcon={<DownloadIcon />}
-                  href={selectedCard.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{
-                    backgroundColor: '#18148C',
-                    '&:hover': { backgroundColor: '#0f0c5e' },
-                  }}
-                >
-                  Descargar PDF
-                </Button>
-                <Button
-                  variant="outlined"
-                  onClick={handleClose}
-                  sx={{
-                    borderColor: '#18148C',
-                    color: '#18148C',
-                    '&:hover': { 
-                      borderColor: '#0f0c5e',
-                      backgroundColor: 'rgba(24, 20, 140, 0.04)'
-                    },
-                  }}
-                >
-                  Cerrar
-                </Button>
-              </Box>
-              
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '70vh',
-                  minHeight: '400px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  p: 1
-                }}
-              >
-                <iframe
-                  src={selectedCard.pdfUrl}
-                  title={selectedCard.title}
-                  width="100%"
-                  height="100%"
-                  style={{
-                    border: 'none',
-                    borderRadius: 8,
-                  }}
-                />
-              </Box>
-            </>
-          ) : (
-            <Box sx={{ p: 4 }}>
-              {selectedCard?.imageUrl && (
-                <Box sx={{ textAlign: 'center', mb: 3 }}>
-                  <img
-                    src={selectedCard.imageUrl}
-                    alt={selectedCard.title}
-                    style={{
-                      width: '100%',
-                      maxHeight: 300,
-                      objectFit: 'contain',
-                      borderRadius: 8,
-                    }}
-                  />
-                </Box>
-              )}
-              
-              <Typography variant="body1" sx={{ 
-                color: '#333', 
-                whiteSpace: 'pre-line',
-                lineHeight: 1.8,
-                mb: 3
-              }}>
-                {selectedCard?.bodyText || selectedCard?.summary}
-              </Typography>
-              
-              {selectedCard?.references && (
-                <Box sx={{ 
-                  mt: 3, 
-                  p: 2, 
-                  backgroundColor: '#f9f9f9', 
-                  borderRadius: 2 
-                }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
-                    Referencias:
-                  </Typography>
-                  <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                    {selectedCard.references}
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
 
       <BannerNewsletter />
       <BannerCierreTres />

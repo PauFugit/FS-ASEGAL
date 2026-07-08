@@ -57,15 +57,17 @@ model Resources {
 model Blog {
   id          Int      @id @default(autoincrement())
   title       String   @unique
+  slug        String?  @unique
   author      String?
   summary     String
   link        String?
   bodyText    String?
   references  String?
   imageUrl    String
-  pdfUrl      String? 
+  pdfUrl      String?
   status    String   @default("publicado")
   createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 model NewsletterSubscriber {

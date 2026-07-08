@@ -2,6 +2,18 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { slugify } from '@/lib/slugify';
+
+async function generateUniqueSlug(title) {
+  const base = slugify(title);
+  let slug = base;
+  let counter = 2;
+  while (await prisma.blog.findUnique({ where: { slug } })) {
+    slug = `${base}-${counter}`;
+    counter++;
+  }
+  return slug;
+}
 
 export async function GET() {
   try {
@@ -36,9 +48,12 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Ya existe un post con este título' }, { status: 400 });
     }
 
+    const slug = await generateUniqueSlug(data.title);
+
     const newPost = await prisma.blog.create({
       data: {
         title: data.title,
+        slug,
         author: data.author || 'Anónimo',
         summary: data.summary,
         link: data.link || null,
