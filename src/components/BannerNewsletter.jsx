@@ -5,9 +5,39 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import Typography from '@mui/material/Typography';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 function BannerNewsletter() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || loading) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setSnackbar({ open: true, message: '¡Gracias por suscribirte!', severity: 'success' });
+        setEmail('');
+      } else {
+        setSnackbar({ open: true, message: data.error || 'No se pudo completar la suscripción.', severity: 'error' });
+      }
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Error de conexión. Intenta nuevamente.', severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -42,15 +72,14 @@ function BannerNewsletter() {
           width: { xs: '100%', sm: 'auto' },
           justifyContent: 'center',
         }}
-        onSubmit={e => {
-          e.preventDefault();
-          // Aquí manejar el submit
-        }}
+        onSubmit={handleSubmit}
       >
         <InputBase
+          type="email"
           placeholder="TUCORREO@CORREO.CL"
           value={email}
           onChange={e => setEmail(e.target.value)}
+          disabled={loading}
           sx={{
             bgcolor: '#fff',
             px: 2,
@@ -81,11 +110,26 @@ function BannerNewsletter() {
               bgcolor: '#0F07D9',
             },
           }}
-          disabled={!email}
+          disabled={!email || loading}
         >
-          SUSCRIBIRSE
+          {loading ? 'Enviando...' : 'Suscribirse'}
         </Button>
       </Box>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert
+          onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

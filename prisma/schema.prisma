@@ -68,6 +68,12 @@ model Blog {
   createdAt   DateTime @default(now())
 }
 
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @db.VarChar(255) @unique
+  createdAt DateTime @default(now())
+}
+
 model ContactForm {
   id        Int      @id @default(autoincrement())
   name      String
