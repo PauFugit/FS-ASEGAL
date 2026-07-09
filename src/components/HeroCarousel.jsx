@@ -56,13 +56,16 @@ const HeroCarousel = () => {
               borderRadius: '8px',
               overflow: 'hidden',
               border: '1px solid rgba(24, 20, 140, 0.15)',
+              backgroundColor: '#f5f5f5',
+              padding: '0.5rem',
+              boxSizing: 'border-box',
             }}
           >
             <Image
               src={slide.src}
               alt={slide.alt}
               fill
-              style={{ objectFit: 'cover', objectPosition: 'center' }}
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
               quality={90}
               sizes="100vw"
             />
