@@ -20,13 +20,16 @@ import {
   Email as EmailIcon,
   MarkEmailRead as NewsletterIcon,
   Settings as SettingsIcon,
-  DesignServices as ServicesIcon
+  DesignServices as ServicesIcon,
+  ReceiptLong as OrdersIcon
 } from '@mui/icons-material';
 import { usePathname } from 'next/navigation'; // Usar usePathname en lugar de useRouter
 import Link from 'next/link';
 
 const menuItems = [
   { text: 'Panel', icon: <DashboardIcon />, path: '/dashboard' },
+  { text: 'Servicios', icon: <ServicesIcon />, path: '/dashboard/servicios' },
+  { text: 'Órdenes', icon: <OrdersIcon />, path: '/dashboard/ordenes' },
   { text: 'Plantillas', icon: <ArticleIcon />, path: '/dashboard/plantillas' },
   { text: 'Cursos', icon: <SchoolIcon />, path: '/dashboard/cursos' },
   { text: 'Blog', icon: <EmailIcon />, path: '/dashboard/blog' },

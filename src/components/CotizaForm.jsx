@@ -1,16 +1,38 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, TextField, Button, MenuItem } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+
+const SERVICIOS_BASE = [
+  'Tramitación resolución sanitaria',
+  'Auditorias',
+  'Sistemas de gestión de calidad',
+  'Capacitaciones',
+  'Etiquetado nutricional',
+];
 
 function CotizaForm() {
+  const searchParams = useSearchParams();
+  const preselectedService = searchParams.get('servicio') || '';
+
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
     email: '',
     phone: '',
-    service: '',
+    service: preselectedService,
     message: '',
   });
+
+  useEffect(() => {
+    if (preselectedService) {
+      setFormData((prev) => ({ ...prev, service: preselectedService }));
+    }
+  }, [preselectedService]);
+
+  const serviceOptions = preselectedService && !SERVICIOS_BASE.includes(preselectedService)
+    ? [preselectedService, ...SERVICIOS_BASE]
+    : SERVICIOS_BASE;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -180,11 +202,9 @@ function CotizaForm() {
         <MenuItem value="" disabled>
           Selecciona el servicio que deseas cotizar
         </MenuItem>
-        <MenuItem value="Tramitación resolución sanitaria">1. Tramitación resolución sanitaria</MenuItem>
-        <MenuItem value="Auditorias">2. Auditorias</MenuItem>
-        <MenuItem value="Sistemas de gestión de calidad">3. Sistemas de gestión de calidad</MenuItem>
-        <MenuItem value="Capacitaciones">4. Capacitaciones</MenuItem>
-        <MenuItem value="Etiquetado nutricional">5. Etiquetado nutricional</MenuItem>
+        {serviceOptions.map((option) => (
+          <MenuItem key={option} value={option}>{option}</MenuItem>
+        ))}
       </TextField>
 
       <TextField

@@ -31,13 +31,21 @@ model Users {
 }
 
 model Services {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  createdBy   String?
-  description String
-  price       String?
-  imageUrl    String
-  createdAt   DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  name            String   @unique
+  slug            String?  @unique
+  createdBy       String?
+  description     String
+  longDescription String?  @db.Text
+  price           String?
+  priceAmount     Int?
+  images          String[] @default([])
+  imageUrl        String
+  status          String   @default("publicado")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+
+  orders Order[]
 }
 
 model Resources {
@@ -95,6 +103,40 @@ model CotizationForm {
   service   String
   message   String   @db.Text
   createdAt DateTime @default(now())
+}
+
+model Order {
+  id                Int         @id @default(autoincrement())
+  buyOrder          String      @unique
+  sessionId         String
+  serviceId         Int?
+  serviceName       String
+  amount            Int
+  status            OrderStatus @default(INICIADA)
+  transbankToken    String?
+  authorizationCode String?
+  responseCode      Int?
+  paymentTypeCode   String?
+  cardLastDigits    String?
+  transactionDate   DateTime?
+  buyerName         String
+  buyerEmail        String
+  buyerPhone        String?
+  emailSent         Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now()) @updatedAt
+
+  service Services? @relation(fields: [serviceId], references: [id])
+
+  @@index([serviceId])
+}
+
+enum OrderStatus {
+  INICIADA
+  AUTORIZADA
+  RECHAZADA
+  ANULADA
+  EXPIRADA
 }
 
 enum Role {

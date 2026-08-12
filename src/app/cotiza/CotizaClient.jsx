@@ -1,7 +1,7 @@
 'use client'
 import BannerStatic from '@/components/BannerStatic'
 import CotizaSection from '@/components/CotizaSection'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 
 function page() {
@@ -11,7 +11,9 @@ function page() {
         image="bannerservicios.jpg"
         text="COTIZA NUESTROS SERVICIOS"
       />
-    <CotizaSection/>
+    <Suspense fallback={null}>
+      <CotizaSection/>
+    </Suspense>
 
     </>
   )

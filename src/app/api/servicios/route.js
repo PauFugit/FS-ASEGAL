@@ -1,10 +1,28 @@
-import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { slugify } from '@/lib/slugify';
 
+async function generateUniqueSlug(name) {
+    const base = slugify(name);
+    let slug = base;
+    let counter = 2;
+    while (await prisma.services.findUnique({ where: { slug } })) {
+        slug = `${base}-${counter}`;
+        counter++;
+    }
+    return slug;
+}
 
 export async function GET() {
     try {
-        const services = await prisma.services.findMany();
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+        }
+
+        const services = await prisma.services.findMany({ orderBy: { createdAt: 'desc' } });
         return NextResponse.json({ data: services }, { status: 200 });
     } catch(error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -13,9 +31,20 @@ export async function GET() {
 
 export async function POST(request) {
     try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+        }
+
         const data = await request.json();
 
-        // Validar servicio único
+        if (!data.name || !data.description || !data.imageUrl) {
+            return NextResponse.json(
+                { error: 'Nombre, descripción e imagen son requeridos' },
+                { status: 400 }
+            );
+        }
+
         const existingService = await prisma.services.findUnique({
             where: { name: data.name }
         });
@@ -26,9 +55,21 @@ export async function POST(request) {
             );
         }
 
-        // Crear servicio
+        const slug = await generateUniqueSlug(data.name);
+
         const newService = await prisma.services.create({
-            data
+            data: {
+                name: data.name,
+                slug,
+                createdBy: data.createdBy || null,
+                description: data.description,
+                longDescription: data.longDescription || null,
+                price: data.price || null,
+                priceAmount: data.priceAmount ? parseInt(data.priceAmount, 10) : null,
+                images: Array.isArray(data.images) ? data.images : [],
+                imageUrl: data.imageUrl,
+                status: data.status || 'publicado',
+            }
         });
 
         return NextResponse.json(newService, { status: 201 });

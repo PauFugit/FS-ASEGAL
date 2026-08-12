@@ -27,7 +27,19 @@ export default async function sitemap() {
       priority: 0.6,
     }));
 
-    return [...staticPages, ...blogPages];
+    const services = await prisma.services.findMany({
+      where: { status: 'publicado', slug: { not: null } },
+      select: { slug: true, updatedAt: true },
+    });
+
+    const servicePages = services.map((service) => ({
+      url: `${BASE_URL}/servicios/${service.slug}`,
+      lastModified: service.updatedAt,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }));
+
+    return [...staticPages, ...blogPages, ...servicePages];
   } catch {
     return staticPages;
   }

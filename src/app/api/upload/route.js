@@ -18,7 +18,7 @@ export async function POST(request) {
       return NextResponse.json({ error: 'No se proporcionó ningún archivo' }, { status: 400 });
     }
 
-    const allowedBuckets = ['blog-images', 'blog-pdfs', 'user-avatars'];
+    const allowedBuckets = ['blog-images', 'blog-pdfs', 'user-avatars', 'service-images'];
     if (!allowedBuckets.includes(bucketName)) {
       return NextResponse.json({ error: 'Bucket no permitido' }, { status: 400 });
     }
@@ -45,6 +45,7 @@ export async function POST(request) {
       'blog-images': 'asegal/blog-images',
       'blog-pdfs': 'asegal/blog-pdfs',
       'user-avatars': 'asegal/user-avatars',
+      'service-images': 'asegal/service-images',
     };
 
     const resourceType = bucketName === 'blog-pdfs' ? 'raw' : 'image';

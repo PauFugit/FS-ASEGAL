@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/authOptions';
 import { prisma } from '@/lib/prisma'
 
 export async function GET(request, { params }) {
-    const id = parseInt(params.id)
+    const { id: rawId } = await params;
+    const id = parseInt(rawId)
     try {
         const service = await prisma.services.findUnique({
             where: { id }
@@ -20,8 +23,14 @@ export async function GET(request, { params }) {
 }
 
 export async function DELETE(request, { params }) {
-    const id = parseInt(params.id)
     try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+        }
+
+        const { id: rawId } = await params;
+        const id = parseInt(rawId)
         await prisma.services.delete({
             where: { id }
         });
@@ -35,30 +44,46 @@ export async function DELETE(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
-    const id = parseInt(params.id)
     try {
-        const data = await request.json();
-        const updateData = { ...data };
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+        }
 
-        // Validar unicidad de nombre si se actualiza el nombre
-        if (updateData.name) {
-            const existingService = await prisma.services.findFirst({
-                where: {
-                    name: updateData.name,
-                    id: { not: id }
-                }
-            });
-            if (existingService) {
-                return NextResponse.json(
-                    { error: "El nombre del servicio ya está en uso" },
-                    { status: 400 }
-                );
+        const { id: rawId } = await params;
+        const id = parseInt(rawId)
+        const data = await request.json();
+
+        if (!data.name || !data.description) {
+            return NextResponse.json({ error: 'Nombre y descripción son requeridos' }, { status: 400 });
+        }
+
+        const existingService = await prisma.services.findFirst({
+            where: {
+                name: data.name,
+                id: { not: id }
             }
+        });
+        if (existingService) {
+            return NextResponse.json(
+                { error: "El nombre del servicio ya está en uso" },
+                { status: 400 }
+            );
         }
 
         const updatedService = await prisma.services.update({
             where: { id },
-            data: updateData
+            data: {
+                name: data.name,
+                createdBy: data.createdBy,
+                description: data.description,
+                longDescription: data.longDescription || null,
+                price: data.price || null,
+                priceAmount: data.priceAmount ? parseInt(data.priceAmount, 10) : null,
+                images: Array.isArray(data.images) ? data.images : [],
+                imageUrl: data.imageUrl,
+                status: data.status,
+            }
         });
         return NextResponse.json({
             message: "Servicio actualizado correctamente.",
