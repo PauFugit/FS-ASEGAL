@@ -21,6 +21,7 @@
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.10.0",
     "dotenv": "^17.2.2",
+    "mercadopago": "^3.4.0",
     "mysql2": "^3.14.1",
     "next": "15.3.8",
     "next-auth": "^4.24.14",

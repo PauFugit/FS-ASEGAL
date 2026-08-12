@@ -43,6 +43,7 @@ export default function OrdenesPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('TODOS');
+  const [providerFilter, setProviderFilter] = useState('TODOS');
 
   useEffect(() => {
     fetch('/api/ordenes')
@@ -58,8 +59,11 @@ export default function OrdenesPage() {
       order.buyerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       order.buyerEmail.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'TODOS' || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
+    const matchesProvider = providerFilter === 'TODOS' || order.provider === providerFilter;
+    return matchesSearch && matchesStatus && matchesProvider;
   });
+
+  const PROVIDER_LABEL = { WEBPAY: 'Webpay Plus', MERCADOPAGO: 'Mercado Pago' };
 
   const formatCLP = (amount) => amount.toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
@@ -107,6 +111,18 @@ export default function OrdenesPage() {
             <MenuItem value="EXPIRADA">Expirada</MenuItem>
           </Select>
         </FormControl>
+        <FormControl sx={{ flex: 1, minWidth: 180 }}>
+          <InputLabel>Proveedor</InputLabel>
+          <Select
+            value={providerFilter}
+            label="Proveedor"
+            onChange={(e) => setProviderFilter(e.target.value)}
+          >
+            <MenuItem value="TODOS">Todos</MenuItem>
+            <MenuItem value="WEBPAY">Webpay Plus</MenuItem>
+            <MenuItem value="MERCADOPAGO">Mercado Pago</MenuItem>
+          </Select>
+        </FormControl>
       </Paper>
 
       <TableContainer component={Paper} sx={{ borderRadius: 2, overflowX: 'auto' }}>
@@ -115,6 +131,7 @@ export default function OrdenesPage() {
             <TableRow>
               <TableCell>Orden</TableCell>
               <TableCell>Servicio</TableCell>
+              <TableCell>Proveedor</TableCell>
               <TableCell>Comprador</TableCell>
               <TableCell>Monto</TableCell>
               <TableCell>Fecha</TableCell>
@@ -133,6 +150,14 @@ export default function OrdenesPage() {
                     </Box>
                   </TableCell>
                   <TableCell>{order.serviceName}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={PROVIDER_LABEL[order.provider] || order.provider}
+                      size="small"
+                      variant="outlined"
+                      color={order.provider === 'MERCADOPAGO' ? 'info' : 'primary'}
+                    />
+                  </TableCell>
                   <TableCell>
                     <Typography variant="body2">{order.buyerName}</Typography>
                     <Typography variant="caption" color="text.secondary">{order.buyerEmail}</Typography>

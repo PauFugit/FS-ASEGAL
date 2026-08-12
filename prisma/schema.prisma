@@ -106,29 +106,38 @@ model CotizationForm {
 }
 
 model Order {
-  id                Int         @id @default(autoincrement())
-  buyOrder          String      @unique
+  id                Int           @id @default(autoincrement())
+  buyOrder          String        @unique
   sessionId         String
+  provider          OrderProvider @default(WEBPAY)
   serviceId         Int?
   serviceName       String
   amount            Int
-  status            OrderStatus @default(INICIADA)
-  transbankToken    String?
+  status            OrderStatus   @default(INICIADA)
+  providerToken     String?
+  providerPaymentId String?
   authorizationCode String?
   responseCode      Int?
+  statusDetail      String?
   paymentTypeCode   String?
   cardLastDigits    String?
+  providerData      Json?
   transactionDate   DateTime?
   buyerName         String
   buyerEmail        String
   buyerPhone        String?
-  emailSent         Boolean     @default(false)
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @default(now()) @updatedAt
+  emailSent         Boolean       @default(false)
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @default(now()) @updatedAt
 
   service Services? @relation(fields: [serviceId], references: [id])
 
   @@index([serviceId])
+}
+
+enum OrderProvider {
+  WEBPAY
+  MERCADOPAGO
 }
 
 enum OrderStatus {

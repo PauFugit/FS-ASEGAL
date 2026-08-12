@@ -36,6 +36,12 @@ const ESTADOS = {
     title: 'Tiempo agotado',
     message: 'La sesión de pago expiró. Por favor, intenta nuevamente.',
   },
+  pendiente: {
+    icon: ScheduleIcon,
+    color: '#ed6c02',
+    title: 'Pago pendiente',
+    message: 'Tu pago está siendo procesado. Te avisaremos por correo cuando se confirme.',
+  },
   error: {
     icon: ErrorOutlineIcon,
     color: '#ed6c02',

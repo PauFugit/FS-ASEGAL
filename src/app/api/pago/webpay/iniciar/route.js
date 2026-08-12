@@ -33,7 +33,7 @@ export async function POST(request) {
     const buyOrder = buildBuyOrder();
     const sessionId = buildSessionId();
     const baseUrl = process.env.NEXTAUTH_URL || new URL(request.url).origin;
-    const returnUrl = `${baseUrl}/api/pago/confirmar`;
+    const returnUrl = `${baseUrl}/api/pago/webpay/confirmar`;
 
     const response = await webpayTransaction.create(
       buyOrder,
@@ -46,11 +46,12 @@ export async function POST(request) {
       data: {
         buyOrder,
         sessionId,
+        provider: 'WEBPAY',
         serviceId: service.id,
         serviceName: service.name,
         amount: service.priceAmount,
         status: 'INICIADA',
-        transbankToken: response.token,
+        providerToken: response.token,
         buyerName,
         buyerEmail,
         buyerPhone: buyerPhone || null,

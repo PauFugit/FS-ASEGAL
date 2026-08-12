@@ -32,7 +32,7 @@ async function handleConfirmation(request, params) {
     );
   }
 
-  const order = await prisma.order.findFirst({ where: { transbankToken: tokenWs } });
+  const order = await prisma.order.findFirst({ where: { providerToken: tokenWs } });
   if (!order) {
     return NextResponse.redirect(
       `${baseUrl(request)}/pago/resultado?estado=error`,
