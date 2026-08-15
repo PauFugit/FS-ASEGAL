@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Button, Grid, CircularProgress } from '@mui/material';
 import Link from 'next/link';
+import CtaServicio from './CtaServicio';
 
 const ServiceCard = ({ name, description, imageUrl, slug, reverse = false }) => {
     return (
@@ -210,35 +211,7 @@ const ServiceCard = ({ name, description, imageUrl, slug, reverse = false }) => 
                             >
                                 VER MÁS
                             </Button>
-                            <Button
-                                variant="contained"
-                                href="/cotiza"
-                                sx={{
-                                    backgroundColor: '#F2AC57',
-                                    color: 'white',
-                                    borderRadius: '24px',
-                                    px: 4,
-                                    py: 1.2,
-                                    fontSize: {
-                                        xs: '0.6rem',
-                                        md: '0.8rem',
-                                        xl: '1rem',
-                                        '@media (min-width: 900px) and (max-width: 1535px)': {
-                                            fontSize: '0.75rem'
-                                        }
-                                    },
-                                    fontWeight: 600,
-                                    textTransform: 'none',
-                                    boxShadow: '0px 2px 8px 0px #F2AC5722',
-                                    '&:hover': {
-                                        backgroundColor: '#ffffff',
-                                        color: '#F2AC57',
-                                        border: '2px solid #F2AC57',
-                                    },
-                                }}
-                            >
-                                COTIZAR SERVICIO
-                            </Button>
+                            <CtaServicio serviceName={name} sx={{ mt: 0 }} />
                         </Box>
                     </Box>
                 </Grid>
