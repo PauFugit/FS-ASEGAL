@@ -1,5 +1,6 @@
 'use client';
 import BannerStatic from '@/components/BannerStatic';
+import ServiciosIntro from '@/components/ServiciosIntro';
 import PlantillasHomeSection from '@/components/PlantillasHomeSection';
 import ContactoBanner from '@/components/ContactoBanner';
 import BannerHomeTres from '@/components/BannerHomeTres';
@@ -15,6 +16,7 @@ export default function ServiciosClient() {
         image="bannerServicios2.jpg"
         text="NUESTROS SERVICIOS"
       />
+      <ServiciosIntro/>
       <ServiciosOld/>
       <ContactoBanner/>
       <PlantillasHomeSection/>

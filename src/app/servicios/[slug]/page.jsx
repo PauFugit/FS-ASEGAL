@@ -379,6 +379,7 @@ export default async function ServicioDetailPage({ params }) {
               <BotonComprarServicio
                 serviceId={service.id}
                 serviceName={service.name}
+                serviceDescription={service.description}
                 priceAmount={service.priceAmount}
               />
             </Box>

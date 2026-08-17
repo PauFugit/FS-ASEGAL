@@ -180,7 +180,8 @@ export default function ServicesPage() {
         try {
           result = JSON.parse(responseText);
         } catch (parseError) {
-          throw new Error('Respuesta inválida del servidor');
+          console.error('Respuesta no-JSON del servidor:', res.status, responseText.slice(0, 500));
+          throw new Error(`Respuesta inválida del servidor (HTTP ${res.status}). Revisa la consola para más detalles.`);
         }
       }
 
