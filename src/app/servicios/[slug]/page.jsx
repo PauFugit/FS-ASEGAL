@@ -152,7 +152,28 @@ export default async function ServicioDetailPage({ params }) {
 
       <Container maxWidth="md" sx={{ py: { xs: 4, md: 6 } }}>
         <Link href="/servicios" style={{ textDecoration: 'none' }}>
-          <Button startIcon={<ArrowBackIcon />} sx={{ mb: 3, color: '#18148C', textTransform: 'none' }}>
+          <Button
+            startIcon={<ArrowBackIcon sx={{ fontSize: '1.6rem !important' }} />}
+            sx={{
+              mb: 3,
+              color: '#18148C',
+              fontWeight: 700,
+              textTransform: 'none',
+              fontSize: '1rem',
+              borderRadius: '30px',
+              px: 2.5,
+              py: 1,
+              border: '2px solid #18148C',
+              bgcolor: 'rgba(24,20,140,0.05)',
+              transition: 'all 0.25s ease',
+              '&:hover': {
+                bgcolor: '#18148C',
+                color: '#fff',
+                transform: 'translateX(-4px)',
+                boxShadow: '0px 4px 14px rgba(24,20,140,0.35)',
+              },
+            }}
+          >
             Volver a servicios
           </Button>
         </Link>
@@ -175,17 +196,34 @@ export default async function ServicioDetailPage({ params }) {
           </Typography>
         )}
 
-        <Typography
-          variant="body1"
+        <Box
           sx={{
-            color: '#333',
-            lineHeight: 1.9,
             mb: { xs: 4, md: 5 },
-            fontSize: { xs: '1rem', md: '1.1rem' },
+            p: { xs: 2.5, md: 3 },
+            borderLeft: '5px solid #F2AC57',
+            border: '1px solid rgba(242,172,87,0.35)',
+            borderLeftWidth: '5px',
+            borderRadius: '14px',
+            bgcolor: 'rgba(242,172,87,0.06)',
+            backdropFilter: 'blur(2px)',
+            transition: 'background-color 0.3s ease',
+            '&:hover': {
+              bgcolor: 'rgba(242,172,87,0.12)',
+            },
           }}
         >
-          {service.description}
-        </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: '#333',
+              lineHeight: 1.9,
+              fontSize: { xs: '1rem', md: '1.1rem' },
+              fontStyle: 'italic',
+            }}
+          >
+            {service.description}
+          </Typography>
+        </Box>
 
         {steps.length > 0 && (
           <Box sx={{ mb: { xs: 4, md: 5 } }}>
