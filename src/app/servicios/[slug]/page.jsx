@@ -198,6 +198,7 @@ export default async function ServicioDetailPage({ params }) {
 
         <Box
           sx={{
+            position: 'relative',
             mb: { xs: 4, md: 5 },
             p: { xs: 2.5, md: 3 },
             borderLeft: '5px solid #F2AC57',
@@ -206,15 +207,63 @@ export default async function ServicioDetailPage({ params }) {
             borderRadius: '14px',
             bgcolor: 'rgba(242,172,87,0.06)',
             backdropFilter: 'blur(2px)',
+            overflow: 'hidden',
             transition: 'background-color 0.3s ease',
             '&:hover': {
               bgcolor: 'rgba(242,172,87,0.12)',
             },
+            '@keyframes sparkleFloat': {
+              '0%, 100%': { opacity: 0.35, transform: 'scale(0.85) rotate(0deg)' },
+              '50%': { opacity: 1, transform: 'scale(1.15) rotate(15deg)' },
+            },
+            '@keyframes shineSweep': {
+              '0%': { transform: 'translateX(-120%) skewX(-20deg)' },
+              '60%, 100%': { transform: 'translateX(220%) skewX(-20deg)' },
+            },
           }}
         >
+          {}
+          <Box
+            aria-hidden
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              width: '40%',
+              background: 'linear-gradient(100deg, transparent, rgba(255,255,255,0.55), transparent)',
+              animation: 'shineSweep 5s ease-in-out infinite',
+              pointerEvents: 'none',
+            }}
+          />
+          {[
+            { top: '10%', left: '92%', size: 14, delay: '0s' },
+            { top: '75%', left: '4%', size: 10, delay: '1.2s' },
+            { top: '20%', left: '6%', size: 8, delay: '2.1s' },
+          ].map((s, i) => (
+            <Box
+              key={i}
+              aria-hidden
+              sx={{
+                position: 'absolute',
+                top: s.top,
+                left: s.left,
+                width: s.size,
+                height: s.size,
+                color: '#F2AC57',
+                animation: `sparkleFloat 2.6s ease-in-out ${s.delay} infinite`,
+                pointerEvents: 'none',
+                zIndex: 1,
+              }}
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" width="100%" height="100%">
+                <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" />
+              </svg>
+            </Box>
+          ))}
           <Typography
             variant="body1"
             sx={{
+              position: 'relative',
+              zIndex: 1,
               color: '#333',
               lineHeight: 1.9,
               fontSize: { xs: '1rem', md: '1.1rem' },
