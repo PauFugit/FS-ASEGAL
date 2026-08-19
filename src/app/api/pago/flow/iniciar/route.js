@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { mpPreference } from '@/lib/mercadopago';
+import { createPayment } from '@/lib/flow';
 
 function buildBuyOrder() {
   return `ASG${Date.now()}`.slice(0, 26);
@@ -38,7 +38,7 @@ export async function POST(request) {
       data: {
         buyOrder,
         sessionId,
-        provider: 'MERCADOPAGO',
+        provider: 'FLOW',
         serviceId: service.id,
         serviceName: service.name,
         amount: service.priceAmount,
@@ -49,39 +49,23 @@ export async function POST(request) {
       },
     });
 
-    const isPublicUrl = baseUrl.startsWith('https://');
-
-    const preference = await mpPreference.create({
-      body: {
-        items: [
-          {
-            id: String(service.id),
-            title: service.name,
-            quantity: 1,
-            unit_price: service.priceAmount,
-            currency_id: 'CLP',
-          },
-        ],
-        payer: { name: buyerName, email: buyerEmail },
-        external_reference: buyOrder,
-        back_urls: {
-          success: `${baseUrl}/pago/resultado?estado=aprobada&orden=${buyOrder}`,
-          failure: `${baseUrl}/pago/resultado?estado=rechazada&orden=${buyOrder}`,
-          pending: `${baseUrl}/pago/resultado?estado=pendiente&orden=${buyOrder}`,
-        },
-        // auto_return y notification_url requieren una URL pública (https); en local se omiten.
-        ...(isPublicUrl ? { auto_return: 'approved', notification_url: `${baseUrl}/api/pago/mercadopago/webhook` } : {}),
-      },
+    const payment = await createPayment({
+      commerceOrder: buyOrder,
+      subject: service.name,
+      amount: service.priceAmount,
+      email: buyerEmail,
+      urlConfirmation: `${baseUrl}/api/pago/flow/confirmar`,
+      urlReturn: `${baseUrl}/api/pago/flow/retorno`,
     });
 
     await prisma.order.update({
       where: { id: order.id },
-      data: { providerToken: preference.id },
+      data: { providerToken: payment.token },
     });
 
-    return NextResponse.json({ url: preference.init_point });
+    return NextResponse.json({ url: `${payment.url}?token=${payment.token}` });
   } catch (error) {
-    console.error('Error iniciando preferencia Mercado Pago:', error);
-    return NextResponse.json({ error: 'Error al iniciar el pago' }, { status: 500 });
+    console.error('Error iniciando pago Flow:', error);
+    return NextResponse.json({ error: error.message || 'Error al iniciar el pago' }, { status: 500 });
   }
 }

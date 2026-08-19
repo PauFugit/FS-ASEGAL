@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import LockIcon from '@mui/icons-material/Lock';
 
 const PROVIDERS = {
@@ -28,6 +29,13 @@ const PROVIDERS = {
     endpoint: '/api/pago/mercadopago/iniciar',
     icon: AccountBalanceWalletIcon,
     accent: '#F2AC57',
+  },
+  flow: {
+    label: 'Flow',
+    sublabel: 'Tarjetas, transferencia y más medios',
+    endpoint: '/api/pago/flow/iniciar',
+    icon: WaterDropIcon,
+    accent: '#00B2A9',
   },
 };
 
@@ -47,6 +55,7 @@ export default function BotonComprarServicio({ serviceId, serviceName, serviceDe
   };
 
   const handleComprar = async () => {
+    if (loading) return;
     if (!buyer.name.trim() || !buyer.email.trim()) {
       setError('Nombre y correo son requeridos');
       return;

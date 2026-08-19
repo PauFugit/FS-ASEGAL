@@ -26,7 +26,7 @@ export async function POST(request) {
     if (!service || service.status !== 'publicado') {
       return NextResponse.json({ error: 'Servicio no encontrado' }, { status: 404 });
     }
-    if (!service.priceAmount) {
+    if (!service.priceAmount || service.priceAmount <= 0) {
       return NextResponse.json({ error: 'Este servicio no tiene precio de compra directa' }, { status: 400 });
     }
 

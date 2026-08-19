@@ -33,6 +33,13 @@ export async function POST(request) {
       return NextResponse.json({ received: true });
     }
 
+    // El monto pagado debe coincidir con el de la orden; evita que un pago de otro
+    // monto/transacción pueda marcar esta orden como aprobada.
+    if (payment.status === 'approved' && Math.round(payment.transaction_amount) !== order.amount) {
+      console.error(`Monto de pago MP (${payment.transaction_amount}) no coincide con orden ${buyOrder} (${order.amount})`);
+      return NextResponse.json({ received: true });
+    }
+
     const newStatus = STATUS_MAP[payment.status] || 'RECHAZADA';
 
     const updatedOrder = await prisma.order.update({

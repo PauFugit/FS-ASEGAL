@@ -63,7 +63,7 @@ export default function OrdenesPage() {
     return matchesSearch && matchesStatus && matchesProvider;
   });
 
-  const PROVIDER_LABEL = { WEBPAY: 'Webpay Plus', MERCADOPAGO: 'Mercado Pago' };
+  const PROVIDER_LABEL = { WEBPAY: 'Webpay Plus', MERCADOPAGO: 'Mercado Pago', FLOW: 'Flow' };
 
   const formatCLP = (amount) => amount.toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
@@ -121,6 +121,7 @@ export default function OrdenesPage() {
             <MenuItem value="TODOS">Todos</MenuItem>
             <MenuItem value="WEBPAY">Webpay Plus</MenuItem>
             <MenuItem value="MERCADOPAGO">Mercado Pago</MenuItem>
+            <MenuItem value="FLOW">Flow</MenuItem>
           </Select>
         </FormControl>
       </Paper>
