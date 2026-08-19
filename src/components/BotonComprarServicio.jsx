@@ -10,19 +10,11 @@ import Alert from '@mui/material/Alert';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import LockIcon from '@mui/icons-material/Lock';
 
 const PROVIDERS = {
-  webpay: {
-    label: 'Webpay Plus',
-    sublabel: 'Tarjetas de crédito y débito',
-    endpoint: '/api/pago/webpay/iniciar',
-    icon: CreditCardIcon,
-    accent: '#18148C',
-  },
   mercadopago: {
     label: 'Mercado Pago',
     sublabel: 'Tarjetas, cuotas y saldo en cuenta',
@@ -43,7 +35,7 @@ export default function BotonComprarServicio({ serviceId, serviceName, serviceDe
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [provider, setProvider] = useState('webpay');
+  const [provider, setProvider] = useState('mercadopago');
   const [buyer, setBuyer] = useState({ name: '', email: '', phone: '' });
 
   const formatCLP = (amount) => amount.toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
