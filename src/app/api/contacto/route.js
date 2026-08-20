@@ -70,7 +70,7 @@ export async function POST(request) {
         '',
         '---',
         'ASEGALBYF Asesorías',
-        'Teléfono: +56 9 9492 8092',
+        'Teléfono: +56 9 9492 8092 / +56 9 4232 7704',
         'Email: contacto@asegalbyfasesorias.cl',
         'Sitio web: https://asegalbyfasesorias.cl',
         '',
@@ -99,7 +99,7 @@ export async function POST(request) {
     <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
       <strong>ASEGALBYF Asesorías</strong><br>
       Atención presencial I y IV Región. Atención online.<br>
-      Teléfono: +56 9 9492 8092<br>
+      Teléfono: +56 9 9492 8092 / +56 9 4232 7704<br>
       Email: contacto@asegalbyfasesorias.cl<br>
       Sitio web: https://asegalbyfasesorias.cl
     </div>

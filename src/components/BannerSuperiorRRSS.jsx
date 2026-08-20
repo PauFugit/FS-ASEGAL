@@ -44,19 +44,6 @@ function BannerSuperiorRRSS() {
           }}
         >
           <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>ATENCIÓN </Box>
-          <b>I Y IV REGIÓN</b>
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{
-            color: '#fff',
-            fontSize: { xs: 9, md: 12, lg: 13 },
-            letterSpacing: 0.2,
-            fontWeight: 400,
-            textTransform: 'uppercase',
-          }}
-        >
-          <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>ATENCIÓN </Box>
           ONLINE <b>CHILE</b>
         </Typography>
       </Stack>
