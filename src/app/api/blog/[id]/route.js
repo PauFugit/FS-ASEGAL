@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { prisma } from '@/lib/prisma';
+import { revalidatePath } from 'next/cache';
 
 export async function PUT(request, { params }) {
   try {
@@ -31,6 +32,9 @@ export async function PUT(request, { params }) {
       },
     });
 
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${updatedPost.slug}`);
+
     return NextResponse.json(updatedPost);
   } catch (error) {
     console.error('Error updating blog post:', error);
@@ -46,7 +50,10 @@ export async function DELETE(request, { params }) {
     }
 
     const { id } = await params;
-    await prisma.blog.delete({ where: { id: parseInt(id) } });
+    const deletedPost = await prisma.blog.delete({ where: { id: parseInt(id) } });
+
+    revalidatePath('/blog');
+    revalidatePath(`/blog/${deletedPost.slug}`);
 
     return NextResponse.json({ message: 'Post eliminado correctamente' }, { status: 200 });
   } catch (error) {

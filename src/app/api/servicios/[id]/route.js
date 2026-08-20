@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
 import { prisma } from '@/lib/prisma'
+import { revalidatePath } from 'next/cache';
 
 export async function GET(request, { params }) {
     const { id: rawId } = await params;
@@ -31,9 +32,11 @@ export async function DELETE(request, { params }) {
 
         const { id: rawId } = await params;
         const id = parseInt(rawId)
-        await prisma.services.delete({
+        const deletedService = await prisma.services.delete({
             where: { id }
         });
+        revalidatePath('/servicios');
+        revalidatePath(`/servicios/${deletedService.slug}`);
         return NextResponse.json({ message: "Servicio eliminado correctamente." }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
@@ -85,6 +88,8 @@ export async function PUT(request, { params }) {
                 status: data.status,
             }
         });
+        revalidatePath('/servicios');
+        revalidatePath(`/servicios/${updatedService.slug}`);
         return NextResponse.json({
             message: "Servicio actualizado correctamente.",
             data: updatedService

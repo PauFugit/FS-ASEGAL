@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/authOptions';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { slugify } from '@/lib/slugify';
+import { revalidatePath } from 'next/cache';
 
 async function generateUniqueSlug(name) {
     const base = slugify(name);
@@ -71,6 +72,9 @@ export async function POST(request) {
                 status: data.status || 'publicado',
             }
         });
+
+        revalidatePath('/servicios');
+        revalidatePath(`/servicios/${newService.slug}`);
 
         return NextResponse.json(newService, { status: 201 });
     } catch(error) {
