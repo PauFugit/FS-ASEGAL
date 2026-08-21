@@ -12,7 +12,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LockIcon from '@mui/icons-material/Lock';
 
 const PROVIDERS = {
@@ -29,13 +28,6 @@ const PROVIDERS = {
     endpoint: '/api/pago/flow/iniciar',
     icon: WaterDropIcon,
     accent: '#00B2A9',
-  },
-  webpay: {
-    label: 'Webpay Plus',
-    sublabel: 'Tarjetas de crédito y débito',
-    endpoint: '/api/pago/webpay/iniciar',
-    icon: CreditCardIcon,
-    accent: '#E5322D',
   },
 };
 
