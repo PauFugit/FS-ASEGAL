@@ -66,8 +66,8 @@ export async function POST(request) {
       },
     });
 
-    revalidatePath('/blog');
-    revalidatePath(`/blog/${newPost.slug}`);
+    revalidatePath('/blog/');
+    revalidatePath(`/blog/${newPost.slug}/`);
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (error) {

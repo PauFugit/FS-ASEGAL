@@ -35,8 +35,8 @@ export async function DELETE(request, { params }) {
         const deletedService = await prisma.services.delete({
             where: { id }
         });
-        revalidatePath('/servicios');
-        revalidatePath(`/servicios/${deletedService.slug}`);
+        revalidatePath('/servicios/');
+        revalidatePath(`/servicios/${deletedService.slug}/`);
         return NextResponse.json({ message: "Servicio eliminado correctamente." }, { status: 200 });
     } catch (error) {
         return NextResponse.json(
@@ -88,8 +88,8 @@ export async function PUT(request, { params }) {
                 status: data.status,
             }
         });
-        revalidatePath('/servicios');
-        revalidatePath(`/servicios/${updatedService.slug}`);
+        revalidatePath('/servicios/');
+        revalidatePath(`/servicios/${updatedService.slug}/`);
         return NextResponse.json({
             message: "Servicio actualizado correctamente.",
             data: updatedService

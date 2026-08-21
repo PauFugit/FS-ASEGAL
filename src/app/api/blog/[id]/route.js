@@ -32,8 +32,8 @@ export async function PUT(request, { params }) {
       },
     });
 
-    revalidatePath('/blog');
-    revalidatePath(`/blog/${updatedPost.slug}`);
+    revalidatePath('/blog/');
+    revalidatePath(`/blog/${updatedPost.slug}/`);
 
     return NextResponse.json(updatedPost);
   } catch (error) {
@@ -52,8 +52,8 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
     const deletedPost = await prisma.blog.delete({ where: { id: parseInt(id) } });
 
-    revalidatePath('/blog');
-    revalidatePath(`/blog/${deletedPost.slug}`);
+    revalidatePath('/blog/');
+    revalidatePath(`/blog/${deletedPost.slug}/`);
 
     return NextResponse.json({ message: 'Post eliminado correctamente' }, { status: 200 });
   } catch (error) {

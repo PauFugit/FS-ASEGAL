@@ -73,8 +73,8 @@ export async function POST(request) {
             }
         });
 
-        revalidatePath('/servicios');
-        revalidatePath(`/servicios/${newService.slug}`);
+        revalidatePath('/servicios/');
+        revalidatePath(`/servicios/${newService.slug}/`);
 
         return NextResponse.json(newService, { status: 201 });
     } catch(error) {
