@@ -7,6 +7,15 @@ function baseUrl(request) {
   return process.env.NEXTAUTH_URL || new URL(request.url).origin;
 }
 
+// Mapea el status ya guardado en la orden al parámetro `estado` que entiende /pago/resultado.
+function estadoFromStatus(status) {
+  if (status === 'AUTORIZADA') return 'aprobada';
+  if (status === 'RECHAZADA') return 'rechazada';
+  if (status === 'ANULADA') return 'anulada';
+  if (status === 'EXPIRADA') return 'expirada';
+  return 'error';
+}
+
 async function handleConfirmation(request, params) {
   const tokenWs = params.get('token_ws');
   const tbkToken = params.get('TBK_TOKEN');
@@ -36,6 +45,16 @@ async function handleConfirmation(request, params) {
   if (!order) {
     return NextResponse.redirect(
       `${baseUrl(request)}/pago/resultado?estado=error`,
+      { status: 303 }
+    );
+  }
+
+  // El token_ws es de un solo uso: si esta orden ya fue confirmada (por el POST real
+  // de Transbank), cualquier otra visita a esta URL no debe volver a llamar a commit(),
+  // que fallaría con "token inválido" y podría machacar un resultado ya correcto.
+  if (order.status === 'AUTORIZADA' || order.status === 'RECHAZADA') {
+    return NextResponse.redirect(
+      `${baseUrl(request)}/pago/resultado?estado=${estadoFromStatus(order.status)}&orden=${order.buyOrder}`,
       { status: 303 }
     );
   }
@@ -71,7 +90,10 @@ async function handleConfirmation(request, params) {
     );
   } catch (error) {
     console.error('Error confirmando transacción Webpay:', error);
-    await prisma.order.update({ where: { id: order.id }, data: { status: 'RECHAZADA' } });
+    // No sabemos si Transbank aprobó o no el pago (el error puede ser de red, timeout,
+    // o un commit duplicado). Usamos un status distinto a RECHAZADA para no dar por
+    // rechazada una compra que tal vez sí se cobró, y así poder revisarla manualmente.
+    await prisma.order.update({ where: { id: order.id }, data: { status: 'ERROR_CONFIRMACION' } });
     return NextResponse.redirect(
       `${baseUrl(request)}/pago/resultado?estado=error&orden=${order.buyOrder}`,
       { status: 303 }
@@ -88,7 +110,38 @@ export async function POST(request) {
   return handleConfirmation(request, params);
 }
 
+// GET solo consulta el estado ya guardado en la orden — nunca llama a webpayTransaction.commit(),
+// para no intentar reutilizar un token_ws que ya fue consumido por el POST real de Transbank.
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  return handleConfirmation(request, searchParams);
+  const tokenWs = searchParams.get('token_ws');
+  const tbkToken = searchParams.get('TBK_TOKEN');
+  const tbkOrdenCompra = searchParams.get('TBK_ORDEN_COMPRA');
+
+  if (tbkToken && !tokenWs) {
+    return NextResponse.redirect(
+      `${baseUrl(request)}/pago/resultado?estado=anulada&orden=${tbkOrdenCompra || ''}`,
+      { status: 303 }
+    );
+  }
+
+  if (!tokenWs) {
+    return NextResponse.redirect(
+      `${baseUrl(request)}/pago/resultado?estado=expirada`,
+      { status: 303 }
+    );
+  }
+
+  const order = await prisma.order.findFirst({ where: { providerToken: tokenWs } });
+  if (!order) {
+    return NextResponse.redirect(
+      `${baseUrl(request)}/pago/resultado?estado=error`,
+      { status: 303 }
+    );
+  }
+
+  return NextResponse.redirect(
+    `${baseUrl(request)}/pago/resultado?estado=${estadoFromStatus(order.status)}&orden=${order.buyOrder}`,
+    { status: 303 }
+  );
 }

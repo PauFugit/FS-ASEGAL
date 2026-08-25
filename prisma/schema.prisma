@@ -147,6 +147,7 @@ enum OrderStatus {
   RECHAZADA
   ANULADA
   EXPIRADA
+  ERROR_CONFIRMACION
 }
 
 enum Role {
